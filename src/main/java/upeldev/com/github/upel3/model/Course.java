@@ -31,10 +31,13 @@ public class Course {
     private User lecturer;
 
     @ManyToMany
+    //replace with a HashMap - students and their marks
     private List<User> enrolledStudents = new ArrayList<>();
+
 
     public Course(String name, String accessCode, User lecturer){
         this.name = name;
+        this.accessCode = accessCode;
         this.lecturer = lecturer;
     }
 
