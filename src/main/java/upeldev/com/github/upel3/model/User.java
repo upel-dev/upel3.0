@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,9 +32,9 @@ public class User {
     @Column
     private String indexNumber;
 
-    @Column
-    @OneToMany
-    private List<Role> roles = new LinkedList<>();
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles = new HashSet<>();
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;

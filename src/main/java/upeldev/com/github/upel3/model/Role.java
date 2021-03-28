@@ -1,22 +1,16 @@
 package upeldev.com.github.upel3.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.Getter;
 
-@Entity
+@Getter
 public enum Role {
-    STUDENT,
-    LECTURER,
-    ADMIN;
+    STUDENT("STUDENT"),
+    LECTURER("LECTURER"),
+    ADMIN("ADMIN");
 
-    private Long id;
+    private final String name;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Id
-    public Long getId() {
-        return id;
+    Role(String name) {
+        this.name = name;
     }
 }
