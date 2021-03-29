@@ -51,10 +51,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/user/all").hasAnyAuthority("ADMIN")
+                .antMatchers("/user/new").hasAnyAuthority("ADMIN")
+                .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .and()
                 .logout().permitAll();
+
+        // Someone from Stackoverflow says:
+        // Don't use this configuration in a production environment =)
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 }

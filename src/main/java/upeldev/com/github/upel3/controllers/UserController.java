@@ -30,7 +30,7 @@ public class UserController {
         return userService.findAll();
     }
 
-    @RequestMapping(value="/register", method = RequestMethod.POST)
+    @RequestMapping(value="/new", method = RequestMethod.POST)
     public @ResponseBody User register(@RequestBody User userDto){
         return uds.registerNewUser(userDto);
     }
