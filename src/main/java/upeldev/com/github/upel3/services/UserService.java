@@ -22,6 +22,9 @@ public class UserService {
         return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
+    public User findById(Long id){
+        return userRepository.findUserById(id);
+    }
 
     public User findByEmail(String email){
         return userRepository.findUserByEmail(email);
