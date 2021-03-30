@@ -2,9 +2,7 @@ package upeldev.com.github.upel3.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,6 +26,9 @@ public class Grade {
     @Column(nullable = false)
     private String name;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Course course;
 
     @OneToMany(
             mappedBy = "grade",
@@ -36,11 +37,23 @@ public class Grade {
     )
     private List<IndividualGrade> individualGrade = new ArrayList<>();
 
-    public Grade(int minValue, int maxValue, String name){
+
+
+    public Grade(Course course, int minValue, int maxValue, String name){
+        this.course = course;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Grade grade = (Grade) o;
+        return id.equals(grade.id);
+    }
+
 
 
 }

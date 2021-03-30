@@ -3,10 +3,7 @@ package upeldev.com.github.upel3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import upeldev.com.github.upel3.auth.Upel3UserDetailsService;
-import upeldev.com.github.upel3.model.Role;
-import upeldev.com.github.upel3.model.Grade;
-import upeldev.com.github.upel3.model.IndividualGrade;
-import upeldev.com.github.upel3.model.User;
+import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.GradeService;
 import upeldev.com.github.upel3.services.IndividualGradeService;
 import upeldev.com.github.upel3.services.CourseService;
@@ -32,9 +29,16 @@ public class DataLoader {
 
     public void populateData(){
         populateUsers();
+        populateCourses();
         populateGrades();
         populateIndividualGrade();
     }
+
+    public void populateCourses(){
+        courseService.createCourse("First course", "1234", "first description", userService.findByEmail("kate@gmail.com"));
+        courseService.createCourse("Second course", "1234", "second description", userService.findByEmail("kate@gmail.com"));
+    }
+
     public void populateUsers() {
         Upel3UserDetailsService uds = new Upel3UserDetailsService(userService);
 
@@ -52,35 +56,21 @@ public class DataLoader {
         uds.registerNewUser(benjamin);
     }
     private void populateGrades(){
+        List<Course> allCourses = courseService.findAll();
         for(int i = 0; i < 5; i++){
-            Grade gradeToAppend = new Grade(0, 100, "Kolokwium " + i);
+            Grade gradeToAppend = new Grade(allCourses.get(i%allCourses.size()), 0, 100, "Kolokwium " + i);
             gradeService.save(gradeToAppend);
         }
 
     }
-    private void populateIndividualGrade(){
+    private void populateIndividualGrade() {
         List<User> users = userService.findAll();
         List<Grade> grades = gradeService.findAll();
 
-        for(int i = 0; i < 25; i++){
-            IndividualGrade individualGrade = new IndividualGrade(users.get(i%users.size()), grades.get(i%grades.size()), 50);
+        for (int i = 0; i < 25; i++) {
+            IndividualGrade individualGrade = new IndividualGrade(users.get(i % users.size()), grades.get(i % grades.size()), 50);
             individualGradeService.save(individualGrade);
         }
-
-    public void populateUsers() {
-        Upel3UserDetailsService uds = new Upel3UserDetailsService(userService);
-
-        User john = new User("John", "Doe", "john@gmail.com", "1234");
-        john.getRoles().add(Role.ADMIN);
-        uds.registerNewUser(john);
-
-        User kate = new User("Kate", "Smith", "kate@gmail.com", "1234");
-        kate.getRoles().add(Role.LECTURER);
-        uds.registerNewUser(kate);
-
-        User benjamin = new User("Benjamin", "Ford", "benjamin@gmail.com", "1234");
-        benjamin.getRoles().add(Role.STUDENT);
-        benjamin.setIndexNumber("123456");
-        uds.registerNewUser(benjamin);
     }
+
 }

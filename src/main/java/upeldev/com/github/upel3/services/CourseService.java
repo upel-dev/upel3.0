@@ -6,6 +6,10 @@ import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.User;
 import upeldev.com.github.upel3.repositories.CourseRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class CourseService {
 
@@ -24,11 +28,14 @@ public class CourseService {
         return save(course);
     }
 
+    public List<Course> findAll(){
+        return StreamSupport.stream(courseRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
     public void addStudent(Course course, User student){
         course.addStudent(student);
-        //student.addCourse(course);
         courseRepository.save(course);
-        //studentRepository.save(student);
     }
 
 

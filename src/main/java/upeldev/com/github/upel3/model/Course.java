@@ -1,8 +1,6 @@
 package upeldev.com.github.upel3.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,6 +32,15 @@ public class Course {
     //replace with a HashMap - students and their marks
     private List<User> enrolledStudents = new ArrayList<>();
 
+    @EqualsAndHashCode.Exclude @ToString.Exclude
+    @OneToMany
+            (
+                    mappedBy = "course",
+                    cascade = CascadeType.ALL,
+                    orphanRemoval = true,
+                    fetch = FetchType.EAGER
+            )
+    private List<Grade> grade = new ArrayList<>();
 
     public Course(String name, String accessCode, User lecturer){
         this.name = name;
@@ -45,7 +52,13 @@ public class Course {
         if(!enrolledStudents.contains(student)) enrolledStudents.add(student);
     }
 
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return id.equals(course.id);
+    }
 
 
 }

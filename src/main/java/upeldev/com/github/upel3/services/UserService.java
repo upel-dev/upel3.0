@@ -39,8 +39,4 @@ public class UserService {
         return user.getRoles().stream()
                 .anyMatch(role -> role.getName().equals(Role.ADMIN.getName()));
     }
-
-    public User findById(Long id){
-        return userRepository.findUserById(id);
-    }
 }

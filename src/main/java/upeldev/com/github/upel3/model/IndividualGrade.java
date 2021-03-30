@@ -21,13 +21,15 @@ public class IndividualGrade {
     private int value;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Grade grade;
 
+    @Column
+    private String description;
 
     public IndividualGrade(User user, Grade grade, int value){
         this.user = user;
