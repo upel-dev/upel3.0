@@ -15,13 +15,4 @@ public class WebController {
         return "users";
     }
 
-    @RequestMapping(value = "/grade")
-    public String grade() {
-        return "grade";
-    }
-
-    @RequestMapping(value = "/individualGrade")
-    public String individualGrade() {
-        return "individualGrade";
-    }
 }

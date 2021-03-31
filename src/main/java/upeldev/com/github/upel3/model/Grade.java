@@ -2,11 +2,12 @@ package upeldev.com.github.upel3.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -17,43 +18,36 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
-    private int minValue = 0;
-
-    @Column
-    private int maxValue = 100;
-
     @Column(nullable = false)
-    private String name;
+    private int value;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Course course;
+    @ManyToOne
+    private User user;
 
-    @OneToMany(
-            mappedBy = "grade",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<IndividualGrade> individualGrade = new ArrayList<>();
+    @JsonIgnore
+    @ManyToOne
+    private Activity activity;
 
+    @Column
+    private String description;
 
-
-    public Grade(Course course, int minValue, int maxValue, String name){
-        this.course = course;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-        this.name = name;
+    public Grade(User user, Activity activity, int value){
+        this.user = user;
+        this.activity = activity;
+        this.value = value;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Grade grade = (Grade) o;
-        return id.equals(grade.id);
+        Grade that = (Grade) o;
+        return id.equals(that.id);
     }
 
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

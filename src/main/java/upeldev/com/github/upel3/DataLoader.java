@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import upeldev.com.github.upel3.auth.Upel3UserDetailsService;
 import upeldev.com.github.upel3.model.*;
+import upeldev.com.github.upel3.services.ActivityService;
 import upeldev.com.github.upel3.services.GradeService;
-import upeldev.com.github.upel3.services.IndividualGradeService;
 import upeldev.com.github.upel3.services.CourseService;
 import upeldev.com.github.upel3.services.UserService;
 
@@ -16,22 +16,22 @@ public class DataLoader {
 
     private final UserService userService;
     private final CourseService courseService;
+    private final ActivityService activityService;
     private final GradeService gradeService;
-    private final IndividualGradeService individualGradeService;
 
     @Autowired
-    public DataLoader(UserService userService, CourseService courseService, GradeService gradeService, IndividualGradeService individualGradeService) {
+    public DataLoader(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService) {
         this.userService = userService;
         this.courseService = courseService;
+        this.activityService = activityService;
         this.gradeService = gradeService;
-        this.individualGradeService = individualGradeService;
     }
 
     public void populateData(){
         populateUsers();
         populateCourses();
-        populateGrades();
-        populateIndividualGrade();
+        populateActivity();
+        populateGrade();
     }
 
     public void populateCourses(){
@@ -55,21 +55,21 @@ public class DataLoader {
         benjamin.setIndexNumber("123456");
         uds.registerNewUser(benjamin);
     }
-    private void populateGrades(){
+    private void populateActivity(){
         List<Course> allCourses = courseService.findAll();
         for(int i = 0; i < 5; i++){
-            Grade gradeToAppend = new Grade(allCourses.get(i%allCourses.size()), 0, 100, "Kolokwium " + i);
-            gradeService.save(gradeToAppend);
+            Activity activityToAppend = new Activity(allCourses.get(i%allCourses.size()), 0, 100, "Kolokwium " + i);
+            activityService.save(activityToAppend);
         }
 
     }
-    private void populateIndividualGrade() {
+    private void populateGrade() {
         List<User> users = userService.findAll();
-        List<Grade> grades = gradeService.findAll();
+        List<Activity> activities = activityService.findAll();
 
         for (int i = 0; i < 25; i++) {
-            IndividualGrade individualGrade = new IndividualGrade(users.get(i % users.size()), grades.get(i % grades.size()), 50);
-            individualGradeService.save(individualGrade);
+            Grade grade = new Grade(users.get(i % users.size()), activities.get(i % activities.size()), 50);
+            gradeService.save(grade);
         }
     }
 

@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -40,7 +41,7 @@ public class Course {
                     orphanRemoval = true,
                     fetch = FetchType.EAGER
             )
-    private List<Grade> grade = new ArrayList<>();
+    private List<Activity> activity = new ArrayList<>();
 
     public Course(String name, String accessCode, User lecturer){
         this.name = name;
@@ -58,6 +59,10 @@ public class Course {
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
         return id.equals(course.id);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
 

@@ -1,15 +1,11 @@
 package upeldev.com.github.upel3.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -44,7 +40,7 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<IndividualGrade> individualGrade = new ArrayList<>();
+    private List<Grade> grade = new ArrayList<>();
 
 
     public User(String firstName, String lastName, String email, String password) {
@@ -52,5 +48,18 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
