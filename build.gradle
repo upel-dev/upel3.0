@@ -31,7 +31,7 @@ dependencies {
     implementation group: 'org.springframework.security', name: 'spring-security-core'
     compile "org.springframework.security:spring-security-web"
     compile "org.springframework.security:spring-security-config"
-
+    testCompile "org.springframework.security:spring-security-test:4.2.2.RELEASE"
 }
 
 test {
