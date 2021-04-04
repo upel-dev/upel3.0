@@ -13,9 +13,11 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column
@@ -47,17 +49,6 @@ public class Activity {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Activity activity = (Activity) o;
-        return id.equals(activity.id);
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 
 
 

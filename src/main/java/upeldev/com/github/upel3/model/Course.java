@@ -11,10 +11,12 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column
@@ -33,7 +35,6 @@ public class Course {
     //replace with a HashMap - students and their marks
     private List<User> enrolledStudents = new ArrayList<>();
 
-    @EqualsAndHashCode.Exclude @ToString.Exclude
     @OneToMany
             (
                     mappedBy = "course",
@@ -53,17 +54,6 @@ public class Course {
         if(!enrolledStudents.contains(student)) enrolledStudents.add(student);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Course course = (Course) o;
-        return id.equals(course.id);
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 
 
 }

@@ -35,7 +35,6 @@ public class ActivityController {
     @PostMapping("/add")
     public @ResponseBody void postBody(@RequestBody Activity activity, Authentication authentication) {
         String currentUserEmail = ((Upel3UserDetails) authentication.getPrincipal()).getUsername();
-        System.out.println("Activity " + activity.getCourse() +" "+ activity.getName() + " " + currentUserEmail);
         User user = userService.findByEmail(currentUserEmail);
 
         if(activityService.canUserAddActivity(activity, user)){
