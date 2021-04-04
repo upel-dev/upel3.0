@@ -14,6 +14,6 @@ public class Upel3Application {
 
     @Bean
     public CommandLineRunner populateData(DataLoader dataLoader) {
-        return args -> dataLoader.populateUsers();
+        return args -> dataLoader.populateData();
     }
 }
