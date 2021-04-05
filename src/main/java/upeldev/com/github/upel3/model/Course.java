@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.*;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,15 +18,14 @@ public class Course {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String accessCode;
-
     @Column(nullable = false)
     private String name;
 
     @Column
     private String description;
+
+    @OneToOne
+    private AccessCode accessCode;
 
     @ManyToMany
     private List<User> lecturers = new ArrayList<>();
@@ -47,6 +47,7 @@ public class Course {
         this.name = name;
         this.description = description;
         this.lecturers.add(lecturer);
+        this.accessCode = new AccessCode();
     }
 
     public void addStudent(User student){

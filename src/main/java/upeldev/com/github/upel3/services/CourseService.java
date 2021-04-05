@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.User;
+import upeldev.com.github.upel3.repositories.AccessCodeRepository;
 import upeldev.com.github.upel3.repositories.CourseRepository;
 import upeldev.com.github.upel3.repositories.UserRepository;
 
@@ -16,17 +17,20 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
+    private final AccessCodeRepository accessCodeRepository;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, UserRepository userRepository){
+    public CourseService(CourseRepository courseRepository, UserRepository userRepository, AccessCodeRepository accessCodeRepository){
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
+        this.accessCodeRepository = accessCodeRepository;
     }
 
     public Course save(Course courseDTO){ return courseRepository.save(courseDTO); }
 
     public Course createCourse(String name, String description, User lecturer){
         Course course = new Course(name, lecturer, description);
+        accessCodeRepository.save(course.getAccessCode());
         return save(course);
     }
 
