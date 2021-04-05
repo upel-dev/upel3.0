@@ -1,6 +1,8 @@
 package upeldev.com.github.upel3.model;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -28,9 +30,11 @@ public class Course {
     private AccessCode accessCode;
 
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<User> lecturers = new ArrayList<>();
 
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<User> enrolledStudents = new ArrayList<>();
 
     @OneToMany

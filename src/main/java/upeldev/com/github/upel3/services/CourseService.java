@@ -20,7 +20,9 @@ public class CourseService {
     private final AccessCodeRepository accessCodeRepository;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, UserRepository userRepository, AccessCodeRepository accessCodeRepository){
+    public CourseService(CourseRepository courseRepository,
+                         UserRepository userRepository,
+                         AccessCodeRepository accessCodeRepository){
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
         this.accessCodeRepository = accessCodeRepository;
@@ -37,6 +39,15 @@ public class CourseService {
     public List<Course> findAll(){
         return StreamSupport.stream(courseRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+
+    public List<Course> findByName(String name){
+        return courseRepository.findByName(name);
+    }
+
+    public List<Course> findByPhrase(String phrase){
+        return courseRepository.findByNameContains(phrase);
     }
 
     public void addStudent(Course course, User student){
