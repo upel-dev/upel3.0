@@ -3,9 +3,7 @@ package upeldev.com.github.upel3.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -20,6 +18,7 @@ public class Course {
     private Long id;
 
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String accessCode;
 
     @Column(nullable = false)
@@ -28,11 +27,10 @@ public class Course {
     @Column
     private String description;
 
-    @ManyToOne
-    private User lecturer;
+    @ManyToMany
+    private List<User> lecturers = new ArrayList<>();
 
     @ManyToMany
-    //replace with a HashMap - students and their marks
     private List<User> enrolledStudents = new ArrayList<>();
 
     @OneToMany
@@ -44,16 +42,20 @@ public class Course {
             )
     private List<Activity> activity = new ArrayList<>();
 
-    public Course(String name, String accessCode, User lecturer){
+
+    public Course(String name, User lecturer, String description){
         this.name = name;
-        this.accessCode = accessCode;
-        this.lecturer = lecturer;
+        this.description = description;
+        this.lecturers.add(lecturer);
     }
 
     public void addStudent(User student){
         if(!enrolledStudents.contains(student)) enrolledStudents.add(student);
     }
 
+    public void addLecturer(User lecturer){
+        if(!lecturers.contains(lecturer)) lecturers.add(lecturer);
+    }
 
 
 }

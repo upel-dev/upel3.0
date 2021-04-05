@@ -45,12 +45,29 @@ public class User {
     )
     private List<Grade> grade = new ArrayList<>();
 
+    @ManyToMany
+    private List<Course> coursesEnrolledIn = new ArrayList<>();
+
+    @ManyToMany
+    private List<Course> coursesLectured = new ArrayList<>();
+
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public void enrollInCourse(Course course){
+        if(!coursesEnrolledIn.contains(course)) coursesEnrolledIn.add(course);
+    }
+
+    public void addLecturedCourse(Course course){
+        if(!roles.contains(Role.LECTURER))
+            throw new UnsupportedOperationException("Only a user with role LECTURER can be added as a lecturer.");
+
+        if(!coursesLectured.contains(course)) coursesLectured.add(course);
     }
 
 }
