@@ -7,5 +7,6 @@ import upeldev.com.github.upel3.model.User;
 import java.util.List;
 
 public interface CourseRepository extends CrudRepository<Course, Integer> {
-    List<Course> findAllByLecturer(User lecturer);
+    List<Course> findByName(String name);
+    List<Course> findByNameContains(String phrase);
 }

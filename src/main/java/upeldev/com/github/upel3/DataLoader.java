@@ -35,8 +35,11 @@ public class DataLoader {
     }
 
     public void populateCourses(){
-        courseService.createCourse("First course", "1234", "first description", userService.findByEmail("kate@gmail.com"));
-        courseService.createCourse("Second course", "1234", "second description", userService.findByEmail("kate@gmail.com"));
+        Course firstCourse = courseService.createCourse("First course", "first description", userService.findByEmail("kate@gmail.com"));
+        Course secondCourse = courseService.createCourse("Second course", "second description", userService.findByEmail("kate@gmail.com"));
+        courseService.addLecturer(firstCourse, userService.findByEmail("kate@gmail.com"));
+        courseService.addLecturer(secondCourse, userService.findByEmail("kate@gmail.com"));
+        courseService.addStudent(firstCourse, userService.findByEmail("benjamin@gmail.com"));
     }
 
     public void populateUsers() {

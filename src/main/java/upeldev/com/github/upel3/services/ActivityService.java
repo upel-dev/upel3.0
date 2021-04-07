@@ -27,19 +27,11 @@ public class ActivityService {
     }
 
     public boolean canUserAddActivity(Activity activity, User user){
-        if(user.getRoles().contains(Role.ADMIN) || user.getRoles().contains(Role.LECTURER)){
-            User lecturer = activity.getCourse().getLecturer();
-            boolean isUserLecturer = lecturer.getId().equals(user.getId());
-            if(isUserLecturer || user.getRoles().contains(Role.ADMIN)){
-                return true;
-            }
-            else {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This user is not course lecturer");
-            }
-        }
-        else{
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This user cannot add grade");
-        }
+
+        if(user.getRoles().contains(Role.ADMIN)) return true;
+        if(!user.getRoles().contains(Role.LECTURER)) return false;
+
+        return user.getCoursesLectured().contains(activity.getCourse());
     }
 
     public List<Activity> findAll(){

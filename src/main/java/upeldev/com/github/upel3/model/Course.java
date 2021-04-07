@@ -1,11 +1,12 @@
 package upeldev.com.github.upel3.model;
 
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
 
 @Getter
 @Setter
@@ -19,20 +20,21 @@ public class Course {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column
-    private String accessCode;
-
     @Column(nullable = false)
     private String name;
 
     @Column
     private String description;
 
-    @ManyToOne
-    private User lecturer;
+    @OneToOne
+    private AccessCode accessCode;
 
     @ManyToMany
-    //replace with a HashMap - students and their marks
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<User> lecturers = new ArrayList<>();
+
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<User> enrolledStudents = new ArrayList<>();
 
     @OneToMany
@@ -44,16 +46,21 @@ public class Course {
             )
     private List<Activity> activity = new ArrayList<>();
 
-    public Course(String name, String accessCode, User lecturer){
+
+    public Course(String name, User lecturer, String description){
         this.name = name;
-        this.accessCode = accessCode;
-        this.lecturer = lecturer;
+        this.description = description;
+        this.lecturers.add(lecturer);
+        this.accessCode = new AccessCode();
     }
 
     public void addStudent(User student){
         if(!enrolledStudents.contains(student)) enrolledStudents.add(student);
     }
 
+    public void addLecturer(User lecturer){
+        if(!lecturers.contains(lecturer)) lecturers.add(lecturer);
+    }
 
 
 }
