@@ -43,14 +43,17 @@ public class UserService {
                 .anyMatch(role -> role.getName().equals(Role.ADMIN.getName()));
     }
 
-    public User registerNewUser(User userDto){
-        String email = userDto.getEmail();
-
+    private boolean emailHasRightFormat(String email){
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
-        if (!matcher.matches()) {
+    public User registerNewUser(User userDto){
+        String email = userDto.getEmail();
+
+        if (!emailHasRightFormat(email)) {
             throw new IllegalArgumentException(String.format("Email %s is invalid", email));
         }
 
