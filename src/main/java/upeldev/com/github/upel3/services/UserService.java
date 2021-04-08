@@ -23,6 +23,9 @@ public class UserService {
         return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
+    public User findById(Long id){
+        return userRepository.findUserById(id);
+    }
 
     public User findByEmail(String email){
         return userRepository.findUserByEmail(email);
@@ -35,9 +38,5 @@ public class UserService {
     public boolean isAdmin(User user){
         return user.getRoles().stream()
                 .anyMatch(role -> role.getName().equals(Role.ADMIN.getName()));
-    }
-
-    public User findById(Long id){
-        return userRepository.findUserById(id);
     }
 }

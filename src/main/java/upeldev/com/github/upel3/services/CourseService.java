@@ -1,0 +1,68 @@
+package upeldev.com.github.upel3.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import upeldev.com.github.upel3.model.Course;
+import upeldev.com.github.upel3.model.User;
+import upeldev.com.github.upel3.repositories.AccessCodeRepository;
+import upeldev.com.github.upel3.repositories.CourseRepository;
+import upeldev.com.github.upel3.repositories.UserRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+@Service
+public class CourseService {
+
+    private final CourseRepository courseRepository;
+    private final UserRepository userRepository;
+    private final AccessCodeRepository accessCodeRepository;
+
+    @Autowired
+    public CourseService(CourseRepository courseRepository,
+                         UserRepository userRepository,
+                         AccessCodeRepository accessCodeRepository){
+        this.courseRepository = courseRepository;
+        this.userRepository = userRepository;
+        this.accessCodeRepository = accessCodeRepository;
+    }
+
+    public Course save(Course courseDTO){ return courseRepository.save(courseDTO); }
+
+    public Course createCourse(String name, String description, User lecturer){
+        Course course = new Course(name, lecturer, description);
+        accessCodeRepository.save(course.getAccessCode());
+        return save(course);
+    }
+
+    public List<Course> findAll(){
+        return StreamSupport.stream(courseRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<Course> findByName(String name){
+        return courseRepository.findByName(name);
+    }
+
+    public List<Course> findByPhrase(String phrase){
+        return courseRepository.findByNameContains(phrase);
+    }
+
+    public void addStudent(Course course, User student){
+        course.addStudent(student);
+        student.enrollInCourse(course);
+        courseRepository.save(course);
+        userRepository.save(student);
+    }
+
+    public void addLecturer(Course course, User lecturer){
+        course.addLecturer(lecturer);
+        lecturer.addLecturedCourse(course);
+        courseRepository.save(course);
+        userRepository.save(lecturer);
+    }
+
+
+}
