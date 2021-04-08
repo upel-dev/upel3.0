@@ -1,6 +1,7 @@
 package upeldev.com.github.upel3;
 
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,24 +24,27 @@ public class UserControllerTest {
     private MockMvc mvc;
 
     @Test
+    @DisplayName("Should allow an admin to see all users")
     @WithMockUser(authorities = {"ADMIN"})
-    public void findAllUsersAdminTest() throws Exception {
+    public void findAllUsersByAdminTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/user/all")
                 .accept(MediaType.ALL))
                 .andExpect(status().isOk());
     }
 
     @Test
+    @DisplayName("Should not allow a student to see all users")
     @WithMockUser(authorities = {"STUDENT"})
-    public void findAllUsersStudentTest() throws Exception {
+    public void findAllUsersByStudentTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/user/all")
                 .accept(MediaType.ALL))
                 .andExpect(status().isForbidden());
     }
 
     @Test
+    @DisplayName("Should not allow a lecturer to see all users")
     @WithMockUser(authorities = {"LECTURER"})
-    public void findAllUsersLecturerTest() throws Exception {
+    public void findAllUsersByLecturerTest() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/user/all")
                 .accept(MediaType.ALL))
                 .andExpect(status().isForbidden());
