@@ -25,6 +25,11 @@ public class UserController {
         this.uds = uds;
     }
 
+    private User findCurrentUser(Authentication authentication){
+        String currentUserEmail = ((Upel3UserDetails) authentication.getPrincipal()).getUsername();
+        return userService.findByEmail(currentUserEmail);
+    }
+
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public @ResponseBody List<User> findAllUsers(){
         return userService.findAll();
@@ -33,11 +38,6 @@ public class UserController {
     @RequestMapping(value="/new", method = RequestMethod.POST)
     public @ResponseBody User register(@RequestBody User userDto){
         return uds.registerNewUser(userDto);
-    }
-
-    private User findCurrentUser(Authentication authentication){
-        String currentUserEmail = ((Upel3UserDetails) authentication.getPrincipal()).getUsername();
-        return userService.findByEmail(currentUserEmail);
     }
 
     @RequestMapping(value="/{email}", method = RequestMethod.GET)
