@@ -12,7 +12,7 @@
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <p class="justify-content-center navbar-brand">UPeL 3.0 - Uczelniana Platforma e-Learningowa</p>
         <div class="text-end">
-            <p class="justify-content-center navbar-brand">Imię Nazwisko</p>
+            <p th:text="${firstname} + ' ' + ${lastname}" class="justify-content-center navbar-brand">Imię Nazwisko</p>
             <button type="button" class="btn btn-primary">Profil</button>
             <button type="button" class="btn btn-primary">Wyloguj się</button>
         </div>
