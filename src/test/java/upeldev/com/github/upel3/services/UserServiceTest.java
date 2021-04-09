@@ -1,6 +1,6 @@
 package upeldev.com.github.upel3.services;
 
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,9 +44,12 @@ public class UserServiceTest {
         Mockito.when(userRepository.findUserById(wrongId))
                 .thenReturn(null);
 
-        Assertions.assertEquals(userService.findById(user1Id), user1);
-        Assertions.assertEquals(userService.findById(user2Id), user2);
-        Assertions.assertNull(userService.findById(wrongId));
+        Assertions.assertThat(userService.findById(user1Id))
+                .isEqualTo(user1);
+        Assertions.assertThat(userService.findById(user2Id))
+                .isEqualTo(user2);
+        Assertions.assertThat(userService.findById(wrongId))
+                .isNull();
     }
 
     @Test
@@ -66,9 +69,12 @@ public class UserServiceTest {
         Mockito.when(userRepository.findUserByEmail(wrongEmail))
                 .thenReturn(null);
 
-        Assertions.assertEquals(userService.findByEmail(user1Email), user1);
-        Assertions.assertEquals(userService.findByEmail(user2Email), user2);
-        Assertions.assertNull(userService.findByEmail(wrongEmail));
+        Assertions.assertThat(userService.findByEmail(user1Email))
+                .isEqualTo(user1);
+        Assertions.assertThat(userService.findByEmail(user2Email))
+                .isEqualTo(user2);
+        Assertions.assertThat(userService.findByEmail(wrongEmail))
+                .isNull();
     }
 
     @Test
@@ -86,9 +92,12 @@ public class UserServiceTest {
         user3.getRoles().add(Role.LECTURER);
         user3.getRoles().add(Role.ADMIN);
 
-        Assertions.assertTrue(userService.isAdmin(user1));
-        Assertions.assertFalse(userService.isAdmin(user2));
-        Assertions.assertTrue(userService.isAdmin(user3));
+        Assertions.assertThat(userService.isAdmin(user1))
+                .isTrue();
+        Assertions.assertThat(userService.isAdmin(user2))
+                .isFalse();
+        Assertions.assertThat(userService.isAdmin(user3))
+                .isTrue();
     }
 
     @Test
@@ -97,27 +106,30 @@ public class UserServiceTest {
         User newUser1 = new User("Brad", "Pitt", "pitt@gmail.com", "8888");
         newUser1.getRoles().add(Role.STUDENT);
         newUser1.setIndexNumber("123456");
-        String goodRegistrationEmail1 = newUser1.getEmail();
+        String newUser1Email = newUser1.getEmail();
 
         User newUser2 = new User("Angelina", "Jolie", "jolie@gmail.com", "8888");
         newUser2.getRoles().add(Role.LECTURER);
-        String goodRegistrationEmail2 = newUser2.getEmail();
+        String newUser2Email = newUser2.getEmail();
 
         User newUser3 = new User("Leonardo", "DiCaprio", "dicaprio@gmail.com", "8888");
         newUser2.getRoles().add(Role.ADMIN);
-        String goodRegistrationEmail3 = newUser3.getEmail();
+        String newUser3Email = newUser3.getEmail();
 
-        Mockito.when(userRepository.findUserByEmail(goodRegistrationEmail1))
+        Mockito.when(userRepository.findUserByEmail(newUser1Email))
                 .thenReturn(null);
-        Mockito.when(userRepository.findUserByEmail(goodRegistrationEmail2))
+        Mockito.when(userRepository.findUserByEmail(newUser2Email))
                 .thenReturn(null);
-        Mockito.when(userRepository.findUserByEmail(goodRegistrationEmail3))
+        Mockito.when(userRepository.findUserByEmail(newUser3Email))
                 .thenReturn(null);
 
         // Successful registration
-        Assertions.assertDoesNotThrow(() -> userService.registerNewUser(newUser1));
-        Assertions.assertDoesNotThrow(() -> userService.registerNewUser(newUser2));
-        Assertions.assertDoesNotThrow(() -> userService.registerNewUser(newUser3));
+        Assertions.assertThatCode(() -> userService.registerNewUser(newUser1))
+                .doesNotThrowAnyException();
+        Assertions.assertThatCode(() -> userService.registerNewUser(newUser2))
+                .doesNotThrowAnyException();
+        Assertions.assertThatCode(() -> userService.registerNewUser(newUser3))
+                .doesNotThrowAnyException();
     }
 
     @Test
@@ -130,34 +142,26 @@ public class UserServiceTest {
         Mockito.when(userRepository.findUserByEmail(goodRegistrationEmail))
                 .thenReturn(null);
 
-        // Student has to have an index number
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.registerNewUser(newUser));
+        Assertions.assertThatThrownBy(() -> userService.registerNewUser(newUser))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Student has to have an index number");
     }
 
     @Test
-    @DisplayName("Should not register users with invalid emails")
+    @DisplayName("Should not register users with invalid email")
     public void registerNewUserWithInvalidEmailTest(){
-        String wrongEmail1 = "pittgmail.com";
-        String wrongEmail2 = "pitt@gmail.";
-        String wrongEmail3 = "..pitt@gmail.com";
+        String wrongEmail = "pittgmail.com";
 
-        User wrongUser1 = new User();
-        wrongUser1.setEmail(wrongEmail1);
-        User wrongUser2 = new User();
-        wrongUser2.setEmail(wrongEmail2);
-        User wrongUser3 = new User();
-        wrongUser3.setEmail(wrongEmail3);
+        User wrongUser = new User();
+        wrongUser.setEmail(wrongEmail);
+        wrongUser.setPassword("1234");
 
-        Mockito.when(userRepository.findUserByEmail(wrongEmail1))
-                .thenReturn(null);
-        Mockito.when(userRepository.findUserByEmail(wrongEmail2))
-                .thenReturn(null);
-        Mockito.when(userRepository.findUserByEmail(wrongEmail3))
+        Mockito.when(userRepository.findUserByEmail(wrongEmail))
                 .thenReturn(null);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.registerNewUser(wrongUser1));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.registerNewUser(wrongUser2));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.registerNewUser(wrongUser3));
+        Assertions.assertThatThrownBy(() -> userService.registerNewUser(wrongUser))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(String.format("Email %s is invalid", wrongEmail));
     }
 
     @Test
@@ -176,7 +180,11 @@ public class UserServiceTest {
         Mockito.when(userRepository.findUserByEmail(user2Email))
                 .thenReturn(user2);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.registerNewUser(user1));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> userService.registerNewUser(user2));
+        Assertions.assertThatThrownBy(() -> userService.registerNewUser(user1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(String.format("User with email %s already exists", user1Email));
+        Assertions.assertThatThrownBy(() -> userService.registerNewUser(user2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining(String.format("User with email %s already exists", user2Email));
     }
 }
