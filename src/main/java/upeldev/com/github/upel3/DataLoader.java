@@ -43,20 +43,18 @@ public class DataLoader {
     }
 
     public void populateUsers() {
-        Upel3UserDetailsService uds = new Upel3UserDetailsService(userService);
-
         User john = new User("John", "Doe", "john@gmail.com", "1234");
         john.getRoles().add(Role.ADMIN);
-        uds.registerNewUser(john);
+        userService.registerNewUser(john);
 
         User kate = new User("Kate", "Smith", "kate@gmail.com", "1234");
         kate.getRoles().add(Role.LECTURER);
-        uds.registerNewUser(kate);
+        userService.registerNewUser(kate);
 
         User benjamin = new User("Benjamin", "Ford", "benjamin@gmail.com", "1234");
         benjamin.getRoles().add(Role.STUDENT);
         benjamin.setIndexNumber("123456");
-        uds.registerNewUser(benjamin);
+        userService.registerNewUser(benjamin);
     }
     private void populateActivity(){
         List<Course> allCourses = courseService.findAll();

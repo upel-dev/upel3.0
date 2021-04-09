@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import upeldev.com.github.upel3.auth.Upel3UserDetails;
-import upeldev.com.github.upel3.auth.Upel3UserDetailsService;
 import upeldev.com.github.upel3.model.User;
 import upeldev.com.github.upel3.services.UserService;
 
@@ -17,12 +16,15 @@ import java.util.List;
 @RequestMapping(path="/user")
 public class UserController {
     private final UserService userService;
-    private final Upel3UserDetailsService uds;
 
     @Autowired
-    public UserController(UserService userService, Upel3UserDetailsService uds) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.uds = uds;
+    }
+
+    private User findCurrentUser(Authentication authentication){
+        String currentUserEmail = ((Upel3UserDetails) authentication.getPrincipal()).getUsername();
+        return userService.findByEmail(currentUserEmail);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -32,12 +34,7 @@ public class UserController {
 
     @RequestMapping(value="/new", method = RequestMethod.POST)
     public @ResponseBody User register(@RequestBody User userDto){
-        return uds.registerNewUser(userDto);
-    }
-
-    private User findCurrentUser(Authentication authentication){
-        String currentUserEmail = ((Upel3UserDetails) authentication.getPrincipal()).getUsername();
-        return userService.findByEmail(currentUserEmail);
+        return userService.registerNewUser(userDto);
     }
 
     @RequestMapping(value="/{email}", method = RequestMethod.GET)
