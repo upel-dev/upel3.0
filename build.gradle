@@ -28,7 +28,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-inline:3.7.7'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.7.7'
-    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.6.1'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.7.0'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
     compile group: 'org.webjars', name: 'bootstrap', version: '4.0.0-2'
     implementation group: 'org.springframework.security', name: 'spring-security-core'
