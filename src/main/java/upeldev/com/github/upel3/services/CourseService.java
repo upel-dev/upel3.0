@@ -41,6 +41,10 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
+    public Course findCourseById(Long id){
+        return courseRepository.findById(id);
+    }
+
 
     public List<Course> findByName(String name){
         return courseRepository.findByName(name);
