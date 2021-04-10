@@ -25,20 +25,18 @@
 
 <section class="container py-3">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <h2 class="pb-2">Twój profil</h2>
+        <h2 class="pb-2">Niepowodzenie</h2>
 
         <div class="text-end">
             <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
         </div>
     </header>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tu możesz zarządzać swoim kontem.
+        Przykro nam, ale napotkano błąd.
     </p>
+    <p><small>Komunikat o błędzie:</small></p>
+    <p class="pb-3" th:text="${errorMsg}" style="border-bottom: 3px solid #343a40;"></p>
 </section>
-
-<div class="container pb-3">
-    <p>Nie będę owijać w bawełnę, to na razie jest tylko placeholder. Klikaj dalej, ale gdzieś indziej.</p>
-</div>
 
 <footer class="container pt-3 pb-0 px-0 mt-5 mb-3">
     <p class="bg-dark text-light text-center pt-1 pb-2">

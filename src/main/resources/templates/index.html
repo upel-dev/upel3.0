@@ -12,7 +12,7 @@
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
         <p class="navbar-brand">UPeL 3.0 - Uczelniana Platforma e-Learningowa</p>
         <div class="row text-end">
-            <p th:text="${firstname} + ' ' + ${lastname}" class="justify-content-center navbar-brand pl-3">Imię Nazwisko</p>
+            <p th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" class="justify-content-center navbar-brand pl-3">Imię Nazwisko</p>
             <div class="pr-1">
                 <a type="button" class="btn btn-primary" href="profile">Profil</a>
             </div>
@@ -36,65 +36,19 @@
         Tutaj możesz podejrzeć wszystkie swoje kursy. Jeśli jesteś studentem, to zobaczysz tu wszystkie kursy, których uczestnikiem jesteś. Jeśli jesteś prowadzącym, to zobaczysz tu także wszystkie kursy, które prowadzisz.</p>
 </section>
 
-<article class="container py-1 mb-3">
-    <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-        <h2 class="bg-dark text-light text-center pt-1 pb-3">Systemy operacyjne</h2>
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-            <p class="justify-content-center col-9">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-            <div class="text-end mr-3" style="text-align: right;">
-                <a type="button" class="btn btn-primary" href="course">Przejdź do kursu</a>
+<section th:each="course : ${courses}">
+    <article class="container py-1 mb-3">
+        <div style="background-color: #d6dff5; border: 3px solid #343a40;">
+            <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${course.getName()}">Nazwa kursu</h2>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
+                <p class="justify-content-center col-9" th:text="${course.getDescription()}">Opis kursu.</p>
+                <div class="text-end mr-3 mb-2" style="text-align: right;">
+                    <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Przejdź do kursu</a>
+                </div>
             </div>
         </div>
-    </div>
-</article>
-
-<article class="container py-1 mb-3">
-    <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-        <h2 class="bg-dark text-light text-center pt-1 pb-3">Metody obliczeniowe w nauce i technice</h2>
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-            <p class="justify-content-center col-9">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-            <div class="text-end mr-3" style="text-align: right;">
-                <a type="button" class="btn btn-primary" href="#">Przejdź do kursu</a>
-            </div>
-        </div>
-    </div>
-</article>
-
-<article class="container py-1 mb-3">
-    <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-        <h2 class="bg-dark text-light text-center pt-1 pb-3">Sieci komputerowe</h2>
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-            <p class="justify-content-center col-9">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-            <div class="text-end mr-3" style="text-align: right;">
-                <a type="button" class="btn btn-primary" href="#">Przejdź do kursu</a>
-            </div>
-        </div>
-    </div>
-</article>
-
-<article class="container py-1 mb-3">
-    <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-        <h2 class="bg-dark text-light text-center pt-1 pb-3">Wstęp do informatyki</h2>
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-            <p class="justify-content-center col-9">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-            <div class="text-end mr-3" style="text-align: right;">
-                <a type="button" class="btn btn-primary" href="#">Przejdź do kursu</a>
-            </div>
-        </div>
-    </div>
-</article>
-
-<article class="container py-1 mb-3">
-    <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-        <h2 class="bg-dark text-light text-center pt-1 pb-3">Algorytmy geometryczne</h2>
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-            <p class="justify-content-center col-9">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-            <div class="text-end mr-3" style="text-align: right;">
-                <a type="button" class="btn btn-primary" href="#">Przejdź do kursu</a>
-            </div>
-        </div>
-    </div>
-</article>
+    </article>
+</section>
 
 <footer class="container pt-3 pb-0 px-0 mt-5 mb-3">
     <p class="bg-dark text-light text-center pt-1 pb-2">

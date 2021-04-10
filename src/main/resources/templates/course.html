@@ -12,7 +12,7 @@
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
         <p class="navbar-brand">UPeL 3.0 - Uczelniana Platforma e-Learningowa</p>
         <div class="row text-end">
-            <p th:text="${firstname} + ' ' + ${lastname}" class="justify-content-center navbar-brand pl-3">Imię Nazwisko</p>
+            <p th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" class="justify-content-center navbar-brand pl-3">Imię Nazwisko</p>
             <div class="pr-1">
                 <a type="button" class="btn btn-primary" href="profile">Profil</a>
             </div>
@@ -25,16 +25,14 @@
 
 <section class="container py-3">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <h2 class="pb-2">Systemy operacyjne</h2>
+        <h2 class="pb-2" th:text="${course.getName()}">Nazwa kursu</h2>
 
         <div class="text-end">
             <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
             <a type="button" class="btn btn-primary" href="#">Ustawienia kursu</a>
         </div>
     </header>
-    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Huh, załóżmy, że prowadzący się postarał i zamieścił dość długi opis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    </p>
+    <p class="pb-3" th:text="${course.getDescription()}" style="border-bottom: 3px solid #343a40;">Opis kursu.</p>
 </section>
 
 <div class="container pb-3">
