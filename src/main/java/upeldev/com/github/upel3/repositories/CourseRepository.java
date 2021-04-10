@@ -9,4 +9,5 @@ import java.util.List;
 public interface CourseRepository extends CrudRepository<Course, Integer> {
     List<Course> findByName(String name);
     List<Course> findByNameContains(String phrase);
+    Course findById(Long id);
 }
