@@ -47,10 +47,9 @@ public class Course {
     private List<Activity> activity = new ArrayList<>();
 
 
-    public Course(String name, User lecturer, String description){
+    public Course(String name, String description){
         this.name = name;
         this.description = description;
-        this.lecturers.add(lecturer);
         this.accessCode = new AccessCode();
     }
 
