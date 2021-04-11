@@ -108,13 +108,13 @@ public class WebController {
     public String enroll(
             @RequestParam(value = "courseCode") String courseCode, Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
         try{
             courseService.addStudentToCourseByCode(currentUser, courseCode);
 
             List<Course> courses = currentUser.getCoursesLectured();
             courses.addAll(currentUser.getCoursesEnrolledIn());
             model.addAttribute("courses", courses);
-            model.addAttribute("user", currentUser);
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Niepoprawny kod kursu albo próbujesz się zapisać na kurs, na który już jesteś zapisany.";
