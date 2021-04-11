@@ -67,29 +67,19 @@
     </p>
 </section>
 
-<article class="container py-1 mb-3">
-    <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-        <h2 class="bg-dark text-light text-center pt-1 pb-3">Laboratorium 1 - Chyba biblioteki i makefile</h2>
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-            <p class="justify-content-center col-9">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-            <div class="text-end mr-3" style="text-align: right;">
-                <a type="button" class="btn btn-primary" href="#">Przejdź do aktywności</a>
+<section th:each="activity : ${course.getActivity()}">
+    <article class="container py-1 mb-3">
+        <div style="background-color: #d6dff5; border: 3px solid #343a40;">
+            <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${activity.getName()}">Laboratorium 1 - Chyba biblioteki i makefile</h2>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
+                <p class="justify-content-center col-9">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                <div class="text-end mr-3" style="text-align: right;">
+                    <a type="button" class="btn btn-primary" th:href="|activity?id=${activity.getId()}|">Przejdź do aktywności</a>
+                </div>
             </div>
         </div>
-    </div>
-</article>
-
-<article class="container py-1 mb-3">
-    <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-        <h2 class="bg-dark text-light text-center pt-1 pb-3">Laboratorium 2 - Jakiś tam inny temat</h2>
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-            <p class="justify-content-center col-9">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-            <div class="text-end mr-3" style="text-align: right;">
-                <a type="button" class="btn btn-primary" href="#">Przejdź do aktywności</a>
-            </div>
-        </div>
-    </div>
-</article>
+    </article>
+</section>
 
 <div th:replace="fragments/footer :: footer"></div>
 
