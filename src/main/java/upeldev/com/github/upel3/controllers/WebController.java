@@ -87,7 +87,6 @@ public class WebController {
     public String courseSettings(Model model, Principal principal, HttpServletRequest request) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
-        System.out.println("XDDD");
         try {
             Long id = Long.parseLong(request.getParameter("id").toString());
             Course course = courseService.findCourseById(id);
