@@ -83,13 +83,6 @@ public class WebController {
         return "course";
     }
 
-    @RequestMapping(value = "/new_course")
-    public String newCourse(Model model, Principal principal) {
-        User currentUser = userService.findByEmail(principal.getName());
-        model.addAttribute("user", currentUser);
-        return "new_course";
-    }
-
     @RequestMapping(value = "/profile")
     public String profile(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());

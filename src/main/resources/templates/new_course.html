@@ -24,15 +24,15 @@
 </section>
 
 <div class="container pb-3">
-    <form>
+    <form th:action="@{/create_course}">
         <div class="form-group">
             <label for="courseName">Nazwa kursu:</label>
-            <input type="email" class="form-control" id="courseName" placeholder="Nazwa kursu">
+            <input type="text" class="form-control" id="courseName" th:name="courseName" placeholder="Nazwa kursu">
             <small id="nameHelp" class="form-text text-muted">Uczestnicy Twojego kursu będą go widzieć u siebie pod tą nazwą. Zadbaj o to by była zwięzła i jednoznaczna, np. nazwa realizowanego przedmiotu.</small>
         </div>
         <div class="form-group">
             <label for="courseDescription">Opis kursu:</label>
-            <textarea class="form-control" id="courseDescription" rows="3"></textarea>
+            <textarea class="form-control" id="courseDescription" th:name="courseDescription" rows="3"></textarea>
         </div>
         <div class="pt-3">
             <button type="submit" class="btn btn-primary">Utwórz kurs</button>
