@@ -2,7 +2,6 @@ package upeldev.com.github.upel3;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import upeldev.com.github.upel3.auth.Upel3UserDetailsService;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.ActivityService;
 import upeldev.com.github.upel3.services.GradeService;
@@ -37,9 +36,10 @@ public class DataLoader {
     public void populateCourses(){
         Course firstCourse = courseService.createCourse("First course", "first description", userService.findByEmail("kate@gmail.com"));
         Course secondCourse = courseService.createCourse("Second course", "second description", userService.findByEmail("kate@gmail.com"));
-        courseService.addLecturer(firstCourse, userService.findByEmail("kate@gmail.com"));
-        courseService.addLecturer(secondCourse, userService.findByEmail("kate@gmail.com"));
-        courseService.addStudent(firstCourse, userService.findByEmail("benjamin@gmail.com"));
+        User lecturer = userService.findByEmail("kate@gmail.com");
+        courseService.addLecturer(firstCourse, lecturer);
+        courseService.addLecturer(secondCourse, lecturer);
+        courseService.addStudentToCourse(firstCourse, userService.findByEmail("benjamin@gmail.com"));
     }
 
     public void populateUsers() {

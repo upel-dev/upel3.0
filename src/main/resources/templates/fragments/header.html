@@ -1,0 +1,18 @@
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="header">
+    <header class="container navbar-dark bg-dark">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+            <p class="navbar-brand">UPeL 3.0 - Uczelniana Platforma e-Learningowa</p>
+            <div class="row text-end">
+                <p th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" class="justify-content-center navbar-brand pl-3">Imię Nazwisko</p>
+                <div class="pr-1">
+                    <a type="button" class="btn btn-primary" href="profile">Profil</a>
+                </div>
+                <form th:action="@{/logout}" method="post" class="pr-3">
+                    <button type="submit" class="btn btn-primary">Wyloguj się</button>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>
+</html>
