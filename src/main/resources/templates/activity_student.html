@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>UPeL3.0</title>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body style="background-color: #ecf1fc;">
+
+<header class="container navbar-dark bg-dark">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+        <p class="navbar-brand">UPeL 3.0 - Uczelniana Platforma e-Learningowa</p>
+        <div class="row text-end">
+            <p th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}" class="justify-content-center navbar-brand pl-3">Imię Nazwisko</p>
+            <div class="pr-1">
+                <a type="button" class="btn btn-primary" href="profile">Profil</a>
+            </div>
+            <form th:action="@{/logout}" method="post" class="pr-3">
+                <button type="submit" class="btn btn-primary">Wyloguj się</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<section class="container py-3">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom" style="border-top: 3px solid #343a40;">
+        <h2 class="pb-2" th:text="${activity.getName()}">Aktywność</h2>
+        <div class="text-end">
+            <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
+            <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
+        </div>
+    </header>
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
+        Tutaj możesz podejrzeć wszystkie oceny udostępnione w ramach tej aktywności.
+    </p>
+</section>
+
+
+<section th:each="grade : ${activity.getGrade()}">
+    <article class="container py-1 mb-3">
+        <div style="background-color: #d6dff5; border: 3px solid #343a40;">
+            <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${grade.getDescription()}"></h2>
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
+                <p class="justify-content-center col-9" th:text="${grade.getValue()}">Wartość</p>
+<!--                <div class="text-end mr-3 mb-2" style="text-align: right;">-->
+<!--                    <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Przejdź do kursu</a>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </article>
+</section>
+
+<footer class="container pt-3 pb-0 px-0 mt-5 mb-3">
+    <p class="bg-dark text-light text-center pt-1 pb-2">
+        <small>&copy 2021, Copyleft Upel-dev. All rights reversed.</small>
+    </p>
+</footer>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
