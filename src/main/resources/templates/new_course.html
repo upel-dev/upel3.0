@@ -25,30 +25,34 @@
 
 <section class="container py-3">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <h2 class="pb-2">Twoje kursy</h2>
+        <h2 class="pb-2">Tworzenie nowego kursu</h2>
 
         <div class="text-end">
-            <a type="button" class="btn btn-primary" href="new_course">Utwórz nowy kurs</a>
-            <a type="button" class="btn btn-primary" href="#">Dołącz do istniejącego kursu</a>
+            <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
         </div>
     </header>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tutaj możesz podejrzeć wszystkie swoje kursy. Jeśli jesteś studentem, to zobaczysz tu wszystkie kursy, których uczestnikiem jesteś. Jeśli jesteś prowadzącym, to zobaczysz tu także wszystkie kursy, które prowadzisz.</p>
+        Tu możesz utworzyć nowy kurs. Wpisz jego nazwę oraz uzupełnij krótki opis. (Tekst alternatywny: Przykro nam, ale tylko prowadzący mogą tworzyć nowe kursy. Jeśli chcesz uzyskać takie przywileje, skontaktuj się z administratorem.)
+    </p>
 </section>
 
-<section th:each="course : ${courses}">
-    <article class="container py-1 mb-3">
-        <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-            <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${course.getName()}">Nazwa kursu</h2>
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-                <p class="justify-content-center col-9" th:text="${course.getDescription()}">Opis kursu.</p>
-                <div class="text-end mr-3 mb-2" style="text-align: right;">
-                    <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Przejdź do kursu</a>
-                </div>
-            </div>
+<div class="container pb-3">
+    <form>
+        <div class="form-group">
+            <label for="courseName">Nazwa kursu:</label>
+            <input type="email" class="form-control" id="courseName" placeholder="Nazwa kursu">
+            <small id="nameHelp" class="form-text text-muted">Uczestnicy Twojego kursu będą go widzieć u siebie pod tą nazwą. Zadbaj o to by była zwięzła i jednoznaczna, np. nazwa realizowanego przedmiotu.</small>
         </div>
-    </article>
-</section>
+        <div class="form-group">
+            <label for="courseDescription">Opis kursu:</label>
+            <textarea class="form-control" id="courseDescription" rows="3"></textarea>
+        </div>
+        <div class="pt-3">
+            <button type="submit" class="btn btn-primary">Utwórz kurs</button>
+            <small id="newCourseHelp" class="form-text text-muted">Po utworzeniu kursu otrzymasz unikalny kod, dzięki któremu studenci będą w stanie samodzielnie dołączyć do kursu. Kod ten znajdziesz także później w ustawieniach kursu.</small>
+        </div>
+    </form>
+</div>
 
 <footer class="container pt-3 pb-0 px-0 mt-5 mb-3">
     <p class="bg-dark text-light text-center pt-1 pb-2">
