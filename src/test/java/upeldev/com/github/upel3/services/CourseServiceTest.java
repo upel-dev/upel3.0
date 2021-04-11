@@ -44,15 +44,13 @@ public class CourseServiceTest {
 
         String name = "courseName";
         String description = "courseDescription";
-        User lecturer = new User("name", "lastName", "name@mail.com", "password");
-        lecturer.getRoles().add(Role.LECTURER);
 
-        Course course = new Course(name, lecturer, description);
+        Course course = new Course(name, description);
 
         Mockito.when(courseRepository.save(course))
                 .thenReturn(course);
 
-        Assertions.assertThat(courseService.createCourse(name, description, lecturer))
+        Assertions.assertThat(courseService.createCourse(name, description, null))
                 .isEqualTo(course);
 
     }
@@ -62,9 +60,7 @@ public class CourseServiceTest {
     void shouldFindByName(){
 
         String name = "someName";
-        User lecturer = new User("name", "lastName", "name@mail.com", "password");
-        lecturer.getRoles().add(Role.LECTURER);
-        Course course = new Course(name, lecturer, null);
+        Course course = new Course(name, null);
 
         Mockito.when(courseRepository.findByName(name))
                 .thenReturn(List.of(course));
@@ -78,9 +74,7 @@ public class CourseServiceTest {
     void shouldFindByPhrase(){
 
         String phrase = "phrase";
-        User lecturer = new User("name", "lastName", "name@mail.com", "password");
-        lecturer.getRoles().add(Role.LECTURER);
-        Course course = new Course("name", lecturer, null);
+        Course course = new Course("name", null);
 
         Mockito.when(courseRepository.findByNameContains(phrase))
                 .thenReturn(List.of(course));
