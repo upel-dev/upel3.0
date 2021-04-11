@@ -36,19 +36,28 @@
     </p>
 </section>
 
+<section class="container py-3">
 
-<section th:each="grade : ${activity.getGrade()}">
-    <article class="container py-1 mb-3">
-        <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-            <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${grade.getDescription()}"></h2>
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
-                <p class="justify-content-center col-9" th:text="${grade.getValue()}">Wartość</p>
-<!--                <div class="text-end mr-3 mb-2" style="text-align: right;">-->
-<!--                    <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Przejdź do kursu</a>-->
-<!--                </div>-->
-            </div>
-        </div>
-    </article>
+    <table class="table table-hover table-bordered table-dark">
+    <thead>
+    <tr>
+        <th scope="col">Opis oceny</th>
+        <th scope="col">Wartość</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="grade : ${activity.getGrade()}">
+        <td th:text="${grade.getDescription()}">Opis</td>
+        <td th:text="${grade.getValue()}">Wartość</td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th scope="col">Suma</th>
+        <th scope="col"></th>
+    </tr>
+    </tfoot>
+</table>
 </section>
 
 <footer class="container pt-3 pb-0 px-0 mt-5 mb-3">
