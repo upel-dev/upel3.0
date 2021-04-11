@@ -1,9 +1,7 @@
 package upeldev.com.github.upel3.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -47,11 +45,11 @@ public class User {
     )
     private List<Grade> grade = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "enrolledStudents")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Course> coursesEnrolledIn = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "lecturers")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Course> coursesLectured = new ArrayList<>();
 

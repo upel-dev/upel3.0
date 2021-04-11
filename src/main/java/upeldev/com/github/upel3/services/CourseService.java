@@ -33,8 +33,10 @@ public class CourseService {
     public Course save(Course courseDTO){ return courseRepository.save(courseDTO); }
 
     public Course createCourse(String name, String description, User lecturer){
-        Course course = new Course(name, lecturer, description);
+        Course course = new Course(name, description);
+        course.addLecturer(lecturer);
         accessCodeRepository.save(course.getAccessCode());
+        userRepository.save(lecturer);
         return save(course);
     }
 
