@@ -56,7 +56,10 @@ public class CourseService {
         return courseRepository.findByNameContains(phrase);
     }
 
-    public void addStudent(Course course, User student){
+    public void addStudentToCourse(Course course, User student){
+        if (course.getEnrolledStudents().contains(student)){
+            throw new IllegalArgumentException("Student is already enrolled to this course");
+        }
         course.addStudent(student);
         student.enrollInCourse(course);
         courseRepository.save(course);
@@ -78,15 +81,15 @@ public class CourseService {
         return courseRepository.findByAccessCode(accessCode);
     }
 
-    public void addStudent(User student, String courseCode){
+    public void addStudentToCourseByCode(User student, String courseCode){
         Course course = findCourseByAccessCode(courseCode);
         if (course == null){
             throw new IllegalArgumentException("No such course");
         }
         if (course.getEnrolledStudents().contains(student)){
-            throw new IllegalArgumentException("Student it already enrolled to this course");
+            throw new IllegalArgumentException("Student is already enrolled to this course");
         }
-        addStudent(course, student);
+        addStudentToCourse(course, student);
     }
 
 }
