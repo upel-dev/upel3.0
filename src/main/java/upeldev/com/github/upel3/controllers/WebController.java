@@ -95,4 +95,11 @@ public class WebController {
         model.addAttribute("user", currentUser);
         return "profile";
     }
+
+    @RequestMapping(value = "/enroll")
+    public String enroll(Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
+        return "course_enrollment";
+    }
 }

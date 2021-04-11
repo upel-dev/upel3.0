@@ -2,7 +2,6 @@ package upeldev.com.github.upel3;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import upeldev.com.github.upel3.auth.Upel3UserDetailsService;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.ActivityService;
 import upeldev.com.github.upel3.services.GradeService;
