@@ -2,6 +2,7 @@ package upeldev.com.github.upel3.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import upeldev.com.github.upel3.model.AccessCode;
 import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.User;
 import upeldev.com.github.upel3.repositories.AccessCodeRepository;
@@ -9,6 +10,7 @@ import upeldev.com.github.upel3.repositories.CourseRepository;
 import upeldev.com.github.upel3.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -68,5 +70,23 @@ public class CourseService {
         userRepository.save(lecturer);
     }
 
+    public Course findCourseByAccessCode(String accessCodeString){
+        Optional<AccessCode> accessCodeOptional = accessCodeRepository.findById(accessCodeString);
+        if (accessCodeOptional.isEmpty())
+            return null;
+        AccessCode accessCode = accessCodeOptional.get();
+        return courseRepository.findByAccessCode(accessCode);
+    }
+
+    public void addStudent(User student, String courseCode){
+        Course course = findCourseByAccessCode(courseCode);
+        if (course == null){
+            throw new IllegalArgumentException("No such course");
+        }
+        if (course.getEnrolledStudents().contains(student)){
+            throw new IllegalArgumentException("Student it already enrolled to this course");
+        }
+        addStudent(course, student);
+    }
 
 }

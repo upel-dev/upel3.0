@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.User;
 import upeldev.com.github.upel3.services.CourseService;
@@ -83,7 +84,7 @@ public class WebController {
     }
 
     @RequestMapping(value = "/new_course")
-    public String new_course(Model model, Principal principal) {
+    public String newCourse(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
         return "new_course";
@@ -96,10 +97,23 @@ public class WebController {
         return "profile";
     }
 
-    @RequestMapping(value = "/enroll")
-    public String enroll(Model model, Principal principal) {
+    @RequestMapping(value = "/course_enrollment")
+    public String courseEnrollment(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
         return "course_enrollment";
+    }
+
+    @RequestMapping(value = "/enroll")
+    public String enroll(
+            @RequestParam(value = "courseCode") String courseCode, Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+        courseService.addStudent(currentUser, courseCode);
+
+        List<Course> courses = currentUser.getCoursesLectured();
+        courses.addAll(currentUser.getCoursesEnrolledIn());
+        model.addAttribute("courses", courses);
+        model.addAttribute("user", currentUser);
+        return "index";
     }
 }

@@ -49,6 +49,7 @@ public class UserController {
         else
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access is forbidden");
     }
+
     @RequestMapping(value="/id/{id}", method = RequestMethod.GET)
     public @ResponseBody User findById(@PathVariable("id") Long id, Authentication authentication){
         User currentUser = findCurrentUser(authentication);

@@ -24,10 +24,10 @@
 </section>
 
 <div class="container pb-3">
-    <form>
+    <form th:action="@{/enroll}">
         <div class="form-group">
-            <label for="courseId">Kod kursu:</label>
-            <input type="email" class="form-control" id="courseId" placeholder="Kod kursu">
+            <label for="courseCode">Kod kursu:</label>
+            <input type="text" th:name="courseCode" class="form-control" id="courseCode" placeholder="Kod kursu">
             <small id="courseIdHelp" class="form-text text-muted">Unikalny kod kursu możesz dostać od prowadzącego tego kursu.</small>
         </div>
         <div class="pt-3">
@@ -36,10 +36,6 @@
         </div>
     </form>
 </div>
-
-
-
-
 
 <div th:replace="fragments/footer :: footer"></div>
 
