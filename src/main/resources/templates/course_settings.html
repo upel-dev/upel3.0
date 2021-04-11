@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>UPeL3.0</title>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body style="background-color: #ecf1fc;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<section class="container py-3">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <h2 class="pb-2" th:text="${course.getName()}">Nazwa kursu</h2>
+
+        <div class="text-end">
+            <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
+            <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
+        </div>
+    </header>
+    <p class="pb-3" th:text="${course.getDescription()}" style="border-bottom: 3px solid #343a40;">Opis kursu.</p>
+</section>
+
+<section class="container py-3">
+    <p>Kod dostępu: <strong th:text="${course.getAccessCode().getId()}">-</strong></p>
+</section>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

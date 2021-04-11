@@ -71,7 +71,7 @@ public class ActivityController {
             model.addAttribute("course", course);
 
             if(currentUser.getCoursesEnrolledIn().contains(course)) return "activity_student";
-            if(currentUser.getCoursesLectured().contains(course)) return "index"; //"activity_lecturer"
+            if(currentUser.getCoursesLectured().contains(course)) return "activity_lecturer";
             if(!currentUser.getRoles().contains(Role.ADMIN)){
                 model.addAttribute(errorMsg);
                 return "error";
