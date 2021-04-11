@@ -19,32 +19,12 @@
         </div>
     </header>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tutaj możesz podejrzeć wszystkie oceny udostępnione w ramach tej aktywności.
+        Tutaj możesz podejrzeć wszystkie oceny swoich podopiecznych w ramach tej aktywności.
     </p>
 </section>
 
 <section class="container py-3">
-
-    <table class="table table-hover table-bordered bg-light">
-    <thead>
-    <tr>
-        <th scope="col">Opis oceny</th>
-        <th scope="col">Wartość</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="grade : ${activity.getGrade()}">
-        <td th:text="${grade.getDescription()}">Opis</td>
-        <td th:text="${grade.getValue()}">Wartość</td>
-    </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-        <th scope="col">Suma</th>
-        <th scope="col"></th>
-    </tr>
-    </tfoot>
-</table>
+    <p>Widok wyłącznie dla prowadzących. Nie będę owijać w bawełnę, to na razie jest tylko placeholder. Klikaj dalej, ale gdzieś indziej.</p>
 </section>
 
 <div th:replace="fragments/footer :: footer"></div>

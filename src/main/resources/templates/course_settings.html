@@ -11,40 +11,19 @@
 <div th:replace="fragments/header :: header"></div>
 
 <section class="container py-3">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom" style="border-top: 3px solid #343a40;">
-        <h2 class="pb-2" th:text="${activity.getName()}">Aktywność</h2>
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <h2 class="pb-2" th:text="${course.getName()}">Nazwa kursu</h2>
+
         <div class="text-end">
             <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
             <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
         </div>
     </header>
-    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tutaj możesz podejrzeć wszystkie oceny udostępnione w ramach tej aktywności.
-    </p>
+    <p class="pb-3" th:text="${course.getDescription()}" style="border-bottom: 3px solid #343a40;">Opis kursu.</p>
 </section>
 
 <section class="container py-3">
-
-    <table class="table table-hover table-bordered bg-light">
-    <thead>
-    <tr>
-        <th scope="col">Opis oceny</th>
-        <th scope="col">Wartość</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="grade : ${activity.getGrade()}">
-        <td th:text="${grade.getDescription()}">Opis</td>
-        <td th:text="${grade.getValue()}">Wartość</td>
-    </tr>
-    </tbody>
-    <tfoot>
-    <tr>
-        <th scope="col">Suma</th>
-        <th scope="col"></th>
-    </tr>
-    </tfoot>
-</table>
+    <p>Kod dostępu: <strong th:text="${course.getAccessCode().getId()}">-</strong></p>
 </section>
 
 <div th:replace="fragments/footer :: footer"></div>
