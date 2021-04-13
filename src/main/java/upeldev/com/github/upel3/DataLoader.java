@@ -52,6 +52,11 @@ public class DataLoader {
         benjamin.getRoles().add(Role.STUDENT);
         benjamin.setIndexNumber("123456");
         userService.registerNewUser(benjamin);
+
+        User ron = new User("Ron", "Dill", "ron@gmail.com", "1234");
+        ron.getRoles().add(Role.STUDENT);
+        ron.setIndexNumber("123457");
+        userService.registerNewUser(ron);
     }
     private void populateActivity(){
         List<Course> allCourses = courseService.findAll();

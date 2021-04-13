@@ -12,30 +12,48 @@
 
 <section class="container py-3">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <h2 class="pb-2">Zapisy na kurs</h2>
+        <h2 class="pb-2">Zapisywanie studentów na kurs</h2>
 
         <div class="text-end">
-            <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
+            <a type="button" class="btn btn-primary" href="index">Powrót do kursu</a>
         </div>
     </header>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tu możesz dołączyć do istniejącego kursu. Możesz to zrobić poprzez wpisanie unikalnego kodu kursu, do którego chcesz dołączyć.
+        Tu możesz dopisać studentów do otwartego kursu.
     </p>
 </section>
 
+
 <div class="container pb-3">
-    <form th:action="@{/enroll}">
+    <form th:action="@{/new_users}">
         <div class="form-group">
-            <label for="courseCode">Kod kursu:</label>
-            <input type="text" th:name="courseCode" class="form-control" id="courseCode" placeholder="Kod kursu">
-            <small id="courseIdHelp" class="form-text text-muted">Unikalny kod kursu możesz dostać od prowadzącego tego kursu.</small>
+            <label for="userName">Dodawany Student:</label>
+            <select class="form-control" id="userName" th:name="userName">
+                <option th:each="student : ${users}" th:value="${student.getEmail()}" th:text="${student.getEmail()}"></option>
+            </select>
         </div>
         <div class="pt-3">
-            <button type="submit" class="btn btn-primary">Zapisz się</button>
-            <small id="newEnrollmentHelp" class="form-text text-muted">Po zapisaniu się na kurs będziesz mógł uczestniczyć w zajęciach oraz monitorować oceny z aktywności na bieżąco.</small>
+            <button type="submit" class="btn btn-primary">Dodaj studenta</button>
         </div>
     </form>
 </div>
+
+
+<section class="container py-3">
+    <table class="table table-hover table-bordered bg-light">
+        <thead>
+        <tr>
+            <th scope="col">Studenci</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${course.getEnrolledStudents()}">
+            <td th:text="${student.getEmail()}">Opis</td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
 
 <div th:replace="fragments/footer :: footer"></div>
 
