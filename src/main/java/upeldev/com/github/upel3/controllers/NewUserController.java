@@ -39,7 +39,7 @@ public class NewUserController {
             @RequestParam(value = "email")  String email,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "index") String index,
-            @RequestParam(value = "role") String role,
+            @RequestParam(value = "role", defaultValue = "0") String role,
             Model model,
             Principal principal) {
 
@@ -52,11 +52,14 @@ public class NewUserController {
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
-
+            
             User newUser = new User(firstName, lastName, email, password);
             newUser.setIndexNumber(index);
+
             switch(role)
             {
+                case "0":
+                    throw new IllegalArgumentException();
                 case "1":
                     newUser.getRoles().add(Role.STUDENT);
                     break;
