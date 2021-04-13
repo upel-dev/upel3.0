@@ -16,11 +16,38 @@
         <div class="text-end">
             <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
             <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
+            <a type="button" class="btn btn-primary" th:href="|new_grade?courseId=${course.getId()}&activityId=${activity.getId()}|">Dodaj ocenę</a>
         </div>
     </header>
+
+    <section class="container py-3">
+    <div class="text-end">
+
+    </div>
+    </section>
+
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
         Tutaj możesz podejrzeć wszystkie oceny swoich podopiecznych w ramach tej aktywności.
     </p>
+
+
+
+    <table class="table table-hover table-bordered bg-light">
+        <thead>
+        <tr>
+            <th scope="col">Użytkownik</th>
+            <th scope="col">Wartość</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="grade : ${activity.getGrade()}">
+            <td th:text="${grade.getUser().getEmail()}">Użytkownik</td>
+            <td th:text="${grade.getValue()}">Wartość</td>
+        </tr>
+        </tbody>
+
+    </table>
+
 </section>
 
 <section class="container py-3">

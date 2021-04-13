@@ -70,6 +70,8 @@ public class ActivityController {
             Course course = activity.getCourse();
             model.addAttribute("course", course);
 
+            model.addAttribute("grades", activity.getGrade());
+
             if(currentUser.getCoursesEnrolledIn().contains(course)) return "activity_student";
             if(currentUser.getCoursesLectured().contains(course)) return "activity_lecturer";
             if(!currentUser.getRoles().contains(Role.ADMIN)){
