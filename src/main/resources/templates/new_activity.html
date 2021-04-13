@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UPeL3.0</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body style="background-color: #ecf1fc;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<section class="container py-3">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <h2 class="pb-2">Tworzenie nowej aktywności</h2>
+
+        <div class="text-end">
+            <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
+        </div>
+    </header>
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
+        Tu możesz utworzyć nową aktywność. (Tekst alternatywny: Przykro nam, ale tylko prowadzący mogą tworzyć nowe aktywności. Jeśli chcesz uzyskać takie przywileje, skontaktuj się z administratorem.)
+    </p>
+</section>
+
+<div class="container pb-3">
+    <form th:action="|/create_activity/${course.getId()}|">
+        <div class="form-group">
+            <label for="activityName">Nazwa aktywności:</label>
+            <input type="text" class="form-control" id="activityName" th:name="activityName" placeholder="Nazwa aktywności">
+        </div>
+        <div class="form-group">
+            <label for="minPoints">Minimalna liczba punktów za aktywność:</label>
+            <input type="number" class="form-control" id="minPoints" th:name="minPoints" placeholder="Minimalna liczba punktów za aktywność">
+        </div>
+        <div class="form-group">
+            <label for="maxPoints">Maksymalna liczba punktów za aktywność:</label>
+            <input type="number" class="form-control" id="maxPoints" th:name="maxPoints" placeholder="Maksymalna liczba punktów za aktywność">
+        </div>
+
+        <div class="pt-3">
+            <button type="submit" class="btn btn-primary">Utwórz aktywność</button>
+        </div>
+    </form>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

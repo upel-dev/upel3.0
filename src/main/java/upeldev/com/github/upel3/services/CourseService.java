@@ -3,9 +3,11 @@ package upeldev.com.github.upel3.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.AccessCode;
+import upeldev.com.github.upel3.model.Activity;
 import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.User;
 import upeldev.com.github.upel3.repositories.AccessCodeRepository;
+import upeldev.com.github.upel3.repositories.ActivityRepository;
 import upeldev.com.github.upel3.repositories.CourseRepository;
 import upeldev.com.github.upel3.repositories.UserRepository;
 
@@ -20,14 +22,16 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final AccessCodeRepository accessCodeRepository;
-
+    private final ActivityRepository activityRepository;
     @Autowired
     public CourseService(CourseRepository courseRepository,
                          UserRepository userRepository,
-                         AccessCodeRepository accessCodeRepository){
+                         AccessCodeRepository accessCodeRepository,
+                         ActivityRepository activityRepository){
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
         this.accessCodeRepository = accessCodeRepository;
+        this.activityRepository = activityRepository;
     }
 
     public Course save(Course courseDTO){ return courseRepository.save(courseDTO); }
@@ -68,6 +72,13 @@ public class CourseService {
         userRepository.save(student);
     }
 
+    public void addActivity(Course course, Activity activity){
+        course.addActivity(activity);
+        activity.setCourse(course);
+        courseRepository.save(course);
+        activityRepository.save(activity);
+    }
+
     public void addLecturer(Course course, User lecturer){
         course.addLecturer(lecturer);
         lecturer.addLecturedCourse(course);
@@ -93,5 +104,6 @@ public class CourseService {
         }
         addStudentToCourse(course, student);
     }
+
 
 }

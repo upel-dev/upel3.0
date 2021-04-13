@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>UPeL3.0</title>
+
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body style="background-color: #ecf1fc;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<section class="container py-3">
+  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <h2 class="pb-2">Dodanie nowej oceny</h2>
+
+    <div class="text-end">
+      <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
+    </div>
+  </header>
+  <p class="pb-3" style="border-bottom: 3px solid #343a40;">
+    Tu możesz utworzyć nową ocenę. Wpisz jego nazwę oraz uzupełnij krótki opis. (Tekst alternatywny: Przykro nam, ale tylko prowadzący mogą tworzyć nowe kursy. Jeśli chcesz uzyskać takie przywileje, skontaktuj się z administratorem.)
+  </p>
+</section>
+
+<div class="container pb-3">
+  <form th:action="|/create_grade/${course.getId()}/${activity.getId()}|">
+    <div class="form-group">
+      <label for="userName">Wartość oceny:</label>
+      <select class="form-control" id="userName" th:name="userName">
+        <option th:each="student : ${course.getEnrolledStudents()}" th:value="${student.getEmail()}" th:text="${student.getEmail()}"></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="gradeValue">Wartość oceny:</label>
+      <input type="number" class="form-control" id="gradeValue" th:name="gradeValue" placeholder="Wartość oceny">
+    </div>
+    <div class="pt-3">
+      <button type="submit" class="btn btn-primary">Dodaj ocenę</button>
+    </div>
+  </form>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

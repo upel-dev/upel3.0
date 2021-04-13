@@ -61,5 +61,9 @@ public class Course {
         if(!lecturers.contains(lecturer)) lecturers.add(lecturer);
     }
 
+    public void addActivity(Activity activity){
+        if(!this.activity.contains(activity)) this.activity.add(activity);
+    }
+
 
 }

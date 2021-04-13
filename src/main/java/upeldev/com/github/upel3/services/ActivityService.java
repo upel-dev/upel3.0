@@ -34,6 +34,12 @@ public class ActivityService {
         return user.getCoursesLectured().contains(activity.getCourse());
     }
 
+    public Activity createActivity(Course course, int minValue, int maxValue, String name){
+
+        Activity activity = new Activity(course, minValue, maxValue, name);
+        return save(activity);
+    }
+
     public List<Activity> findAll(){
         return activityRepository.findAll();
     }
