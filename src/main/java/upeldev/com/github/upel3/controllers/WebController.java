@@ -59,12 +59,7 @@ public class WebController {
         return "index";
     }
 
-    @RequestMapping(value = "/course")
-    public String course(Model model, Principal principal) {
-        User currentUser = userService.findByEmail(principal.getName());
-        model.addAttribute("user", currentUser);
-        return "course";
-    }
+
 
     @RequestMapping(value = "/course", method = RequestMethod.GET)
     public String courseSpecific(Model model, Principal principal, HttpServletRequest request) {
@@ -80,6 +75,13 @@ public class WebController {
             model.addAttribute("errorMsg", errorMsg);
             return "error";
         }
+        return "course";
+    }
+
+    @RequestMapping(value = "/course")
+    public String course(Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
         return "course";
     }
 
