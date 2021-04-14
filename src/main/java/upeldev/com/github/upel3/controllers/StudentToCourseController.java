@@ -97,6 +97,6 @@ public class StudentToCourseController {
             return "error";
         }
 
-        return "users";
+        return "redirect:/course_users?id="+courseId;
     }
 }
