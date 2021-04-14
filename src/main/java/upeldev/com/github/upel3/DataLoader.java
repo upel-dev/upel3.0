@@ -71,8 +71,12 @@ public class DataLoader {
         List<Activity> activities = activityService.findAll();
 
         for (int i = 0; i < 25; i++) {
-            Grade grade = new Grade(users.get(i % users.size()), activities.get(i % activities.size()), 50);
-            gradeService.save(grade);
+            User user = users.get(i % users.size());
+            Activity activity = activities.get(i % activities.size());
+            if(!activity.getCourse().getLecturers().contains(user) && activity.getCourse().getEnrolledStudents().contains(user)) {
+                Grade grade = new Grade(user, activity, 50);
+                gradeService.save(grade);
+            }
         }
     }
 
