@@ -25,7 +25,10 @@ public class StudentToCourseController {
     }
 
     @RequestMapping(value = "/course_users", method = RequestMethod.GET)
-    public String studentsInCourse(Model model, Principal principal, HttpServletRequest request)
+    public String studentsInCourse(
+            Model model,
+            Principal principal,
+            HttpServletRequest request)
     {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
@@ -42,20 +45,28 @@ public class StudentToCourseController {
         return "course_users";
     }
 
-    @RequestMapping(value = "/new_users", method = RequestMethod.GET)
+    @ModelAttribute("users")
+    public List<User> users() {
+        return userService.findAllStudents();
+    }
+
+    @RequestMapping(value = "/new_users/{courseId}", method = RequestMethod.GET)
     public String addStudent(
+            @RequestParam(value = "userName") String userName,
+            @PathVariable("courseId") Long courseId,
             Model model,
-            Principal principal,
+            Principal principal/*,
             HttpServletRequest requestID,
-            HttpServletRequest requestName)
+            HttpServletRequest requestName*/)
     {
         User currentUser = userService.findByEmail(principal.getName());
 
-        Long courseId = Long.parseLong(requestID.getParameter("id"));
+        //Long courseId = Long.parseLong(requestID.getParameter("id"));
         Course currentCourse = courseService.findCourseById(courseId);
 
         model.addAttribute("user", currentUser);
         model.addAttribute("courseId", courseId);
+
 
         try{
             if(!currentUser.getRoles().contains(Role.ADMIN) && !currentUser.getRoles().contains(Role.LECTURER)){
@@ -64,13 +75,21 @@ public class StudentToCourseController {
                 return "error";
             }
 
-            List<User> users = userService.findAll();
-            model.addAttribute("users", users);
 
-            String userName = requestName.getParameter("userName");
+/*            users = userService.findAllStudents();
+            users.removeAll(currentCourse.getEnrolledStudents());
+
+            String userName = requestName.getParameter("userName");*/
 
             User newStudent = userService.findByEmail(userName);
-            courseService.addStudentToCourse(currentCourse, newStudent);
+            if (currentCourse.getEnrolledStudents().contains(newStudent))
+            {
+                String errorMsg = "Student juz zapisany do kursu";
+                model.addAttribute("errorMsg", errorMsg);
+                return "error";
+            }
+            else
+                courseService.addStudentToCourse(currentCourse, newStudent);
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Podano nieprawidłowe argumenty podczas dodawania kursanta.";
@@ -78,6 +97,6 @@ public class StudentToCourseController {
             return "error";
         }
 
-        return "course_users";
+        return "users";
     }
 }

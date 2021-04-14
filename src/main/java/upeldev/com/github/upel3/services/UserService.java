@@ -26,6 +26,14 @@ public class UserService {
         return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
+
+    public List<User> findAllStudents(){
+        List<User> studentList = StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+        studentList.removeIf(user -> isAdmin(user) || isLecturer(user));
+        return studentList;
+    }
+
     public User findById(Long id){
         return userRepository.findUserById(id);
     }
@@ -41,6 +49,11 @@ public class UserService {
     public boolean isAdmin(User user){
         return user.getRoles().stream()
                 .anyMatch(role -> role.getName().equals(Role.ADMIN.getName()));
+    }
+
+    public boolean isLecturer(User user){
+        return user.getRoles().stream()
+                .anyMatch(role -> role.getName().equals(Role.LECTURER.getName()));
     }
 
     private boolean emailHasRightFormat(String email){
