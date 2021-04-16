@@ -13,31 +13,26 @@
 <section class="container py-3">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <h2 class="pb-2">Zapisywanie studentów na kurs</h2>
-
         <div class="text-end">
             <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
         </div>
     </header>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tu możesz dopisać studentów do otwartego kursu.
+        Tu możesz dodać studentów do obecnego kursu, poprzez wpisanie numerów ich indeksów.
     </p>
 </section>
 
-
 <div class="container pb-3">
-    <form th:action="|/new_users/${course.getId()}|">
+    <form th:action="|/new_course_students/${course.getId()}|">
         <div class="form-group">
-            <label for="userName">Dodawany Student:</label>
-            <select class="form-control" id="userName" th:name="userName">
-                <option th:each="student : ${users}" th:value="${student.getEmail()}" th:text="${student.getEmail()}"></option>
-            </select>
+            <label for="userId">Numer indeksu dodawanego studenta:</label>
+            <input type="number" min="100000" max="999999" class="form-control" placeholder="Sześciocyfrowy numer indeksu" id="userId" th:name="userId">
         </div>
         <div class="pt-3">
             <button type="submit" class="btn btn-primary">Dodaj studenta</button>
         </div>
     </form>
 </div>
-
 
 <section class="container py-3">
     <table class="table table-hover table-bordered bg-light">
@@ -53,7 +48,6 @@
         </tbody>
     </table>
 </section>
-
 
 <div th:replace="fragments/footer :: footer"></div>
 

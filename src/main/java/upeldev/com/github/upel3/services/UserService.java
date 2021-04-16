@@ -29,20 +29,11 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public List<User> findAllStudents(){
-        List<User> studentList = StreamSupport.stream(userRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
-        studentList.removeIf(user -> isAdmin(user) || isLecturer(user));
-        return studentList;
-    }
+    public User findByEmail(String email){ return userRepository.findUserByEmail(email); }
 
-    public User findById(Long id){
-        return userRepository.findUserById(id);
-    }
+    public User findByIndexNumber(String indexNumber) { return userRepository.findUserByIndexNumber(indexNumber); }
 
-    public User findByEmail(String email){
-        return userRepository.findUserByEmail(email);
-    }
+    public User findById(Long id) { return userRepository.findUserById(id); }
 
     public User save(User userDTO){
         return userRepository.save(userDTO);

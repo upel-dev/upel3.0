@@ -8,83 +8,74 @@ import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.CourseService;
 import upeldev.com.github.upel3.services.UserService;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
-public class StudentToCourseController {
+public class CourseStudentsController {
     private final UserService userService;
     private final CourseService courseService;
 
     @Autowired
-    public StudentToCourseController(UserService userService, CourseService courseService) {
+    public CourseStudentsController(UserService userService, CourseService courseService) {
         this.userService = userService;
         this.courseService = courseService;
     }
 
-    @RequestMapping(value = "/course_users", method = RequestMethod.GET)
-    public String studentsInCourse(
+    @RequestMapping(value = "/course_students", method = RequestMethod.GET)
+    public String studentsInCourseDisplay(
             Model model,
             Principal principal,
             HttpServletRequest request)
     {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
+
         try {
             Long id = Long.parseLong(request.getParameter("id").toString());
             Course course = courseService.findCourseById(id);
             model.addAttribute("course", course);
         }
+
         catch(NumberFormatException nfe) {
             String errorMsg = "Zapytanie GET /course?id=<course_id> otrzymało niewłaściwy typ danych. Spodziewany typ: long integer.";
             model.addAttribute("errorMsg", errorMsg);
             return "error";
         }
-        return "course_users";
+        return "course_students";
     }
 
-    @ModelAttribute("users")
-    public List<User> users() {
-        return userService.findAllStudents();
-    }
-
-    @RequestMapping(value = "/new_users/{courseId}", method = RequestMethod.GET)
-    public String addStudent(
-            @RequestParam(value = "userName") String userName,
+    @RequestMapping(value = "/new_course_students/{courseId}", method = RequestMethod.GET)
+    public String addStudentToCurrentCourse(
+            @RequestParam(value = "userId") String userId,
             @PathVariable("courseId") Long courseId,
             Model model,
-            Principal principal/*,
-            HttpServletRequest requestID,
-            HttpServletRequest requestName*/)
+            Principal principal)
     {
         User currentUser = userService.findByEmail(principal.getName());
-
-        //Long courseId = Long.parseLong(requestID.getParameter("id"));
         Course currentCourse = courseService.findCourseById(courseId);
 
         model.addAttribute("user", currentUser);
         model.addAttribute("courseId", courseId);
 
-
-        try{
-            if(!currentUser.getRoles().contains(Role.ADMIN) && !currentUser.getRoles().contains(Role.LECTURER)){
-                String errorMsg = "Nie masz wystarczających uprawnień, aby dodać kursanta";
+        try {
+            if (currentUser.getRoles().contains(Role.STUDENT)){
+                String errorMsg = "Nie masz wystarczających uprawnień aby dodać nowego kursanta.";
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
 
+            User newStudent = userService.findByIndexNumber(userId);
 
-/*            users = userService.findAllStudents();
-            users.removeAll(currentCourse.getEnrolledStudents());
-
-            String userName = requestName.getParameter("userName");*/
-
-            User newStudent = userService.findByEmail(userName);
+            if (newStudent == null)
+            {
+                String errorMsg = "Niepoprawny numer indeksu.";
+                model.addAttribute("errorMsg", errorMsg);
+                return "error";
+            }
             if (currentCourse.getEnrolledStudents().contains(newStudent))
             {
-                String errorMsg = "Student juz zapisany do kursu";
+                String errorMsg = "Student już jest zapisany do kursu.";
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
@@ -96,7 +87,6 @@ public class StudentToCourseController {
             model.addAttribute("errorMsg", errorMsg);
             return "error";
         }
-
-        return "redirect:/course_users?id="+courseId;
+        return "redirect:/course_students?id="+courseId;
     }
 }
