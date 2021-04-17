@@ -14,7 +14,7 @@
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <h2 class="pb-2">Twoje kursy</h2>
         <div class="text-end">
-            <a th:unless="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'ADMIN')}" type="button" class="btn btn-primary" href="new_course">Utwórz nowy kurs</a>
+            <a th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER')}" type="button" class="btn btn-primary" href="new_course">Utwórz nowy kurs</a>
             <a th:unless="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'ADMIN')}" type="button" class="btn btn-primary" href="course_enrollment">Dołącz do istniejącego kursu</a>
             <a th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'ADMIN')}" type="button" class="btn btn-primary" href="new_user">Dodaj użytkownika</a>
             <!--the effect of trying to figure out why 'isAdmin' or '.contains(Role.ADMIN)' didn't work,
