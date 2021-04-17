@@ -37,11 +37,26 @@
             <input type="number" class="form-control" id="passValue" th:name="passValue" placeholder="Liczba punktów potrzebnych do zdania aktywności">
         </div>
 
+        <div class="form-group" th:each="i: ${#numbers.sequence(0, howMany-1)}">
+            <label for="subActivity">Nazwa części oceny:</label>
+            <input type="text" class="form-control" id="subActivity" th:name="subActivity" placeholder="Nazwa oceny">
+            <label for="maxPoints">Maksymalna liczba punktów:</label>
+            <input type="number" class="form-control" id="maxPoints" th:name="maxPoints" placeholder="Maksymalna liczba punktów">
+        </div>
+
+        <div class="form-group">
+            <a th:href="|${howMany+1}?id=${course.getId()}|">Dodaj nową część oceny</a>
+        </div>
+        <div class="form-group">
+            <a th:href="|${howMany-1}?id=${course.getId()}|">Usuń część oceny</a>
+        </div>
+
         <div class="pt-3">
             <button type="submit" class="btn btn-primary">Utwórz aktywność</button>
         </div>
     </form>
 </div>
+
 
 <div th:replace="fragments/footer :: footer"></div>
 

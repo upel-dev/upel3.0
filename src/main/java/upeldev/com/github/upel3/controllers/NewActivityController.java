@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.ActivityService;
 import upeldev.com.github.upel3.services.CourseService;
+import upeldev.com.github.upel3.services.SubActivityService;
 import upeldev.com.github.upel3.services.UserService;
 
 import java.security.Principal;
@@ -20,20 +21,24 @@ public class NewActivityController {
     private final UserService userService;
     private final CourseService courseService;
     private final ActivityService activityService;
+    private final SubActivityService subActivityService;
 
     @Autowired
-    public NewActivityController(UserService userService, CourseService courseService, ActivityService activityService){
+    public NewActivityController(UserService userService, CourseService courseService, ActivityService activityService, SubActivityService subActivityService){
         this.userService = userService;
         this.courseService = courseService;
         this.activityService = activityService;
+        this.subActivityService = subActivityService;
     }
 
-    @RequestMapping(value = "/new_activity")
-    public String newCourse(@RequestParam(value = "id")  Long courseId, Model model, Principal principal) {
+    @RequestMapping(value = "/new_activity/{howMany}")
+    public String newCourse(@PathVariable("howMany") int howMany, @RequestParam(value = "id")  Long courseId, Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
         Course currentCourse = courseService.findCourseById(courseId);
         model.addAttribute("course", currentCourse);
+        if(howMany < 1) howMany = 1;
+        model.addAttribute("howMany", howMany);
 
         return "new_activity";
     }
@@ -44,6 +49,8 @@ public class NewActivityController {
             @RequestParam(value = "activityName") String activityName,
             @RequestParam(value = "activityDescription") String activityDescription,
             @RequestParam(value = "passValue")  int passValue,
+            @RequestParam(value = "subActivity")  String[] subActivityName,
+            @RequestParam(value = "maxPoints")  int[] maxPoints,
             Model model,
             Principal principal) {
 
@@ -65,6 +72,12 @@ public class NewActivityController {
 
             List<Course> courses = currentUser.getCoursesLectured();
             model.addAttribute("courses", courses);
+
+            for(int i = 0; i < subActivityName.length; i++){
+                SubActivity subActivity = new SubActivity(newActivity, maxPoints[i], subActivityName[i]);
+                subActivityService.save(subActivity);
+            }
+
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Podano nieprawidłowe argumenty podczas tworzenia kursu.";
