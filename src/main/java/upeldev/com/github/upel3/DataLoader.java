@@ -93,13 +93,11 @@ public class DataLoader {
         List<Activity> activities = activityService.findAll();
 
         for (int i = 0; i < 25; i++) {
-            List<User> users = activities.get(i%activities.size()).getCourse().getEnrolledStudents();
             SubActivity subActivity = new SubActivity(activities.get(i%activities.size()), 10, "Zadanie " + i);
             subActivityService.save(subActivity);
         }
     }
     public void populateSubGrade(){
-        List<Activity> activities = activityService.findAll();
         List<SubActivity> subActivities = subActivityService.findAll();
         for(SubActivity subActivity : subActivities){
             for(Grade grade : subActivity.getActivity().getGrade()){
@@ -108,5 +106,4 @@ public class DataLoader {
             }
         }
     }
-
 }
