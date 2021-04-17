@@ -28,13 +28,12 @@ public class UserService {
         return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
-    public User findById(Long id){
-        return userRepository.findUserById(id);
-    }
 
-    public User findByEmail(String email){
-        return userRepository.findUserByEmail(email);
-    }
+    public User findByEmail(String email){ return userRepository.findUserByEmail(email); }
+
+    public User findByIndexNumber(String indexNumber) { return userRepository.findUserByIndexNumber(indexNumber); }
+
+    public User findById(Long id) { return userRepository.findUserById(id); }
 
     public User save(User userDTO){
         return userRepository.save(userDTO);
@@ -43,6 +42,11 @@ public class UserService {
     public boolean isAdmin(User user){
         return user.getRoles().stream()
                 .anyMatch(role -> role.getName().equals(Role.ADMIN.getName()));
+    }
+
+    public boolean isLecturer(User user){
+        return user.getRoles().stream()
+                .anyMatch(role -> role.getName().equals(Role.LECTURER.getName()));
     }
 
     private boolean emailHasRightFormat(String email){
