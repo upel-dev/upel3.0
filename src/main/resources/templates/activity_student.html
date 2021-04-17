@@ -18,6 +18,7 @@
             <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
         </div>
     </header>
+    <p class="pb-3" th:text="${activity.getDescription()}" style="border-bottom: 3px solid #343a40;">Opis aktywności.</p>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
         Tutaj możesz podejrzeć wszystkie oceny udostępnione w ramach tej aktywności.
     </p>
@@ -26,19 +27,21 @@
 <section class="container py-3">
 
     <table class="table table-hover table-bordered bg-light">
-    <thead>
-    <tr>
-        <th scope="col">Opis oceny</th>
-        <th scope="col">Wartość</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="grade : ${grades}">
-        <td th:text="${grade.getDescription()}">Opis</td>
-        <td th:text="${grade.getValue()}">Wartość</td>
-    </tr>
-    </tbody>
+        <thead>
+        <tr>
+            <th scope="col">Użytkownik</th>
+            <th scope="col">Opis oceny</th>
+            <th scope="col">Łączna wartość</th>
+            <th scope="col" th:each="subActivity : ${activity.getSubActivity()}" th:text="${subActivity.getName()}"></th>
+        </tr>
 
+        <tr th:each="grade : ${grades}">
+            <td scope="col" th:text="${grade.getUser().getEmail()}"></td>
+            <td scope="col" th:text="${grade.getDescription()}"></td>
+            <td scope="col" th:text="${grade.getValue()}"></td>
+            <td scope="col" th:each="subGrade : ${grade.getSubGrade()}" th:text="${subGrade.getValue()}"></td>
+        </tr>
+        </thead>
     </table>
 </section>
 

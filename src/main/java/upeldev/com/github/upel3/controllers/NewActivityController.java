@@ -42,8 +42,8 @@ public class NewActivityController {
     public String createCourse(
             @PathVariable("id") Long id,
             @RequestParam(value = "activityName") String activityName,
-            @RequestParam(value = "minPoints")  int minValue,
-            @RequestParam(value = "maxPoints")  int maxValue,
+            @RequestParam(value = "activityDescription") String activityDescription,
+            @RequestParam(value = "passValue")  int passValue,
             Model model,
             Principal principal) {
 
@@ -58,7 +58,8 @@ public class NewActivityController {
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
-            Activity newActivity = activityService.createActivity(currentCourse, minValue, maxValue, activityName);
+            Activity newActivity = activityService.createActivity(currentCourse, passValue, activityName);
+            newActivity.setDescription(activityDescription);
             List<Activity> activities =  currentCourse.getActivity();
             model.addAttribute("activities", activities);
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import upeldev.com.github.upel3.model.Course;
+import upeldev.com.github.upel3.model.Role;
 import upeldev.com.github.upel3.model.User;
 import upeldev.com.github.upel3.services.CourseService;
 import upeldev.com.github.upel3.services.UserService;
@@ -43,6 +44,7 @@ public class WebController {
     public String defaultPage(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         List<Course> courses = currentUser.getCoursesLectured();
+
         courses.addAll(currentUser.getCoursesEnrolledIn());
         model.addAttribute("courses", courses);
         model.addAttribute("user", currentUser);
