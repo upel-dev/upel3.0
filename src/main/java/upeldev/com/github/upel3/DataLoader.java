@@ -63,6 +63,7 @@ public class DataLoader {
         bmw.getRoles().add(Role.STUDENT);
         bmw.setIndexNumber("123456");
         userService.registerNewUser(bmw);
+
     }
     private void populateActivity(){
         List<Course> allCourses = courseService.findAll();
