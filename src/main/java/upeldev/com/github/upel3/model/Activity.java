@@ -21,13 +21,15 @@ public class Activity {
     private Long id;
 
     @Column
-    private int minValue = 0;
+    private int passValue = 0;
 
-    @Column
-    private int maxValue = 100;
+
 
     @Column(nullable = false)
     private String name;
+
+    @Column
+    private String description;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
@@ -36,16 +38,23 @@ public class Activity {
     @OneToMany(
             mappedBy = "activity",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
     private List<Grade> grade = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "activity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<SubActivity> subActivity = new ArrayList<>();
 
 
-    public Activity(Course course, int minValue, int maxValue, String name){
+
+    public Activity(Course course, int passValue, String name){
         this.course = course;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+        this.passValue = passValue;
         this.name = name;
     }
 

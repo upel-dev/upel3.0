@@ -34,6 +34,14 @@ public class GradeService {
         return gradeRepository.findGradeByUser(user);
     }
 
+    public List<Grade> findGradeByActivity(Activity activity){
+        return gradeRepository.findGradeByActivity(activity);
+    }
+
+    public List<Grade> findGradeByCourseUserActivity(Course course, User user, Activity activity){
+        return gradeRepository.findGradeByCourseUserActivity(course.getId(), user.getId(), activity.getId());
+    }
+
     public Grade findGradeById(Long id){
         return gradeRepository.findGradeById(id);
     }
@@ -51,6 +59,8 @@ public class GradeService {
     public List<Grade> findGradeByCourseAndUser(Course course, User user){
         return gradeRepository.findGradeByCourseAndUser(course.getId(), user.getId());
     }
+
+    public long deleteById(Long id){return gradeRepository.deleteById(id);}
 
     public Grade save(Grade gradeDTO){
         return gradeRepository.save(gradeDTO);

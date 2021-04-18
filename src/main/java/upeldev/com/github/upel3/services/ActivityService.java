@@ -34,9 +34,9 @@ public class ActivityService {
         return user.getCoursesLectured().contains(activity.getCourse());
     }
 
-    public Activity createActivity(Course course, int minValue, int maxValue, String name){
+    public Activity createActivity(Course course, int passValue, String name){
 
-        Activity activity = new Activity(course, minValue, maxValue, name);
+        Activity activity = new Activity(course, passValue, name);
         return save(activity);
     }
 
