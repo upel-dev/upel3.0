@@ -53,7 +53,6 @@ public class CourseService {
         return courseRepository.findById(id);
     }
 
-
     public List<Course> findByName(String name){
         return courseRepository.findByName(name);
     }

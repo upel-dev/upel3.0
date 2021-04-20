@@ -16,7 +16,6 @@
         <div class="text-end">
             <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
             <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
-
         </div>
     </header>
     <p class="pb-3" th:text="${activity.getDescription()}" style="border-bottom: 3px solid #343a40;">Opis aktywności.</p>

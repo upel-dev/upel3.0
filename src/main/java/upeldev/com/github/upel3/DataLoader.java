@@ -61,7 +61,7 @@ public class DataLoader {
 
         User bmw = new User("Benjamin", "Bmw", "bmw@gmail.com", "1234");
         bmw.getRoles().add(Role.STUDENT);
-        bmw.setIndexNumber("123456");
+        bmw.setIndexNumber("123457");
         userService.registerNewUser(bmw);
 
     }
