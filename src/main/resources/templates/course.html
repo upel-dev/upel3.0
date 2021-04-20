@@ -28,7 +28,7 @@
             <a type="button" class="btn btn-primary" href="#">Strona główna</a>
         </div>
         <div class="d-flex p-2">
-            <a type="button" class="btn btn-primary" href="#">Uczestnicy</a>
+            <a type="button" class="btn btn-primary" th:href="|course_students?id=${course.getId()}|">Uczestnicy</a>
         </div>
         <div class="d-flex p-2">
             <a type="button" class="btn btn-primary" href="#">Leaderboard</a>
@@ -59,7 +59,7 @@
         <h2 class="pb-2">Aktywności</h2>
 
         <div class="text-end">
-            <a type="button" class="btn btn-primary" th:href="|new_activity?id=${course.getId()}|">Dodaj aktywność</a>
+            <a type="button" class="btn btn-primary" th:href="|new_activity/1?id=${course.getId()}|">Dodaj aktywność</a>
         </div>
     </header>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
