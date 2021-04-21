@@ -45,6 +45,14 @@
     </table>
 </section>
 
+<section class="container py-3">
+    <p th:text="|Wynik aktywności: ${percentage}%|"></p>
+    <div class="progress">
+        <div th:class="|progress-bar ${barColor}|" role="progressbar" th:style="|width: ${basePercentage}%|"></div>
+        <div class="progress-bar bg-info" role="progressbar" th:style="|width: ${bonusPercentage}%|"></div>
+    </div>
+</section>
+
 <div th:replace="fragments/footer :: footer"></div>
 
 <script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>

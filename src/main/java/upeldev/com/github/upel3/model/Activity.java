@@ -58,6 +58,12 @@ public class Activity {
         this.name = name;
     }
 
-
+    public double getMaxPoints(){
+        double value = 0;
+        for(SubActivity subActiv : this.subActivity){
+            value += subActiv.getMaxValue();
+        }
+        return value;
+    }
 
 }
