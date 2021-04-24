@@ -31,7 +31,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String indexNumber;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
