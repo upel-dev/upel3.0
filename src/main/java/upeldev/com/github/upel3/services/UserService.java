@@ -76,4 +76,14 @@ public class UserService {
 
         return save(userDto);
     }
+
+    public void hideCourse(User user, Course course){
+        user.addHiddenCourse(course);
+        userRepository.save(user);
+    }
+
+    public void showCourse(User user, Course course){
+        user.removeCourseFromHidden(course);
+        userRepository.save(user);
+    }
 }

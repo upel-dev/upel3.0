@@ -41,7 +41,7 @@ public class CourseService {
         Course course = new Course(name, description);
         course.addLecturer(lecturer);
         accessCodeRepository.save(course.getAccessCode());
-        userRepository.save(lecturer);
+//        userRepository.save(lecturer);
         return save(course);
     }
 
@@ -86,7 +86,6 @@ public class CourseService {
 
         Course course = courseRepository.findById(courseId);
         User student = userRepository.findUserByEmail(email);
-
         addStudentToCourse(course, student);
     }
 
