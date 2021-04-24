@@ -57,7 +57,6 @@ public class NewCourseController {
                 return "error";
             }
             Course newCourse = courseService.createCourse(courseName, courseDescription, currentUser);
-            courseService.addLecturer(newCourse, currentUser);
 
             Set<Course> courses = currentUser.getCoursesLectured();
             courses.addAll(currentUser.getCoursesEnrolledIn());

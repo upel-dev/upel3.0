@@ -66,7 +66,7 @@ public class CourseService {
     private void addStudentToCourse(Course course, User student){
 
         if (course.getEnrolledStudents().contains(student)){
-            throw new IllegalArgumentException("Student is already enrolled to this course");
+            throw new IllegalArgumentException("Given student is already enrolled to this course");
         }
         course.addStudent(student);
         student.enrollInCourse(course);
@@ -78,10 +78,6 @@ public class CourseService {
         Course course = courseRepository.findById(courseId);
         User student = userRepository.findUserById(studentId);
 
-        if (course.getEnrolledStudents().contains(student)){
-            throw new IllegalArgumentException("Student is already enrolled to this course");
-        }
-
         addStudentToCourse(course, student);
 
     }
@@ -90,10 +86,6 @@ public class CourseService {
 
         Course course = courseRepository.findById(courseId);
         User student = userRepository.findUserByEmail(email);
-
-        if (course.getEnrolledStudents().contains(student)){
-            throw new IllegalArgumentException("Student is already enrolled to this course");
-        }
 
         addStudentToCourse(course, student);
     }
@@ -105,11 +97,30 @@ public class CourseService {
         activityRepository.save(activity);
     }
 
-    public void addLecturer(Course course, User lecturer){
+    public void addLecturer(Long courseId, Long lecturerId) throws IllegalArgumentException {
+        Course course = courseRepository.findById(courseId);
+        User lecturer = userRepository.findUserById(lecturerId);
+
+        addLecturer(course, lecturer);
+
+    }
+
+
+    public void addLecturer(Long courseId, String email) throws IllegalArgumentException {
+        Course course = courseRepository.findById(courseId);
+        User lecturer = userRepository.findUserByEmail(email);
+
+        addLecturer(course, lecturer);
+
+    }
+
+    private void addLecturer(Course course, User lecturer) throws IllegalArgumentException {
+        if(course.getLecturers().contains(lecturer)){
+            throw new IllegalArgumentException("Given lecturer is already assigned to this course");
+        }
         course.addLecturer(lecturer);
         lecturer.addLecturedCourse(course);
         courseRepository.save(course);
-        userRepository.save(lecturer);
     }
 
     public Course findCourseByAccessCode(String accessCodeString){
