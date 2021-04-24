@@ -39,9 +39,8 @@ public class DataLoader {
         Course firstCourse = courseService.createCourse("First course", "first description", userService.findByEmail("kate@gmail.com"));
         Course secondCourse = courseService.createCourse("Second course", "second description", userService.findByEmail("kate@gmail.com"));
 
-        courseService.addStudentToCourse(firstCourse, userService.findByEmail("benjamin@gmail.com"));
-
-        courseService.addStudentToCourse(firstCourse, userService.findByEmail("bmw@gmail.com"));
+        courseService.addStudentToCourse(firstCourse.getId(), "benjamin@gmail.com");
+        courseService.addStudentToCourse(firstCourse.getId(), "bmw@gmail.com");
 
     }
 
@@ -61,7 +60,7 @@ public class DataLoader {
 
         User bmw = new User("Benjamin", "Bmw", "bmw@gmail.com", "1234");
         bmw.getRoles().add(Role.STUDENT);
-        bmw.setIndexNumber("123456");
+        bmw.setIndexNumber("123457");
         userService.registerNewUser(bmw);
 
     }

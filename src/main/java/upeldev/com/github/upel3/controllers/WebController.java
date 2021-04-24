@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class WebController {
@@ -43,7 +44,7 @@ public class WebController {
     @RequestMapping(value = "/")
     public String defaultPage(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
-        List<Course> courses = currentUser.getCoursesLectured();
+        Set<Course> courses = currentUser.getCoursesLectured();
 
         courses.addAll(currentUser.getCoursesEnrolledIn());
         model.addAttribute("courses", courses);
@@ -54,7 +55,7 @@ public class WebController {
     @RequestMapping(value = "/index")
     public String index(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
-        List<Course> courses = currentUser.getCoursesLectured();
+        Set<Course> courses = currentUser.getCoursesLectured();
         courses.addAll(currentUser.getCoursesEnrolledIn());
         model.addAttribute("courses", courses);
         model.addAttribute("user", currentUser);
@@ -126,7 +127,7 @@ public class WebController {
         try{
             courseService.addStudentToCourseByCode(currentUser, courseCode);
 
-            List<Course> courses = currentUser.getCoursesLectured();
+            Set<Course> courses = currentUser.getCoursesLectured();
             courses.addAll(currentUser.getCoursesEnrolledIn());
             model.addAttribute("courses", courses);
         }

@@ -14,6 +14,7 @@ import upeldev.com.github.upel3.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class NewActivityController {
@@ -69,7 +70,7 @@ public class NewActivityController {
             List<Activity> activities =  currentCourse.getActivity();
             model.addAttribute("activities", activities);
 
-            List<Course> courses = currentUser.getCoursesLectured();
+            Set<Course> courses = currentUser.getCoursesLectured();
             model.addAttribute("courses", courses);
 
             for(int i = 0; i < subActivityName.length; i++){
