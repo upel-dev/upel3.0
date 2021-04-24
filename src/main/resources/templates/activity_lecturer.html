@@ -47,14 +47,14 @@
             <td scope="col" th:each="subGrade : ${grade.getSubGrade()}" th:text="${subGrade.getValue()}"></td>
         </tr>
 
-        <tr>
+        <tr th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER')}">
             <th scope="col">Używkownik</th>
             <th scope="col">Opis oceny</th>
             <th scope="col" th:each="subActivity : ${activity.getSubActivity()}" th:text="${subActivity.getName()}"></th>
             <th scope="col">Dodaj ocenę</th>
         </tr>
 
-        <form th:action="|/create_grade/${course.getId()}/${activity.getId()}|">
+        <form th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER')}" th:action="|/create_grade/${course.getId()}/${activity.getId()}|">
         <tr>
             <td scope="col">
                 <select class="form-control" id="userName" th:name="userName">
