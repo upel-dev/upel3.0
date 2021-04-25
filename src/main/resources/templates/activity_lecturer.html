@@ -48,7 +48,7 @@
         </tr>
 
         <tr th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER')}">
-            <th scope="col">Używkownik</th>
+            <th scope="col">Użytkownik</th>
             <th scope="col">Opis oceny</th>
             <th scope="col" th:each="subActivity : ${activity.getSubActivity()}" th:text="${subActivity.getName()}"></th>
             <th scope="col">Dodaj ocenę</th>
