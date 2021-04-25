@@ -45,13 +45,13 @@ public class User {
     )
     private List<Grade> grade = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "enrolledStudents")
+    @ManyToMany(mappedBy = "enrolledStudents", cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Course> coursesEnrolledIn = new ArrayList<>();
+    private Set<Course> coursesEnrolledIn = new HashSet<>();
 
-    @ManyToMany(mappedBy = "lecturers")
+    @ManyToMany(mappedBy = "lecturers", cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Course> coursesLectured = new ArrayList<>();
+    private Set<Course> coursesLectured = new HashSet<>();
 
 
     public User(String firstName, String lastName, String email, String password) {
@@ -62,14 +62,14 @@ public class User {
     }
 
     public void enrollInCourse(Course course){
-        if(!coursesEnrolledIn.contains(course)) coursesEnrolledIn.add(course);
+        coursesEnrolledIn.add(course);
     }
 
     public void addLecturedCourse(Course course){
         if(!roles.contains(Role.LECTURER))
             throw new UnsupportedOperationException("Only a user with role LECTURER can be added as a lecturer.");
 
-        if(!coursesLectured.contains(course)) coursesLectured.add(course);
+        coursesLectured.add(course);
     }
 
 }

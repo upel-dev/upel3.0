@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class NewCourseController {
@@ -56,9 +57,8 @@ public class NewCourseController {
                 return "error";
             }
             Course newCourse = courseService.createCourse(courseName, courseDescription, currentUser);
-            courseService.addLecturer(newCourse, currentUser);
 
-            List<Course> courses = currentUser.getCoursesLectured();
+            Set<Course> courses = currentUser.getCoursesLectured();
             courses.addAll(currentUser.getCoursesEnrolledIn());
             model.addAttribute("courses", courses);
         }

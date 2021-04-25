@@ -80,7 +80,7 @@ public class CourseStudentsController {
                 return "error";
             }
             else
-                courseService.addStudentToCourse(currentCourse, newStudent);
+                courseService.addStudentToCourse(currentCourse.getId(), newStudent.getId());
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Podano nieprawidłowe argumenty podczas dodawania kursanta.";

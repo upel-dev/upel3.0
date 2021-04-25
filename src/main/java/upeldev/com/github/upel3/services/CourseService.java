@@ -11,6 +11,7 @@ import upeldev.com.github.upel3.repositories.ActivityRepository;
 import upeldev.com.github.upel3.repositories.CourseRepository;
 import upeldev.com.github.upel3.repositories.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,14 +63,31 @@ public class CourseService {
         return courseRepository.findByNameContains(phrase);
     }
 
-    public void addStudentToCourse(Course course, User student){
+    private void addStudentToCourse(Course course, User student){
+
         if (course.getEnrolledStudents().contains(student)){
-            throw new IllegalArgumentException("Student is already enrolled to this course");
+            throw new IllegalArgumentException("Given student is already enrolled to this course");
         }
         course.addStudent(student);
         student.enrollInCourse(course);
         courseRepository.save(course);
-        userRepository.save(student);
+    }
+
+    public void addStudentToCourse(Long courseId, Long studentId){
+
+        Course course = courseRepository.findById(courseId);
+        User student = userRepository.findUserById(studentId);
+
+        addStudentToCourse(course, student);
+
+    }
+
+    public void addStudentToCourse(Long courseId, String email){
+
+        Course course = courseRepository.findById(courseId);
+        User student = userRepository.findUserByEmail(email);
+
+        addStudentToCourse(course, student);
     }
 
     public void addActivity(Course course, Activity activity){
@@ -79,11 +97,30 @@ public class CourseService {
         activityRepository.save(activity);
     }
 
-    public void addLecturer(Course course, User lecturer){
+    public void addLecturer(Long courseId, Long lecturerId) throws IllegalArgumentException {
+        Course course = courseRepository.findById(courseId);
+        User lecturer = userRepository.findUserById(lecturerId);
+
+        addLecturer(course, lecturer);
+
+    }
+
+
+    public void addLecturer(Long courseId, String email) throws IllegalArgumentException {
+        Course course = courseRepository.findById(courseId);
+        User lecturer = userRepository.findUserByEmail(email);
+
+        addLecturer(course, lecturer);
+
+    }
+
+    private void addLecturer(Course course, User lecturer) throws IllegalArgumentException {
+        if(course.getLecturers().contains(lecturer)){
+            throw new IllegalArgumentException("Given lecturer is already assigned to this course");
+        }
         course.addLecturer(lecturer);
         lecturer.addLecturedCourse(course);
         courseRepository.save(course);
-        userRepository.save(lecturer);
     }
 
     public Course findCourseByAccessCode(String accessCodeString){
