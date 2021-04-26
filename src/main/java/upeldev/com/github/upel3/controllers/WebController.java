@@ -44,9 +44,15 @@ public class WebController {
     @RequestMapping(value = "/")
     public String defaultPage(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
-        Set<Course> courses = currentUser.getCoursesLectured();
+        Set<Course> courses;
 
-        courses.addAll(currentUser.getCoursesEnrolledIn());
+        if(!currentUser.getRoles().contains(Role.ADMIN)) {
+            courses = currentUser.getCoursesLectured();
+            courses.addAll(currentUser.getCoursesEnrolledIn());
+        }
+        else {
+            courses = courseService.findAll();
+        }
         model.addAttribute("courses", courses);
         model.addAttribute("user", currentUser);
         return "index";
@@ -55,8 +61,15 @@ public class WebController {
     @RequestMapping(value = "/index")
     public String index(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
-        Set<Course> courses = currentUser.getCoursesLectured();
-        courses.addAll(currentUser.getCoursesEnrolledIn());
+        Set<Course> courses;
+
+        if(!currentUser.getRoles().contains(Role.ADMIN)) {
+            courses = currentUser.getCoursesLectured();
+            courses.addAll(currentUser.getCoursesEnrolledIn());
+        }
+        else {
+            courses = courseService.findAll();
+        }
         model.addAttribute("courses", courses);
         model.addAttribute("user", currentUser);
         return "index";

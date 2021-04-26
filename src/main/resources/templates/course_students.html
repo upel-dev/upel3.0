@@ -12,17 +12,17 @@
 
 <section class="container py-3">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <h2 class="pb-2">Zapisywanie studentów na kurs</h2>
+        <h2 class="pb-2">Lista studentów zapisanych na kurs</h2>
         <div class="text-end">
             <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
         </div>
     </header>
+</section>
+
+<div th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER')}" class="container pb-3">
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
         Tu możesz dodać studentów do obecnego kursu, poprzez wpisanie numerów ich indeksów.
     </p>
-</section>
-
-<div class="container pb-3">
     <form th:action="|/new_course_students/${course.getId()}|">
         <div class="form-group">
             <label for="userId">Numer indeksu dodawanego studenta:</label>
