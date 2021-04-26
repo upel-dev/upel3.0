@@ -29,16 +29,8 @@ public class Course {
     @OneToOne
     private AccessCode accessCode;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(
-            name="LECTURERS_COURSES_LECTURED",
-            joinColumns = @JoinColumn(name="COURSE_ID"),
-            inverseJoinColumns = @JoinColumn(name="USER_ID")
-    )
-    private Set<User> lecturers = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(
             name="STUDENT_COURSES_ENROLLED_IN",
@@ -46,6 +38,15 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name="USER_ID")
     )
     private Set<User> enrolledStudents = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.DETACH)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(
+            name="LECTURERS_COURSES_LECTURED",
+            joinColumns = @JoinColumn(name="COURSE_ID"),
+            inverseJoinColumns = @JoinColumn(name="USER_ID")
+    )
+    private Set<User> lecturers = new HashSet<>();
 
     @OneToMany
             (

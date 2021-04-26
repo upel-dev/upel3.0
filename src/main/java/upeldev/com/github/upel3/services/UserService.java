@@ -9,7 +9,9 @@ import upeldev.com.github.upel3.model.Role;
 import upeldev.com.github.upel3.model.User;
 import upeldev.com.github.upel3.repositories.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -75,5 +77,30 @@ public class UserService {
         userDto.setPassword(passwordEncrypted);
 
         return save(userDto);
+    }
+
+    public void hideCourse(User user, Course course){
+        user.addHiddenCourse(course);
+        userRepository.save(user);
+    }
+
+    public void showCourse(User user, Course course){
+        user.removeCourseFromHidden(course);
+        userRepository.save(user);
+    }
+
+    public Set<Course> getAllVisibleCourses(User user){
+
+        Set<Course> visibleCourses = new HashSet<>();
+
+        user.getCoursesLectured().stream()
+                .filter(course -> !user.getHiddenCourses().contains(course))
+                .forEach(visibleCourses::add);
+
+        user.getCoursesEnrolledIn().stream()
+                .filter(course -> !user.getHiddenCourses().contains(course))
+                .forEach(visibleCourses::add);
+
+        return visibleCourses;
     }
 }
