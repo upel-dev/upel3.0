@@ -70,10 +70,13 @@ public class ActivityController {
 
             model.addAttribute("activity", activity);
 
-
+            int passValue = activity.getPassValue();
+            double maxPoints = activity.getMaxPoints();
+            double points = 0;
             List<Grade> grades;
             if(currentUser.getRoles().contains(Role.STUDENT)){
                 grades = gradeService.findGradeByCourseUserActivity(activity.getCourse(), currentUser, activity);
+                if(!grades.isEmpty()) points = grades.get(grades.size() - 1).getValue();
             }
             else{
                 grades = gradeService.findGradeByActivity(activity);
@@ -85,6 +88,24 @@ public class ActivityController {
             model.addAttribute("course", course);
 
             if(currentUser.getCoursesLectured().contains(course) || currentUser.getRoles().contains(Role.ADMIN)) return "activity_lecturer";
+
+            // Progress bar
+            if(points < passValue) model.addAttribute("barColor", "bg-danger");
+            else model.addAttribute("barColor", "bg-success");
+
+            int basePercentage;
+            int bonusPercentage = 0;
+            if(points < maxPoints){
+                basePercentage = (int)(100.0 * points / maxPoints);
+            }
+            else{
+                basePercentage = (int)(100.0 * maxPoints / points);
+                bonusPercentage = 100 - basePercentage;
+            }
+            model.addAttribute("percentage", (int)(100.0 * points / maxPoints));
+            model.addAttribute("basePercentage", basePercentage);
+            model.addAttribute("bonusPercentage", bonusPercentage);
+
             if(currentUser.getCoursesEnrolledIn().contains(course)) return "activity_student";
 
             if(!currentUser.getRoles().contains(Role.ADMIN)){

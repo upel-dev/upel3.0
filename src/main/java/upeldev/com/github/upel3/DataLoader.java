@@ -39,9 +39,8 @@ public class DataLoader {
         Course firstCourse = courseService.createCourse("First course", "first description", userService.findByEmail("kate@gmail.com"));
         Course secondCourse = courseService.createCourse("Second course", "second description", userService.findByEmail("kate@gmail.com"));
 
-        courseService.addStudentToCourse(firstCourse, userService.findByEmail("benjamin@gmail.com"));
-
-        courseService.addStudentToCourse(firstCourse, userService.findByEmail("bmw@gmail.com"));
+        courseService.addStudentToCourse(firstCourse.getId(), "benjamin@gmail.com");
+        courseService.addStudentToCourse(firstCourse.getId(), "bmw@gmail.com");
 
     }
 

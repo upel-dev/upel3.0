@@ -29,13 +29,23 @@ public class Course {
     @OneToOne
     private AccessCode accessCode;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<User> lecturers = new ArrayList<>();
+    @JoinTable(
+            name="LECTURERS_COURSES_LECTURED",
+            joinColumns = @JoinColumn(name="COURSE_ID"),
+            inverseJoinColumns = @JoinColumn(name="USER_ID")
+    )
+    private Set<User> lecturers = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<User> enrolledStudents = new ArrayList<>();
+    @JoinTable(
+            name="STUDENT_COURSES_ENROLLED_IN",
+            joinColumns = @JoinColumn(name="COURSE_ID"),
+            inverseJoinColumns = @JoinColumn(name="USER_ID")
+    )
+    private Set<User> enrolledStudents = new HashSet<>();
 
     @OneToMany
             (
@@ -54,11 +64,11 @@ public class Course {
     }
 
     public void addStudent(User student){
-        if(!enrolledStudents.contains(student)) enrolledStudents.add(student);
+        enrolledStudents.add(student);
     }
 
     public void addLecturer(User lecturer){
-        if(!lecturers.contains(lecturer)) lecturers.add(lecturer);
+        lecturers.add(lecturer);
     }
 
     public void addActivity(Activity activity){
