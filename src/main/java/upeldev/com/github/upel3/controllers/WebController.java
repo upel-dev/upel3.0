@@ -44,16 +44,18 @@ public class WebController {
     @RequestMapping(value = "/")
     public String defaultPage(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
-        Set<Course> courses;
 
         if(!currentUser.getRoles().contains(Role.ADMIN)) {
+            Set<Course> courses;
             courses = currentUser.getCoursesLectured();
             courses.addAll(currentUser.getCoursesEnrolledIn());
+            model.addAttribute("courses", courses);
         }
         else {
+            List<Course> courses;
             courses = courseService.findAll();
+            model.addAttribute("courses", courses);
         }
-        model.addAttribute("courses", courses);
         model.addAttribute("user", currentUser);
         return "index";
     }
@@ -61,16 +63,18 @@ public class WebController {
     @RequestMapping(value = "/index")
     public String index(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
-        Set<Course> courses;
 
         if(!currentUser.getRoles().contains(Role.ADMIN)) {
+            Set<Course> courses;
             courses = currentUser.getCoursesLectured();
             courses.addAll(currentUser.getCoursesEnrolledIn());
+            model.addAttribute("courses", courses);
         }
         else {
+            List<Course> courses;
             courses = courseService.findAll();
+            model.addAttribute("courses", courses);
         }
-        model.addAttribute("courses", courses);
         model.addAttribute("user", currentUser);
         return "index";
     }
