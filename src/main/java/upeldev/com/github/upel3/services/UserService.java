@@ -103,4 +103,8 @@ public class UserService {
 
         return visibleCourses;
     }
+
+    public Set<Course> getAllHiddenCourses(User user){
+        return user.getHiddenCourses();
+    }
 }

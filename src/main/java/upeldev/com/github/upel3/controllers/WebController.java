@@ -44,38 +44,40 @@ public class WebController {
     @RequestMapping(value = "/")
     public String defaultPage(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
 
         if(!currentUser.getRoles().contains(Role.ADMIN)) {
-            Set<Course> courses;
-            courses = currentUser.getCoursesLectured();
-            courses.addAll(currentUser.getCoursesEnrolledIn());
+            Set<Course> courses = userService.getAllVisibleCourses(currentUser);
             model.addAttribute("courses", courses);
         }
         else {
-            List<Course> courses;
-            courses = courseService.findAll();
+            List<Course> courses = courseService.findAll();
             model.addAttribute("courses", courses);
         }
-        model.addAttribute("user", currentUser);
+
+        Set<Course> hiddenCourses = userService.getAllHiddenCourses(currentUser);
+        model.addAttribute("hiddenCourses", hiddenCourses);
+
         return "index";
     }
 
     @RequestMapping(value = "/index")
     public String index(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
 
         if(!currentUser.getRoles().contains(Role.ADMIN)) {
-            Set<Course> courses;
-            courses = currentUser.getCoursesLectured();
-            courses.addAll(currentUser.getCoursesEnrolledIn());
+            Set<Course> courses = userService.getAllVisibleCourses(currentUser);
             model.addAttribute("courses", courses);
         }
         else {
-            List<Course> courses;
-            courses = courseService.findAll();
+            List<Course> courses = courseService.findAll();
             model.addAttribute("courses", courses);
         }
-        model.addAttribute("user", currentUser);
+
+        Set<Course> hiddenCourses = userService.getAllHiddenCourses(currentUser);
+        model.addAttribute("hiddenCourses", hiddenCourses);
+
         return "index";
     }
 
