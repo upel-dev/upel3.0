@@ -19,11 +19,40 @@
             <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
         </div>
     </header>
-    <p class="pb-3" th:text="${course.getDescription()}" style="border-bottom: 3px solid #343a40;">Opis kursu.</p>
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzać oraz modyfikować ustawienia kursu.</p>
 </section>
 
-<section class="container py-3">
-    <p>Kod dostępu: <strong th:text="${course.getAccessCode().getId()}">-</strong></p>
+<section class="container py-3 border-bottom border-top">
+    <header class="d-flex flex-wrap align-items-center py-1 mx-0 px-0">
+        <div class="col-6 mx-0 px-0">
+            <h5 class="align-middle my-0">Kod dostępu:</h5>
+        </div>
+        <div class="mx-0 px-0 col-6 text-right">
+            <p class="my-0"><strong th:text="${course.getAccessCode().getId()}">-</strong></p>
+        </div>
+    </header>
+</section>
+
+<section class="container py-2 border-bottom">
+    <header class="d-flex flex-wrap align-items-center justify-content-center py-1 mx-0 px-0">
+        <div class="col-6 mx-0 px-0">
+            <h5 class="align-middle my-0">Widoczność kursu:</h5>
+        </div>
+
+        <div class="mx-0 px-0 col-6">
+            <form class="px-0 mx-0 col-12 form-inline">
+                <div class="col-8 ml-0 pl-0">
+                    <select class="custom-select my-1 col" id="visibilityForm">
+                        <option value="1">Widoczny</option>
+                        <option value="2">Ukryty</option>
+                    </select>
+                </div>
+                <div class="col-4 mx-0 px-0">
+                    <button type="submit" class="btn btn-primary px-0 mx-0 col">Zatwierdź</button>
+                </div>
+            </form>
+        </div>
+    </header>
 </section>
 
 <div th:replace="fragments/footer :: footer"></div>

@@ -107,4 +107,8 @@ public class UserService {
     public Set<Course> getAllHiddenCourses(User user){
         return user.getHiddenCourses();
     }
+
+    public boolean isCourseHidden(User user, Course course){
+        return user.getHiddenCourses().contains(course);
+    }
 }

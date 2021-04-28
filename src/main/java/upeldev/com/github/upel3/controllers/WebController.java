@@ -115,6 +115,8 @@ public class WebController {
             Long id = Long.parseLong(request.getParameter("id").toString());
             Course course = courseService.findCourseById(id);
             model.addAttribute("course", course);
+
+            boolean isHidden = userService.isCourseHidden(currentUser, course);
         }
         catch(NumberFormatException nfe) {
             String errorMsg = "Zapytanie GET /course_settings?id=<course_id> otrzymało niewłaściwy typ danych. Spodziewany typ: long integer.";
