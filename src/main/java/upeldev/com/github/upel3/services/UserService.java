@@ -51,6 +51,11 @@ public class UserService {
                 .anyMatch(role -> role.getName().equals(Role.LECTURER.getName()));
     }
 
+    public boolean isStudent(User user){
+        return user.getRoles().stream()
+                .anyMatch(role -> role.getName().equals(Role.STUDENT.getName()));
+    }
+
     private boolean emailHasRightFormat(String email){
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);

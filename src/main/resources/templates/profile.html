@@ -23,26 +23,22 @@
     </p>
 </section>
 
-<div class="container pb-3">
+<div class="container pb-3" th:with="isStudent=${userService.isStudent(user)}">
     <dl class="row">
         <dt class="col-sm-3">Imię</dt>
-        <dd class="col-sm-9">Tu będzie imię</dd>
+        <dd class="col-sm-9" th:text="${user.getFirstName()}"></dd>
 
         <dt class="col-sm-3">Nazwisko</dt>
-        <dd class="col-sm-9">
-            <p>Tu będzie nazwisko</p>
-        </dd>
+        <dd class="col-sm-9" th:text="${user.getLastName()}"></dd>
 
-        <dt class="col-sm-3">Numer indeksu</dt>
-        <dd class="col-sm-9">Tu będzie numer</dd>
+        <dt class="col-sm-3" th:if="${isStudent}">Numer indeksu</dt>
+        <dd class="col-sm-9" th:if="${isStudent}" th:text="${user.getIndexNumber()}">Tu będzie numer</dd>
 
         <dt class="col-sm-3 text-truncate">Email</dt>
-        <dd class="col-sm-9">Tu będzie email</dd>
+        <dd class="col-sm-9" th:text="${user.getEmail()}"></dd>
 
         <dt class="col-sm-3">Nesting</dt>
-        <dd class="col-sm-9">
-            Hasełko
-        </dd>
+        <dd class="col-sm-9">Hasełko</dd>
     </dl>
 </div>
 
