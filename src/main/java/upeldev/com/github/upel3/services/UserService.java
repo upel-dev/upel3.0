@@ -43,17 +43,17 @@ public class UserService {
 
     public boolean isAdmin(User user){
         return user.getRoles().stream()
-                .anyMatch(role -> role.getName().equals(Role.ADMIN.getName()));
+                .anyMatch(role -> role.equals(Role.ADMIN));
     }
 
     public boolean isLecturer(User user){
         return user.getRoles().stream()
-                .anyMatch(role -> role.getName().equals(Role.LECTURER.getName()));
+                .anyMatch(role -> role.equals(Role.LECTURER));
     }
 
     public boolean isStudent(User user){
         return user.getRoles().stream()
-                .anyMatch(role -> role.getName().equals(Role.STUDENT.getName()));
+                .anyMatch(role -> role.equals(Role.STUDENT));
     }
 
     private boolean emailHasRightFormat(String email){
