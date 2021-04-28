@@ -18,19 +18,14 @@
             <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
         </div>
     </header>
-    <p class="pb-3" th:text="${activity.getDescription()}" style="border-bottom: 3px solid #343a40;">Opis aktywności.</p>
-    <p class="pb-3" th:text="'Punkty potrzebne aby zdać tą aktywność: '+${activity.getPassValue()}" style="border-bottom: 3px solid #343a40;">Liczba punktów potrzebnych</p>
-
-    <section class="container py-3">
-    <div class="text-end">
-
-    </div>
-    </section>
-
+    <p class="pb-3 border-bottom" th:text="${activity.getDescription()}">Opis aktywności.</p>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
         Tutaj możesz podejrzeć wszystkie oceny swoich podopiecznych w ramach tej aktywności.
     </p>
+</section>
 
+<section class="container py-3">
+    <p class="pb-3" th:text="'Punkty potrzebne aby zdać tą aktywność: '+${activity.getPassValue()}">Liczba potrzebnych punktów</p>
 
     <table class="table table-hover table-bordered bg-light">
         <thead>
@@ -41,7 +36,7 @@
             <th scope="col" th:each="subActivity : ${activity.getSubActivity()}" th:text="${subActivity.getName()}"></th>
         </tr>
 
-        <tr th:each="grade : ${grades}" th:style="${grade.getValue()} >= ${grade.getActivity().getPassValue()} ? 'background-color: white' : 'background-color: #FF8A8A'">
+        <tr th:each="grade : ${grades}" th:style="${grade.getValue()} >= ${grade.getActivity().getPassValue()} ? 'background-color: #d0faa3' : 'background-color: #FF978F'">
             <td scope="col" th:text="${grade.getUser().getFirstName()} + ' ' + ${grade.getUser().getLastName()}"></td>
             <td scope="col" th:text="${grade.getDescription()}"></td>
             <td scope="col" th:text="${grade.getValue()}"></td>
@@ -75,11 +70,6 @@
         </form>
         </thead>
     </table>
-
-</section>
-
-<section class="container py-3">
-    <p>Widok wyłącznie dla prowadzących. Nie będę owijać w bawełnę, to na razie jest tylko placeholder. Klikaj dalej, ale gdzieś indziej.</p>
 </section>
 
 <div th:replace="fragments/footer :: footer"></div>
