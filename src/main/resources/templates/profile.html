@@ -24,7 +24,26 @@
 </section>
 
 <div class="container pb-3">
-    <p>Nie będę owijać w bawełnę, to na razie jest tylko placeholder. Klikaj dalej, ale gdzieś indziej.</p>
+    <dl class="row">
+        <dt class="col-sm-3">Imię</dt>
+        <dd class="col-sm-9">Tu będzie imię</dd>
+
+        <dt class="col-sm-3">Nazwisko</dt>
+        <dd class="col-sm-9">
+            <p>Tu będzie nazwisko</p>
+        </dd>
+
+        <dt class="col-sm-3">Numer indeksu</dt>
+        <dd class="col-sm-9">Tu będzie numer</dd>
+
+        <dt class="col-sm-3 text-truncate">Email</dt>
+        <dd class="col-sm-9">Tu będzie email</dd>
+
+        <dt class="col-sm-3">Nesting</dt>
+        <dd class="col-sm-9">
+            Hasełko
+        </dd>
+    </dl>
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
