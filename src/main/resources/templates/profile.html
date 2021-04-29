@@ -22,10 +22,36 @@
         Tu możesz zarządzać swoim kontem.
     </p>
 </section>
+<section class="container py-3">
 
-<div class="container pb-3">
-    <p>Nie będę owijać w bawełnę, to na razie jest tylko placeholder. Klikaj dalej, ale gdzieś indziej.</p>
-</div>
+    <div class="container pb-3" th:with="isStudent=${userService.isStudent(user)}">
+        <dl class="row">
+            <dt class="col-sm-3"><h4>Dane osobowe</h4></dt>
+        </dl>
+
+        <dl class="row">
+            <dt class="col-sm-3">Imię</dt>
+            <dd class="col-sm-9" th:text="${user.getFirstName()}"></dd>
+
+            <dt class="col-sm-3">Nazwisko</dt>
+            <dd class="col-sm-9" th:text="${user.getLastName()}"></dd>
+
+            <dt class="col-sm-3" th:if="${isStudent}">Numer indeksu</dt>
+            <dd class="col-sm-9" th:if="${isStudent}" th:text="${user.getIndexNumber()}">Tu będzie numer</dd>
+
+            <dt class="col-sm-3 text-truncate">Email</dt>
+            <dd class="col-sm-9" th:text="${user.getEmail()}"></dd>
+
+        </dl>
+    </div>
+
+    <div class="container pb-3">
+        <div class="text-start">
+            <a type="button" class="btn btn-primary" href="profile">Zmień hasło</a>
+        </div>
+    </div>
+
+</section>
 
 <div th:replace="fragments/footer :: footer"></div>
 

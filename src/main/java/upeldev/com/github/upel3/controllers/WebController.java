@@ -106,11 +106,21 @@ public class WebController {
         return "course";
     }
 
-    @RequestMapping(value = "/profile")
-    public String profile(Model model, Principal principal) {
+    @RequestMapping(value = "/course_settings", method = RequestMethod.GET)
+    public String courseSettings(Model model, Principal principal, HttpServletRequest request) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
-        return "profile";
+        try {
+            Long id = Long.parseLong(request.getParameter("id").toString());
+            Course course = courseService.findCourseById(id);
+            model.addAttribute("course", course);
+        }
+        catch(NumberFormatException nfe) {
+            String errorMsg = "Zapytanie GET /course_settings?id=<course_id> otrzymało niewłaściwy typ danych. Spodziewany typ: long integer.";
+            model.addAttribute("errorMsg", errorMsg);
+            return "error";
+        }
+        return "course_settings";
     }
 
     @RequestMapping(value = "/course_enrollment")
