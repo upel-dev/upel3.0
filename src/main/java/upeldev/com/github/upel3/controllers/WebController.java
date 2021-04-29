@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -117,6 +118,7 @@ public class WebController {
             model.addAttribute("course", course);
 
             boolean isHidden = userService.isCourseHidden(currentUser, course);
+            model.addAttribute("isHidden", isHidden);
         }
         catch(NumberFormatException nfe) {
             String errorMsg = "Zapytanie GET /course_settings?id=<course_id> otrzymało niewłaściwy typ danych. Spodziewany typ: long integer.";
@@ -124,6 +126,25 @@ public class WebController {
             return "error";
         }
         return "course_settings";
+    }
+
+    @RequestMapping(value = "/course_settings/hide/{courseId}", method = RequestMethod.GET)
+    public String courseSettings(@PathVariable("courseId") Long courseId,
+                               @RequestParam(value = "hide") Long hide,
+                               Model model,Principal principal){
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
+
+        Course course = courseService.findCourseById(courseId);
+        boolean isHidden = userService.isCourseHidden(currentUser, course);
+
+        if(hide == 0 && isHidden){
+            userService.showCourse(currentUser, course);
+        }
+        else if(hide == 1 && !isHidden){
+            userService.hideCourse(currentUser, course);
+        }
+        return "redirect:/course_settings?id="+courseId;
     }
 
     @RequestMapping(value = "/profile")
