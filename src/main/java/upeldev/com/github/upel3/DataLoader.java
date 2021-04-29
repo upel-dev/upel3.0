@@ -70,7 +70,7 @@ public class DataLoader {
     private void populateActivity(){
         List<Course> allCourses = courseService.findAll();
         for(int i = 0; i < 5; i++){
-            Activity activityToAppend = new Activity(allCourses.get(i%allCourses.size()), 0, "Kolokwium " + i);
+            Activity activityToAppend = new Activity(allCourses.get(i%allCourses.size()), 100, "Kolokwium " + i);
             activityToAppend.setDescription("Opis tej aktywności pewnie jest bardzo znaczący xd");
             activityService.save(activityToAppend);
         }
@@ -104,7 +104,7 @@ public class DataLoader {
         List<SubActivity> subActivities = subActivityService.findAll();
         for(SubActivity subActivity : subActivities){
             for(Grade grade : subActivity.getActivity().getGrade()){
-                SubGrade subGrade = new SubGrade(subActivity, grade, subActivity.getId().intValue());
+                SubGrade subGrade = new SubGrade(subActivity, grade, (int)(Math.random()*40));
                 subGradeService.save(subGrade);
             }
         }
