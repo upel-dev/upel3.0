@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>UPeL3.0</title>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body style="background-color: #ecf1fc;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<section class="container py-3">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <h2 class="pb-2">Dodano nowego użytkownika</h2>
+
+        <div class="text-end">
+            <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
+        </div>
+    </header>
+    <p class="pb-2" th:text="'Imię: ' + ${new_user_first_name}">firstName</p>
+    <p class="pb-2" th:text="'Nazwisko: ' + ${new_user_last_name}">lastName</p>
+    <p class="pb-2" th:text="'Hasło: ' + ${new_user_unhashed_password}">password</p>
+    <p class="pb-2" th:text="'E-mail: ' + ${new_user_email}">email</p>
+    <p class="pb-2" th:text="'Index: ' + ${new_user_index}">index</p>
+    <p class="pb-2" th:text="'Rola: ' + ${new_user_role}">role</p>
+</section>
+
+<div class="container pb-3">
+    <div class="pt-3">
+        <a type="button" class="btn btn-primary" href="new_user">Dodaj nowego użytkownika</a>
+    </div>
+</div>
+
+
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
