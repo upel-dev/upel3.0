@@ -43,21 +43,21 @@
 </section>
 
 <section class="container py-3" th:unless="${hiddenCourses.isEmpty()}">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 mb-0 border-bottom">
         <h2 class="pb-2">Ukryte kursy</h2>
         <div class="text-end">
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 Rozwiń listę ukrytych kursów
             </button>
         </div>
-        <p>Posiadasz jeden lub więcej ukrytych kursów. Zostają one wyświetlane w widoku uproszczonym. Jeśli chcesz przywrócić je do widoku głównego przejdź do ustawień wybranego kursu i zmień jego ustawienia widoczności.</p>
+        <p class="mt-3">Posiadasz jeden lub więcej ukrytych kursów. Zostają one wyświetlane w widoku uproszczonym. Jeśli chcesz przywrócić je do widoku głównego przejdź do ustawień wybranego kursu i zmień jego ustawienia widoczności.</p>
     </header>
     <div class="collapse" id="collapseExample">
-        <div class="card-body">
-            <div th:each="course : ${hiddenCourses}" class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
-                <h2 class="pt-1 pb-3" th:text="${course.getName()}">Nazwa kursu</h2>
+        <div class="card-body px-0 mx-0 py-0">
+            <div th:each="course : ${hiddenCourses}" class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 border-bottom">
+                <h4 class="py-0 my-0 align-middle" th:text="${course.getName()}">Nazwa kursu</h4>
                 <div class="text-end">
-                    <div class="text-end mr-3 mb-2" style="text-align: right;">
+                    <div class="text-end mr-0 my-0" style="text-align: right;">
                         <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Przejdź do kursu</a>
                     </div>
                 </div>

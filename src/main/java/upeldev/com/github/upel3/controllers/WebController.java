@@ -82,8 +82,6 @@ public class WebController {
         return "index";
     }
 
-
-
     @RequestMapping(value = "/course", method = RequestMethod.GET)
     public String courseSpecific(Model model, Principal principal, HttpServletRequest request) {
         User currentUser = userService.findByEmail(principal.getName());
@@ -108,45 +106,6 @@ public class WebController {
         return "course";
     }
 
-    @RequestMapping(value = "/course_settings", method = RequestMethod.GET)
-    public String courseSettings(Model model, Principal principal, HttpServletRequest request) {
-        User currentUser = userService.findByEmail(principal.getName());
-        model.addAttribute("user", currentUser);
-        try {
-            Long id = Long.parseLong(request.getParameter("id").toString());
-            Course course = courseService.findCourseById(id);
-            model.addAttribute("course", course);
-
-            boolean isHidden = userService.isCourseHidden(currentUser, course);
-            model.addAttribute("isHidden", isHidden);
-        }
-        catch(NumberFormatException nfe) {
-            String errorMsg = "Zapytanie GET /course_settings?id=<course_id> otrzymało niewłaściwy typ danych. Spodziewany typ: long integer.";
-            model.addAttribute("errorMsg", errorMsg);
-            return "error";
-        }
-        return "course_settings";
-    }
-
-    @RequestMapping(value = "/course_settings/hide/{courseId}", method = RequestMethod.GET)
-    public String courseSettings(@PathVariable("courseId") Long courseId,
-                               @RequestParam(value = "hide") Long hide,
-                               Model model,Principal principal){
-        User currentUser = userService.findByEmail(principal.getName());
-        model.addAttribute("user", currentUser);
-
-        Course course = courseService.findCourseById(courseId);
-        boolean isHidden = userService.isCourseHidden(currentUser, course);
-
-        if(hide == 0 && isHidden){
-            userService.showCourse(currentUser, course);
-        }
-        else if(hide == 1 && !isHidden){
-            userService.hideCourse(currentUser, course);
-        }
-        return "redirect:/course_settings?id="+courseId;
-    }
-
     @RequestMapping(value = "/profile")
     public String profile(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
@@ -168,17 +127,12 @@ public class WebController {
         model.addAttribute("user", currentUser);
         try{
             courseService.addStudentToCourseByCode(currentUser, courseCode);
-
-            Set<Course> courses = currentUser.getCoursesLectured();
-            courses.addAll(currentUser.getCoursesEnrolledIn());
-            model.addAttribute("courses", courses);
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Niepoprawny kod kursu albo próbujesz się zapisać na kurs, na który już jesteś zapisany.";
             model.addAttribute("errorMsg", errorMsg);
             return "error";
         }
-
-        return "index";
+        return "redirect:/index";
     }
 }
