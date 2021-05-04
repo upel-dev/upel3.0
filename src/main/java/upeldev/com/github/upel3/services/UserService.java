@@ -116,4 +116,9 @@ public class UserService {
     public boolean isCourseHidden(User user, Course course){
         return user.getHiddenCourses().contains(course);
     }
+
+    public void changePassword(User user, String newPassword) {
+        user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        userRepository.save(user);
+    }
 }
