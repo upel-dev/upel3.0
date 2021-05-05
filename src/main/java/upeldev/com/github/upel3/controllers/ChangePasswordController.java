@@ -48,8 +48,7 @@ public class ChangePasswordController {
             if(!newPassword.equals(repeatedNewPassword)) {
                 throw new IllegalArgumentException("Nowe hasła nie są takie same");
             }
-
-            //currentUser.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+            
             userService.changePassword(currentUser, newPassword);
 
         } catch (IllegalArgumentException e) {
