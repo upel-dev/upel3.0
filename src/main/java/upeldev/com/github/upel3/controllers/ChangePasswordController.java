@@ -21,15 +21,15 @@ public class ChangePasswordController {
         this.userService = userService;
     }
 
-    @RequestMapping(path="/change_password")
+    @RequestMapping(path= "/new_user_password")
     public String newUser(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
         model.addAttribute("userService", userService);
-        return "change_password";
+        return "new_user_password";
     }
 
-    @RequestMapping(value = "/change_password2")
+    @RequestMapping(value = "/change_password")
     public String changePassword(
             @RequestParam(value = "oldPassword") String oldPassword,
             @RequestParam(value = "newPassword") String newPassword,
@@ -48,7 +48,7 @@ public class ChangePasswordController {
             if(!newPassword.equals(repeatedNewPassword)) {
                 throw new IllegalArgumentException("Nowe hasła nie są takie same");
             }
-            
+
             userService.changePassword(currentUser, newPassword);
 
         } catch (IllegalArgumentException e) {
