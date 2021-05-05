@@ -1,4 +1,4 @@
-package upeldev.com.github.upel3.controllers;
+package upeldev.com.github.upel3.controllers.new_controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
