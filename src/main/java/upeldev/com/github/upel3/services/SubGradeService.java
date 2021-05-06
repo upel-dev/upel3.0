@@ -3,7 +3,6 @@ package upeldev.com.github.upel3.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
-import upeldev.com.github.upel3.repositories.SubActivityRepository;
 import upeldev.com.github.upel3.repositories.SubGradeRepository;
 
 import java.util.List;

@@ -1,25 +1,17 @@
 package upeldev.com.github.upel3.controllers.new_controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.Role;
 import upeldev.com.github.upel3.model.User;
-import upeldev.com.github.upel3.services.ActivityService;
 import upeldev.com.github.upel3.services.CourseService;
 import upeldev.com.github.upel3.services.UserService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.List;
 import java.util.Set;
 
 @Controller
