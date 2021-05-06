@@ -20,4 +20,18 @@ public class SubGradeService {
     public SubGrade save(SubGrade subGradeDTO){ return subGradeRepository.save(subGradeDTO); }
 
     public List<SubGrade> findAll(){ return subGradeRepository.findAll(); }
+
+    public void changeDescription(SubGrade subGrade, String newDescription){
+        if (newDescription == null || newDescription.isEmpty()){
+            throw new IllegalArgumentException("New sub grade description cannot be empty");
+        }
+
+        subGrade.setDescription(newDescription);
+        subGradeRepository.save(subGrade);
+    }
+
+    public void changeValue(SubGrade subGrade, int newValue){
+        subGrade.setValue(newValue);
+        subGradeRepository.save(subGrade);
+    }
 }

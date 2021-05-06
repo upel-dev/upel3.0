@@ -24,4 +24,27 @@ public class SubActivityService {
 
     public List<SubActivity> findByActivity(Activity activity){return subActivityRepository.findByActivity(activity); }
 
+    public void changeDescription(SubActivity subActivity, String newDescription){
+        if (newDescription == null || newDescription.isEmpty()){
+            throw new IllegalArgumentException("New sub activity description cannot be empty");
+        }
+
+        subActivity.setDescription(newDescription);
+        subActivityRepository.save(subActivity);
+    }
+
+    public void changeName(SubActivity subActivity, String newName){
+        if (newName == null || newName.isEmpty()){
+            throw new IllegalArgumentException("New sub activity name cannot be empty");
+        }
+
+        subActivity.setName(newName);
+        subActivityRepository.save(subActivity);
+    }
+
+    public void changeMaxValue(SubActivity subActivity, int newMaxValue){
+        subActivity.setMaxValue(newMaxValue);
+        subActivityRepository.save(subActivity);
+    }
+
 }
