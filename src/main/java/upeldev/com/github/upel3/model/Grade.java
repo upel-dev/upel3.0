@@ -40,7 +40,7 @@ public class Grade {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<SubGrade> subGrade = new ArrayList<>();
+    private List<SubGrade> subGrades = new ArrayList<>();
 
     public Grade(User user, Activity activity){
         this.user = user;
@@ -49,7 +49,7 @@ public class Grade {
 
     public double getValue(){
         double value = 0;
-        for(SubGrade subGrade : this.subGrade){
+        for(SubGrade subGrade : this.subGrades){
             value += subGrade.getValue();
         }
         return value;

@@ -40,7 +40,7 @@ public class SubActivity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<SubGrade> subGrade = new ArrayList<>();
+    private List<SubGrade> subGrades = new ArrayList<>();
 
     public SubActivity(Activity activity, int maxValue, String name){
         this.activity = activity;

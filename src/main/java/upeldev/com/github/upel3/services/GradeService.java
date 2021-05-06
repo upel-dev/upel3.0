@@ -71,4 +71,9 @@ public class GradeService {
         grade.setDescription(newDescription);
         gradeRepository.save(grade);
     }
+
+    public void removeSubGrade(Grade grade, SubGrade subGrade){
+        grade.getSubGrades().remove(subGrade);
+        gradeRepository.save(grade);
+    }
 }

@@ -69,5 +69,14 @@ public class ActivityService {
         activityRepository.save(activity);
     }
 
+    public void removeGrade(Activity activity, Grade grade){
+        activity.getGrades().remove(grade);
+        activityRepository.save(activity);
+    }
+
+    public void removeSubActivity(Activity activity, SubActivity subActivity){
+        activity.getSubActivities().remove(subActivity);
+        activityRepository.save(activity);
+    }
 
 }

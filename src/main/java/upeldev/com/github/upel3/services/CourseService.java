@@ -157,4 +157,9 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+    public void removeActivity(Course course, Activity activity){
+        course.getActivity().remove(activity);
+        courseRepository.save(course);
+    }
+
 }

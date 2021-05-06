@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.Activity;
 import upeldev.com.github.upel3.model.SubActivity;
+import upeldev.com.github.upel3.model.SubGrade;
 import upeldev.com.github.upel3.repositories.SubActivityRepository;
 
 import java.util.List;
@@ -44,6 +45,11 @@ public class SubActivityService {
 
     public void changeMaxValue(SubActivity subActivity, int newMaxValue){
         subActivity.setMaxValue(newMaxValue);
+        subActivityRepository.save(subActivity);
+    }
+
+    public void removeSubGrade(SubActivity subActivity, SubGrade subGrade){
+        subActivity.getSubGrades().remove(subGrade);
         subActivityRepository.save(subActivity);
     }
 
