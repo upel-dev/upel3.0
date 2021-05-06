@@ -59,14 +59,14 @@
             <th scope="col">Użytkownik</th>
             <th scope="col">Opis oceny</th>
             <th scope="col">Łączna wartość</th>
-            <th scope="col" th:each="subActivity : ${activity.getSubActivity()}" th:text="${subActivity.getName()}"></th>
+            <th scope="col" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
         </tr>
 
         <tr th:each="grade : ${grades}">
             <td scope="col" th:text="${grade.getUser().getFirstName()} + ' ' + ${grade.getUser().getLastName()}"></td>
             <td scope="col" th:text="${grade.getDescription()}"></td>
             <td scope="col" th:text="${grade.getValue()}"></td>
-            <td scope="col" th:each="subGrade : ${grade.getSubGrade()}" th:text="${subGrade.getValue()}"></td>
+            <td scope="col" th:each="subGrade : ${grade.getSubGrades()}" th:text="${subGrade.getValue()}"></td>
         </tr>
         </thead>
     </table>

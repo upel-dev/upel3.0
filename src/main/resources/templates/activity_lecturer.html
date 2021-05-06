@@ -51,20 +51,20 @@
             <th scope="col">Użytkownik</th>
             <th scope="col">Opis oceny</th>
             <th scope="col">Łączna wartość</th>
-            <th scope="col" th:each="subActivity : ${activity.getSubActivity()}" th:text="${subActivity.getName()}"></th>
+            <th scope="col" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
         </tr>
 
         <tr th:each="grade : ${grades}" th:style="${grade.getValue()} >= ${grade.getActivity().getPassValue()} ? 'background-color: #d0faa3' : 'background-color: #ff978f'">
             <td scope="col" th:text="${grade.getUser().getFirstName()} + ' ' + ${grade.getUser().getLastName()}"></td>
             <td scope="col" th:text="${grade.getDescription()}"></td>
             <td scope="col" th:text="${grade.getValue()}"></td>
-            <td scope="col" th:each="subGrade : ${grade.getSubGrade()}" th:text="${subGrade.getValue()}"></td>
+            <td scope="col" th:each="subGrade : ${grade.getSubGrades()}" th:text="${subGrade.getValue()}"></td>
         </tr>
 
         <tr th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER')}">
             <th scope="col">Użytkownik</th>
             <th scope="col">Opis oceny</th>
-            <th scope="col" th:each="subActivity : ${activity.getSubActivity()}" th:text="${subActivity.getName()}"></th>
+            <th scope="col" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
             <th scope="col">Dodaj ocenę</th>
         </tr>
 
@@ -80,7 +80,7 @@
                 <input type="text" class="form-control" id="description" th:name="description" placeholder="Opis">
             </td>
 
-            <td scope="col" th:each="subActivity : ${activity.getSubActivity()}">
+            <td scope="col" th:each="subActivity : ${activity.getSubActivities()}">
                 <input type="number" class="form-control" th:id="${subActivity.getName()}" th:name="subGrade" th:placeholder="${subActivity.getName()}">
             </td>
             <td scopr="col"><button type="submit" class="btn btn-primary">Dodaj ocenę</button></td>

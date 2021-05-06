@@ -103,7 +103,7 @@ public class DataLoader {
     public void populateSubGrade(){
         List<SubActivity> subActivities = subActivityService.findAll();
         for(SubActivity subActivity : subActivities){
-            for(Grade grade : subActivity.getActivity().getGrade()){
+            for(Grade grade : subActivity.getActivity().getGrades()){
                 SubGrade subGrade = new SubGrade(subActivity, grade, (int)(Math.random()*40));
                 subGradeService.save(subGrade);
             }
