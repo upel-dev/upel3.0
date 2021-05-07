@@ -9,8 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import upeldev.com.github.upel3.model.Course;
-import upeldev.com.github.upel3.model.Role;
-import upeldev.com.github.upel3.model.User;
 import upeldev.com.github.upel3.repositories.AccessCodeRepository;
 import upeldev.com.github.upel3.repositories.ActivityRepository;
 import upeldev.com.github.upel3.repositories.CourseRepository;

@@ -3,19 +3,14 @@ package upeldev.com.github.upel3.controllers.new_controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.Role;
 import upeldev.com.github.upel3.model.User;
-import upeldev.com.github.upel3.services.CourseService;
 import upeldev.com.github.upel3.services.UserService;
 
 import java.security.Principal;
 import java.security.SecureRandom;
-import java.util.List;
 import java.util.stream.Collectors;
 
 

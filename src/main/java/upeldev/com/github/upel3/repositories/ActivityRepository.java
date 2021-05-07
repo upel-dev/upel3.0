@@ -1,6 +1,5 @@
 package upeldev.com.github.upel3.repositories;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import upeldev.com.github.upel3.model.Activity;

@@ -13,7 +13,6 @@ import upeldev.com.github.upel3.services.*;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(path="/activity")

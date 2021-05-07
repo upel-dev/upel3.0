@@ -1,9 +1,7 @@
 package upeldev.com.github.upel3.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.repositories.ActivityRepository;
 
@@ -48,7 +46,37 @@ public class ActivityService {
         return activityRepository.save(activityDTO);
     }
 
+    public void changeDescription(Activity activity, String newDescription){
+        if (newDescription == null || newDescription.isEmpty()){
+            throw new IllegalArgumentException("New activity description cannot be empty");
+        }
 
+        activity.setDescription(newDescription);
+        activityRepository.save(activity);
+    }
 
+    public void changeName(Activity activity, String newName){
+        if (newName == null || newName.isEmpty()){
+            throw new IllegalArgumentException("New activity name cannot be empty");
+        }
+
+        activity.setName(newName);
+        activityRepository.save(activity);
+    }
+
+    public void changePassValue(Activity activity, int newPassValue){
+        activity.setPassValue(newPassValue);
+        activityRepository.save(activity);
+    }
+
+    public void removeGrade(Activity activity, Grade grade){
+        activity.getGrades().remove(grade);
+        activityRepository.save(activity);
+    }
+
+    public void removeSubActivity(Activity activity, SubActivity subActivity){
+        activity.getSubActivities().remove(subActivity);
+        activityRepository.save(activity);
+    }
 
 }

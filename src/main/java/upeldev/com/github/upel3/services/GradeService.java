@@ -1,10 +1,7 @@
 package upeldev.com.github.upel3.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.repositories.GradeRepository;
 
@@ -64,5 +61,19 @@ public class GradeService {
 
     public Grade save(Grade gradeDTO){
         return gradeRepository.save(gradeDTO);
+    }
+
+    public void changeDescription(Grade grade, String newDescription){
+        if (newDescription == null || newDescription.isEmpty()){
+            throw new IllegalArgumentException("New grade description cannot be empty");
+        }
+
+        grade.setDescription(newDescription);
+        gradeRepository.save(grade);
+    }
+
+    public void removeSubGrade(Grade grade, SubGrade subGrade){
+        grade.getSubGrades().remove(subGrade);
+        gradeRepository.save(grade);
     }
 }

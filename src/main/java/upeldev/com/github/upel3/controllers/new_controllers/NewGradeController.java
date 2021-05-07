@@ -63,7 +63,7 @@ public class NewGradeController {
 
 
 
-        List<SubActivity> subActivities =  currentActivity.getSubActivity();
+        List<SubActivity> subActivities =  currentActivity.getSubActivities();
 
         try{
             if(!currentUser.getRoles().contains(Role.ADMIN) && !currentCourse.getLecturers().contains(currentUser)){
@@ -93,7 +93,7 @@ public class NewGradeController {
                 Grade oldGrade = gradeService.findGradeByCourseUserActivity(currentCourse, modifiedUser, currentActivity).get(0);
                 oldGrade.setDescription(description);
                 for(int i = 0; i < subActivities.size(); i++){
-                    SubGrade subGrade = oldGrade.getSubGrade().get(i);
+                    SubGrade subGrade = oldGrade.getSubGrades().get(i);
                     subGrade.setValue(subActivityId[i]);
                 }
                 gradeService.save(oldGrade);

@@ -11,7 +11,6 @@ import upeldev.com.github.upel3.repositories.ActivityRepository;
 import upeldev.com.github.upel3.repositories.CourseRepository;
 import upeldev.com.github.upel3.repositories.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -140,5 +139,27 @@ public class CourseService {
         addStudentToCourse(course, student);
     }
 
+    public void changeDescription(Course course, String newDescription){
+        if (newDescription == null || newDescription.isEmpty()){
+            throw new IllegalArgumentException("New course description cannot be empty");
+        }
+
+        course.setDescription(newDescription);
+        courseRepository.save(course);
+    }
+
+    public void changeName(Course course, String newName){
+        if (newName == null || newName.isEmpty()){
+            throw new IllegalArgumentException("New course name cannot be empty");
+        }
+
+        course.setName(newName);
+        courseRepository.save(course);
+    }
+
+    public void removeActivity(Course course, Activity activity){
+        course.getActivity().remove(activity);
+        courseRepository.save(course);
+    }
 
 }
