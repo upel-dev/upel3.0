@@ -20,12 +20,15 @@ public class ActivitySettingsController {
     private final ActivityService activityService;
     private final GradeService gradeService;
     private final SubGradeService subGradeService;
+    private final SubActivityService subActivityService;
 
     @Autowired
-    public ActivitySettingsController(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubGradeService subGradeService){
+    public ActivitySettingsController(UserService userService, CourseService courseService, ActivityService activityService,
+                                      GradeService gradeService, SubGradeService subGradeService, SubActivityService subActivityService){
         this.userService = userService;
         this.courseService = courseService;
         this.activityService = activityService;
+        this.subActivityService = subActivityService;
         this.gradeService = gradeService;
         this.subGradeService = subGradeService;
     }
@@ -76,11 +79,13 @@ public class ActivitySettingsController {
         return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
     }
 
-    @RequestMapping(value = "/activity_settings/passval/{courseId}/{activityId}", method = RequestMethod.GET)
-    public String editPassValue(@PathVariable("courseId") Long courseId,
-                                @PathVariable("activityId") Long activityId,
-                                @RequestParam(value = "passValue") Integer passValue,
-                                Model model, Principal principal) {
+    @RequestMapping(value = "/activity_settings/subactivity_edit/{courseId}/{activityId}/{subActivityId}", method = RequestMethod.GET)
+    public String editSubActivity(@PathVariable("courseId") Long courseId,
+                                  @PathVariable("activityId") Long activityId,
+                                  @PathVariable("subActivityId") Long subActivityId,
+                                  @RequestParam(value = "subActivityName") String subActivityName,
+                                  @RequestParam(value = "subActivityMax") Integer subActivityMax,
+                                  Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
 
         Course currentCourse = courseService.findCourseById(courseId);
@@ -88,7 +93,58 @@ public class ActivitySettingsController {
 
         Activity currentActivity = activityService.findActivityById(activityId);
 
-        activityService.changePassValue(currentActivity, passValue);
+        for(SubActivity subActivity : subActivityService.findByActivity(currentActivity)){
+            if(subActivity.getId().equals(subActivityId)){
+                if(!subActivityName.isEmpty()){
+                    subActivityService.changeName(subActivity, subActivityName);
+                }
+                if(subActivityMax >= 0){
+                    subActivityService.changeMaxValue(subActivity, subActivityMax);
+                }
+                break;
+            }
+        }
+
+        return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
+    }
+
+    @RequestMapping(value = "/activity_settings/subactivity_delete/{courseId}/{activityId}/{subActivityId}", method = RequestMethod.GET)
+    public String deleteSubActivity(@PathVariable("courseId") Long courseId,
+                                  @PathVariable("activityId") Long activityId,
+                                  @PathVariable("subActivityId") Long subActivityId,
+                                  Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+
+        Course currentCourse = courseService.findCourseById(courseId);
+        model.addAttribute("user", currentUser);
+
+        Activity currentActivity = activityService.findActivityById(activityId);
+
+        for(SubActivity subActivity : subActivityService.findByActivity(currentActivity)){
+            if(subActivity.getId().equals(subActivityId)){
+                activityService.removeSubActivity(currentActivity, subActivity);
+                break;
+            }
+        }
+
+        return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
+    }
+
+    @RequestMapping(value = "/activity_settings/name/{courseId}/{activityId}", method = RequestMethod.GET)
+    public String changeActivityName(@PathVariable("courseId") Long courseId,
+                                     @PathVariable("activityId") Long activityId,
+                                     @RequestParam(value = "activityName") String activityName,
+                                    Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+
+        Course currentCourse = courseService.findCourseById(courseId);
+        model.addAttribute("user", currentUser);
+
+        Activity currentActivity = activityService.findActivityById(activityId);
+
+        if(!activityName.isEmpty()) {
+            activityService.changeName(currentActivity, activityName);
+        }
 
         return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
     }
