@@ -30,6 +30,9 @@ public class Activity {
     @Column
     private String description;
 
+    @Enumerated
+    private GradeAggregation aggregation = GradeAggregation.SUM;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Course course;

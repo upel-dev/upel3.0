@@ -64,6 +64,16 @@ public class ActivityService {
         activityRepository.save(activity);
     }
 
+    public void changeAggregation(Activity activity, GradeAggregation aggregation){
+        if(aggregation == null){
+            throw new IllegalArgumentException("Aggregation cannot be empty");
+        }
+        System.out.println("Changing agregation to " + aggregation);
+
+        activity.setAggregation(aggregation);
+        activityRepository.save(activity);
+    }
+
     public void changePassValue(Activity activity, int newPassValue){
         activity.setPassValue(newPassValue);
         activityRepository.save(activity);

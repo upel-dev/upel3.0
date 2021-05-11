@@ -23,4 +23,14 @@ public enum GradeAggregation {
         double denominator = subGrades.stream().mapToDouble(SubGrade::getWeight).sum();
         return numerator / denominator;
     }
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case SUM: return "Suma";
+            case AVG: return"Średnia";
+            case WAVG: return "Średnia ważona";
+        }
+        return "";
+    }
 }

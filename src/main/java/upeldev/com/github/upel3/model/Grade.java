@@ -42,8 +42,7 @@ public class Grade {
     )
     private List<SubGrade> subGrades = new ArrayList<>();
 
-    @Enumerated
-    private GradeAggregation aggregation = GradeAggregation.SUM;
+
 
     public Grade(User user, Activity activity){
         this.user = user;
@@ -52,10 +51,10 @@ public class Grade {
 
     public double getValue(){
         double value = 0;
-        switch (aggregation){
-            case SUM -> value = GradeAggregation.countSum(subGrades);
-            case AVG -> value = GradeAggregation.countAvg(subGrades);
-            case WAVG -> value = GradeAggregation.countWavg(subGrades);
+        switch (activity.getAggregation()){
+            case SUM: return GradeAggregation.countSum(subGrades);
+            case AVG: return GradeAggregation.countAvg(subGrades);
+            case WAVG: return GradeAggregation.countWavg(subGrades);
         }
         return value;
     }
