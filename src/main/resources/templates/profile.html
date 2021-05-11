@@ -11,15 +11,22 @@
 <div th:replace="fragments/header :: header"></div>
 
 <section class="container py-3">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <h2 class="pb-2">Twój profil</h2>
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 pb-2 mb-0" style="border-top: 3px solid #343a40;">
+        <h2 class="my-0">Twój profil</h2>
 
         <div class="text-end">
             <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
         </div>
     </header>
+    <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: #ecf1fc">
+            <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
+            <li class="breadcrumb-item"><a href="/profile" text="Profil">Profil</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Widok główny profilu</li>
+        </ol>
+    </nav>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tu możesz zarządzać swoim kontem.
+        Tutaj możesz zarządzać swoim kontem.
     </p>
 </section>
 <section class="container py-3">
