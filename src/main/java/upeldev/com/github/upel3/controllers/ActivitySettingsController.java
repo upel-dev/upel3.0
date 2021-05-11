@@ -62,6 +62,23 @@ public class ActivitySettingsController {
         return "activity_settings";
     }
 
+    @RequestMapping(value = "/activity_settings/passval/{courseId}/{activityId}", method = RequestMethod.GET)
+    public String editPassValue(@PathVariable("courseId") Long courseId,
+                                @PathVariable("activityId") Long activityId,
+                                @RequestParam(value = "passValue") Integer passValue,
+                                Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+
+        Course currentCourse = courseService.findCourseById(courseId);
+        model.addAttribute("user", currentUser);
+
+        Activity currentActivity = activityService.findActivityById(activityId);
+
+        activityService.changePassValue(currentActivity, passValue);
+
+        return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
+    }
+
     @RequestMapping(value = "/activity_settings/description/{courseId}/{activityId}", method = RequestMethod.GET)
     public String editDescription(@PathVariable("courseId") Long courseId,
                                 @PathVariable("activityId") Long activityId,
