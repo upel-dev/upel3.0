@@ -7,7 +7,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -41,14 +40,14 @@ public class Activity {
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    private List<Grade> grade = new ArrayList<>();
+    private List<Grade> grades = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "activity",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<SubActivity> subActivity = new ArrayList<>();
+    private List<SubActivity> subActivities = new ArrayList<>();
 
 
 
@@ -60,7 +59,7 @@ public class Activity {
 
     public double getMaxPoints(){
         double value = 0;
-        for(SubActivity subActiv : this.subActivity){
+        for(SubActivity subActiv : this.subActivities){
             value += subActiv.getMaxValue();
         }
         return value;

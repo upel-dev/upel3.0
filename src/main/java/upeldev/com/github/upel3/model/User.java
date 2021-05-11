@@ -1,7 +1,6 @@
 package upeldev.com.github.upel3.model;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 

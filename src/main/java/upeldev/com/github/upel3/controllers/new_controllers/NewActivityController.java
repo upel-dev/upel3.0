@@ -1,4 +1,4 @@
-package upeldev.com.github.upel3.controllers;
+package upeldev.com.github.upel3.controllers.new_controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +40,7 @@ public class NewActivityController {
         if(howMany < 1) howMany = 1;
         model.addAttribute("howMany", howMany);
 
-        return "new_activity";
+        return "new_templates/new_activity";
     }
 
     @RequestMapping(value = "/create_activity/{id}")

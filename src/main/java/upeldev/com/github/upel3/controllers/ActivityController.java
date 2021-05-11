@@ -13,7 +13,6 @@ import upeldev.com.github.upel3.services.*;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(path="/activity")
@@ -90,11 +89,24 @@ public class ActivityController {
             if(currentUser.getCoursesLectured().contains(course) || currentUser.getRoles().contains(Role.ADMIN)) return "activity_lecturer";
 
             // Progress bar
-            if(points < passValue) model.addAttribute("barColor", "bg-danger");
-            else model.addAttribute("barColor", "bg-success");
+
+            String status;
+            if(points == 0){
+                status = "Brak przydzielonych punktów";
+            }
+            else if(points < passValue){
+                model.addAttribute("barColor", "bg-danger");
+                status = "Niezaliczone";
+            }
+            else{
+                model.addAttribute("barColor", "bg-success");
+                status = "Zaliczone";
+            }
+            model.addAttribute("status", status);
 
             int basePercentage;
             int bonusPercentage = 0;
+
             if(points < maxPoints){
                 basePercentage = (int)(100.0 * points / maxPoints);
             }

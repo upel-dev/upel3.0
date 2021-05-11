@@ -14,7 +14,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-public class NewGradeController {
+public class EditGradeController {
     private final UserService userService;
     private final CourseService courseService;
     private final ActivityService activityService;
@@ -22,7 +22,7 @@ public class NewGradeController {
     private final SubGradeService subGradeService;
 
     @Autowired
-    public NewGradeController(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubGradeService subGradeService){
+    public EditGradeController(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubGradeService subGradeService){
         this.userService = userService;
         this.courseService = courseService;
         this.activityService = activityService;
@@ -30,28 +30,13 @@ public class NewGradeController {
         this.subGradeService = subGradeService;
     }
 
-    @RequestMapping(value = "/new_grade")
-    public String newCourse(@RequestParam(value = "courseId")  Long courseId,
-                            @RequestParam(value = "activityId")  Long activityId,
-                            Model model, Principal principal) {
-        User currentUser = userService.findByEmail(principal.getName());
-        model.addAttribute("user", currentUser);
-        Course currentCourse = courseService.findCourseById(courseId);
-        model.addAttribute("course", currentCourse);
-
-        Activity currentActivity = activityService.findActivityById(activityId);
-        model.addAttribute("activity", currentActivity);
-
-        return "new_grade";
-    }
-
-    @RequestMapping(value = "/create_grade/{courseId}/{activityId}", method = RequestMethod.GET)
-    public String createCourse(@PathVariable("courseId") Long courseId,
+    @RequestMapping(value = "/edit_grade/{courseId}/{activityId}/{userName}", method = RequestMethod.GET)
+    public String editGrades(@PathVariable("courseId") Long courseId,
                                @PathVariable("activityId") Long activityId,
-                               @RequestParam(value = "userName")  String userName,
+                               @PathVariable("userName")  String userName,
                                @RequestParam(value = "description")  String description,
                                @RequestParam("subGrade") double[] subActivityId,
-                               Model model,Principal principal){
+                               Model model, Principal principal){
         User currentUser = userService.findByEmail(principal.getName());
 
         User modifiedUser = userService.findByEmail(userName);
@@ -63,7 +48,7 @@ public class NewGradeController {
 
 
 
-        List<SubActivity> subActivities =  currentActivity.getSubActivity();
+        List<SubActivity> subActivities =  currentActivity.getSubActivities();
 
         try{
             if(!currentUser.getRoles().contains(Role.ADMIN) && !currentCourse.getLecturers().contains(currentUser)){
@@ -93,7 +78,7 @@ public class NewGradeController {
                 Grade oldGrade = gradeService.findGradeByCourseUserActivity(currentCourse, modifiedUser, currentActivity).get(0);
                 oldGrade.setDescription(description);
                 for(int i = 0; i < subActivities.size(); i++){
-                    SubGrade subGrade = oldGrade.getSubGrade().get(i);
+                    SubGrade subGrade = oldGrade.getSubGrades().get(i);
                     subGrade.setValue(subActivityId[i]);
                 }
                 gradeService.save(oldGrade);
@@ -110,4 +95,20 @@ public class NewGradeController {
         return "redirect:/activity?id="+activityId;
     }
 
+    @RequestMapping(value = "/edit_grade/passval/{courseId}/{activityId}", method = RequestMethod.GET)
+    public String editPassValue(@PathVariable("courseId") Long courseId,
+                               @PathVariable("activityId") Long activityId,
+                               @RequestParam(value = "passValue") Integer passValue,
+                               Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+
+        Course currentCourse = courseService.findCourseById(courseId);
+        model.addAttribute("user", currentUser);
+
+        Activity currentActivity = activityService.findActivityById(activityId);
+
+        activityService.changePassValue(currentActivity, passValue);
+
+        return "redirect:/activity?id="+activityId;
+    }
 }
