@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>UPeL3.0</title>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body style="background-color: #ecf1fc;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<section class="container py-3">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 pb-2 mb-0" style="border-top: 3px solid #343a40;">
+        <h2 class="my-0" th:text="${activity.getName()}">Nazwa aktywności</h2>
+
+        <div class="text-end">
+            <a type="button" class="btn btn-primary" href="/index">Powrót do listy kursów</a>
+            <a type="button" class="btn btn-primary" th:href="|/course?id=${course.getId()}|">Powrót do kursu</a>
+            <a type="button" class="btn btn-primary" th:href="|/activity?id=${activity.getId()}|">Powrót do aktywności</a>
+        </div>
+    </header>
+    <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: #ecf1fc">
+            <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
+            <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
+            <li class="breadcrumb-item"><a th:href="|/activity?id=${activity.getId()}|" th:text="${activity.getName()}">Nazwa aktywności</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Ustawienia aktywności</li>
+        </ol>
+    </nav>
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzać oraz modyfikować ustawienia aktywności, w tym punktację i nazwy poszczególnych zadań.</p>
+</section>
+
+<section class="container py-3 border-bottom border-top">
+    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0">
+        <div class="col-3 mx-0 px-0">
+            <h6 class="align-middle my-0">Nazwa aktywności:</h6>
+        </div>
+
+        <div class="mx-0 px-0 col-9">
+            <form class="px-0 mx-0 col-12 form-inline" method="get"
+                  th:action="|/activity_settings/name/${course.getId()}/${activity.getId()}|">
+                <div class="col-10 ml-0 pl-0">
+                    <input type="text" class="form-control w-100" th:name="activityName"
+                           th:placeholder="${activity.getName()}" th:value="${activity.getName()}">
+                </div>
+                <div class="col-2 mx-0 px-0">
+                    <button type="submit" class="btn btn-primary px-0 mx-0 col">Zmień nazwę</button>
+                </div>
+            </form>
+        </div>
+    </header>
+</section>
+
+<section class="container py-3 border-bottom">
+    <form method="get" th:action="|/activity_settings/description/${course.getId()}/${activity.getId()}|">
+        <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-4 px-0 border-bottom">
+            <div class="col-3 mx-0 px-0 h-100 align-top">
+                <h6 class="align-top mb-3 border-bottom border-light mr-3 pb-3">Opis aktywności:</h6>
+                <button type="submit" class="btn btn-primary">Zmień opis</button>
+            </div>
+
+            <div class="mx-0 px-0 col-9">
+                <textarea class="form-control col w-100" th:name="description" rows="3"
+                          th:text="${activity.getDescription()}"></textarea>
+            </div>
+        </header>
+    </form>
+</section>
+
+<section class="container py-3 border-bottom">
+    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0">
+        <div class="col-8 mx-0 px-0">
+            <h6 class="align-middle my-0">Punkty potrzebne, aby zdać tę aktywność:</h6>
+        </div>
+
+        <div class="mx-0 px-0 col-4">
+            <form class="px-0 mx-0 col-12 form-inline" method="get"
+                  th:action="|/activity_settings/passval/${course.getId()}/${activity.getId()}|">
+                <div class="col-8 ml-0 pl-0">
+                    <input type="number" class="form-control w-100" th:name="passValue"
+                           th:placeholder="${activity.getPassValue()}" th:value="${activity.getPassValue()}">
+                </div>
+                <div class="col-4 mx-0 px-0">
+                    <button type="submit" class="btn btn-primary px-0 mx-0 col">Zmień próg</button>
+                </div>
+            </form>
+        </div>
+    </header>
+</section>
+
+<section class="container py-3 border-bottom">
+    <table class="table table-hover table-bordered bg-light">
+        <thead>
+            <tr>
+                <td class="text-nowrap"><strong>Nazwa zadania</strong></td>
+                <td class="text-nowrap"><strong>Pula punktów</strong></td>
+                <td colspan="2"><strong>Akcje</strong></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="subActivity, iterStat : ${activity.getSubActivities()}">
+                <form th:action="|/activity_settings/subactivity_edit/${course.getId()}/${activity.getId()}/${subActivity.getId()}|">
+                    <td class="col">
+                        <input type="text" class="form-control" th:name="subActivityName"
+                                  th:placeholder="${subActivity.getName()}" th:value="${subActivity.getName()}">
+                    </td>
+                    <td class="col">
+                        <input type="number" class="form-control" th:name="subActivityMax"
+                               th:placeholder="${subActivity.getMaxValue()}" th:value="${subActivity.getMaxValue()}">
+                    </td>
+                    <td class="col">
+                        <a type="button" class="btn btn-danger"
+                           th:href="|/activity_settings/subactivity_delete/${course.getId()}/${activity.getId()}/${subActivity.getId()}|">Usuń</a>
+                    </td>
+                    <td class="col">
+                        <button type="submit" class="btn btn-primary mx-0 ">Zatwierdź</button>
+                    </td>
+                </form>
+            </tr>
+        </tbody>
+        <thead>
+            <tr>
+                <td><strong>Suma punktów</strong></td>
+                <td class="text-center"><strong th:text="${activity.getMaxPoints()}"></strong></td>
+                <td colspan="2"></td>
+            </tr>
+        </thead>
+    </table>
+</section>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
