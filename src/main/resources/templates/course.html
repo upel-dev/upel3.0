@@ -19,7 +19,20 @@
             <a type="button" class="btn btn-primary" th:href="|course_settings?id=${course.getId()}|">Ustawienia kursu</a>
         </div>
     </header>
-    <p class="pb-3" th:text="${course.getDescription()}" style="border-bottom: 3px solid #343a40;">Opis kursu.</p>
+    <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: #ecf1fc">
+            <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
+            <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Strona główna kursu</li>
+        </ol>
+    </nav>
+    <p class="pb-3 border-bottom">
+        <strong>Opis kursu: </strong>
+        <span th:text="${course.getDescription()}">Opis kursu.</span>
+    </p>
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
+        Tutaj możesz podejrzeć wszystkie kwestie dotyczące danego kursu.
+    </p>
 </section>
 
 <div class="container pb-3">
@@ -37,7 +50,7 @@
 </div>
 
 <section class="container py-3">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom" style="border-top: 3px solid #343a40;">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pb-3 pt-4 mb-3 border-bottom" style="border-top: 3px solid #343a40;">
         <h2 class="pb-2">Aktywności</h2>
 
         <div th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER')}" class="text-end">
@@ -45,7 +58,7 @@
         </div>
     </header>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tutaj możesz podejrzeć wszystkie aktywności udostępnione w ramach przeglądanego obecnie kursu.
+        Lista wszystkich aktywności udostępnionych w ramach przeglądanego obecnie kursu.
     </p>
 </section>
 

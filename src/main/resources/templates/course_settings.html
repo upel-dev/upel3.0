@@ -19,6 +19,13 @@
             <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
         </div>
     </header>
+    <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: #ecf1fc">
+            <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
+            <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Ustawienia kursu</li>
+        </ol>
+    </nav>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzać oraz modyfikować ustawienia kursu.</p>
 </section>
 
