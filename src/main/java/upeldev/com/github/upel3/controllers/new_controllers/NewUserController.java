@@ -1,6 +1,9 @@
 package upeldev.com.github.upel3.controllers.new_controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,16 +21,20 @@ import java.util.stream.Collectors;
 public class NewUserController {
     private final UserService userService;
 
+    private JavaMailSender javaMailSender;
+
     @Autowired
-    public NewUserController(UserService userService) {
+    public NewUserController(UserService userService,
+                             JavaMailSender javaMailSender) {
         this.userService = userService;
+        this.javaMailSender = javaMailSender;
     }
 
     @RequestMapping(value = "/new_user")
     public String newUser(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
-        return "new_user";
+        return "new_templates/new_user";
     }
 
     @RequestMapping(value = "/create_user")
@@ -74,19 +81,46 @@ public class NewUserController {
             }
             userService.registerNewUser(newUser);
 
-            model.addAttribute("new_user_first_name", firstName); // To be removed when email service is implemented
-            model.addAttribute("new_user_last_name", lastName); // To be removed when email service is implemented
-            model.addAttribute("new_user_unhashed_password", password); // To be removed when email service is implemented
-            model.addAttribute("new_user_email", email); // To be removed when email service is implemented
-            model.addAttribute("new_user_index", index); // To be removed when email service is implemented
+            try {
+                sendEmail(newUser, password);
+            }
+            catch (MailException e){
+                e.printStackTrace();
+
+                //if not possible to send email, display user details
+                model.addAttribute("new_user_first_name", firstName); // To be removed when email service is implemented
+                model.addAttribute("new_user_last_name", lastName); // To be removed when email service is implemented
+                model.addAttribute("new_user_unhashed_password", password); // To be removed when email service is implemented
+                model.addAttribute("new_user_email", email); // To be removed when email service is implemented
+                model.addAttribute("new_user_index", index); // To be removed when email service is implemented
+
+                return "/new_user_added"; // To be removed when email service is implemented
+
+            }
+
 
         } catch (IllegalArgumentException e) {
             String errorMsg = "Podano nieprawidłowe argumenty podczas rejetrowania użytkonika.";
             model.addAttribute("errorMsg", errorMsg);
             return "error";
         }
-        return "/new_user_added"; // To be removed when email service is implemented
-        // return "redirect:/index";
+         return "redirect:/index";
+    }
+
+    private void sendEmail(User user, String password) throws MailException {
+
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(user.getEmail());
+
+        msg.setSubject("Witamy w Upel3.0!");
+        msg.setText("Witaj " + user.getFirstName() + "!\n" +
+                "Twoje tymczasowe hasło to: " + password + "\n" +
+                "Możesz je zmienić w ustawieniach swojego profilu.\n");
+
+        javaMailSender.send(msg);
+
+
+
     }
 
     private static String generateRandomPassword(){

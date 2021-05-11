@@ -29,7 +29,7 @@ public class NewCourseController {
     public String newCourse(Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
-        return "new_course";
+        return "new_templates/new_course";
     }
 
     @RequestMapping(value = "/create_course")

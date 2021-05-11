@@ -40,7 +40,7 @@ public class NewActivityController {
         if(howMany < 1) howMany = 1;
         model.addAttribute("howMany", howMany);
 
-        return "new_activity";
+        return "new_templates/new_activity";
     }
 
     @RequestMapping(value = "/create_activity/{id}")
