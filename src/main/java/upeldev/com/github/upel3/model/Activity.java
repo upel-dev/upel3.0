@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Activity implements Aggregator {
+public class Activity implements Aggregator, Aggregable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
@@ -21,6 +21,9 @@ public class Activity implements Aggregator {
 
     @Column
     private double passValue = 0;
+
+    @Column
+    private double weight = 1.0;
 
     @Column(nullable = false)
     private String name;
@@ -69,4 +72,13 @@ public class Activity implements Aggregator {
         return value;
     }
 
+    @Override
+    public double getAggregableValue() {
+        return getValue();
+    }
+
+    @Override
+    public double getAggregableWeight() {
+        return getWeight();
+    }
 }

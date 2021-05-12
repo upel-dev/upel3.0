@@ -24,20 +24,6 @@ public enum ElementAggregation {
         return numerator / denominator;
     }
 
-//    public static double countMaxSum(List<SubActivity> subActivities){
-//        return subActivities.stream().mapToDouble(SubActivity::getMaxValue).sum();
-//    }
-//
-//    public static double countMaxAvg(List<SubActivity> subActivities){
-//        return subActivities.stream().mapToDouble(SubActivity::getMaxValue).average().orElse(0);
-//    }
-//
-//    public static double countMaxWavg(List<SubActivity> subActivities){
-//        double numerator = subActivities.stream().mapToDouble(subActivity -> subActivity.getMaxValue() * subActivity.getWeight()).sum();
-//        double denominator = subActivities.stream().mapToDouble(SubActivity::getWeight).sum();
-//        return numerator / denominator;
-//    }
-
     @Override
     public String toString() {
         switch (this) {
