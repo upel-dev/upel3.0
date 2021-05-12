@@ -74,7 +74,7 @@
     <article class="container py-1 mb-3">
         <div style="background-color: #d6dff5; border: 3px solid #343a40;">
             <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${activity.getName()}">Laboratorium 1 - Chyba biblioteki i makefile</h2>
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
+            <div class="d-flex flex-wrap align-content-center justify-content-center justify-content-md-between py-2">
                 <div class="justify-content-center col-9">
                     <p class="pb-3 border-bottom" th:if="${course.getEnrolledStudents().contains(user)}">
                         <strong th:text="'Zdobyta ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></strong>
@@ -90,7 +90,7 @@
                     </p>
                     <p th:text="${activity.getDescription()}">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
                 </div>
-                <div class="text-end mr-3 justify-content-end">
+                <div class="text-end mr-3 justify-content-end" style="display: flex; justify-content: flex-end; flex-direction: column; margin-bottom: 1rem;">
                     <a type="button" class="btn btn-primary" th:href="|activity?id=${activity.getId()}|">Przejdź do aktywności</a>
                 </div>
             </div>
