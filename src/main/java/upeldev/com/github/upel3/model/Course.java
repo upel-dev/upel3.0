@@ -7,7 +7,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.*;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -57,6 +56,9 @@ public class Course {
             )
     private List<Activity> activity = new ArrayList<>();
 
+    @OneToMany
+    private Set<StudentGroup> groups = new HashSet<>();
+
 
     public Course(String name, String description){
         this.name = name;
@@ -75,6 +77,5 @@ public class Course {
     public void addActivity(Activity activity){
         if(!this.activity.contains(activity)) this.activity.add(activity);
     }
-
 
 }

@@ -79,7 +79,7 @@ public class NewGradeController {
             }
 
             if(gradeService.findGradeByCourseUserActivity(currentCourse, modifiedUser, currentActivity).size() == 0){
-                Grade newGrade = new Grade(modifiedUser, currentActivity);
+                Grade newGrade = new StudentGrade(modifiedUser, currentActivity);
                 newGrade.setDescription(description);
                 gradeService.save(newGrade);
 

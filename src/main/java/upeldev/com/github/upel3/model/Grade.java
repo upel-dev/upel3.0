@@ -1,6 +1,5 @@
 package upeldev.com.github.upel3.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,36 +15,30 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Grade {
+public abstract class Grade {
 
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-
-    @JsonIgnore
-    @ManyToOne
-    private User user;
+    protected Long id;
 
     @JsonIgnore
     @ManyToOne
-    private Activity activity;
+    protected Activity activity;
 
     @Column
-    private String description;
+    protected String description;
 
     @OneToMany(
             mappedBy = "grade",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<SubGrade> subGrades = new ArrayList<>();
+    protected List<SubGrade> subGrades = new ArrayList<>();
 
 
 
-    public Grade(User user, Activity activity){
-        this.user = user;
+    public Grade(Activity activity){
         this.activity = activity;
     }
 

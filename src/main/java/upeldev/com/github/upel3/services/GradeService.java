@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.repositories.GradeRepository;
+import upeldev.com.github.upel3.repositories.GroupGradeRepository;
+import upeldev.com.github.upel3.repositories.StudentGradeRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,10 +14,16 @@ import java.util.stream.StreamSupport;
 @Service
 public class GradeService {
     private final GradeRepository gradeRepository;
+    private final StudentGradeRepository studentGradeRepository;
+    private final GroupGradeRepository groupGradeRepository;
 
     @Autowired
-    public GradeService(GradeRepository gradeRepository) {
+    public GradeService(GradeRepository gradeRepository,
+                        StudentGradeRepository studentGradeRepository,
+                        GroupGradeRepository groupGradeRepository) {
         this.gradeRepository = gradeRepository;
+        this.studentGradeRepository = studentGradeRepository;
+        this.groupGradeRepository = groupGradeRepository;
     }
 
     public boolean canUserAddGrade(Grade gradeDTO, User user){
@@ -28,7 +36,7 @@ public class GradeService {
     }
 
     public List<Grade> findGradeByUser(User user){
-        return gradeRepository.findGradeByUser(user);
+        return studentGradeRepository.findGradeByUser(user);
     }
 
     public List<Grade> findGradeByActivity(Activity activity){
@@ -36,7 +44,7 @@ public class GradeService {
     }
 
     public List<Grade> findGradeByCourseUserActivity(Course course, User user, Activity activity){
-        return gradeRepository.findGradeByCourseUserActivity(course.getId(), user.getId(), activity.getId());
+        return studentGradeRepository.findGradeByCourseAndUserAndActivity(course.getId(), user.getId(), activity.getId());
     }
 
     public Grade findGradeById(Long id){
@@ -54,7 +62,7 @@ public class GradeService {
     }
 
     public List<Grade> findGradeByCourseAndUser(Course course, User user){
-        return gradeRepository.findGradeByCourseAndUser(course.getId(), user.getId());
+        return studentGradeRepository.findGradeByCourseAndUser(course.getId(), user.getId());
     }
 
     public long deleteById(Long id){return gradeRepository.deleteById(id);}

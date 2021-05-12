@@ -68,7 +68,7 @@ public class ActivityService {
         if(aggregation == null){
             throw new IllegalArgumentException("Aggregation cannot be empty");
         }
-        System.out.println("Changing agregation to " + aggregation);
+        System.out.println("Changing aggregation to " + aggregation);
 
         activity.setAggregation(aggregation);
         activityRepository.save(activity);

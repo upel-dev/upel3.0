@@ -85,7 +85,7 @@ public class DataLoader {
             Activity activity = activities.get(i % activities.size());
             Course course = activity.getCourse();
             if(!activity.getCourse().getLecturers().contains(user) && activity.getCourse().getEnrolledStudents().contains(user) && gradeService.findGradeByCourseUserActivity(course, user, activity).size()==0) {
-                Grade grade = new Grade(user, activity);
+                Grade grade = new StudentGrade(user, activity);
                 grade.setDescription("Opis " + i);
                 gradeService.save(grade);
             }
