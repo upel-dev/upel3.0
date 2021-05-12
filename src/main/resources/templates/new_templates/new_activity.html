@@ -5,6 +5,28 @@
     <title>UPeL3.0</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
+<script>
+    function addNewFormPart(){
+        let newDiv = document.createElement('div');
+        newDiv.classList.add('subActivities-class');
+
+        newDiv.innerHTML = "<label for=\"subActivity\">Nazwa części oceny:</label>\n" +
+            "            <input type=\"text\" class=\"form-control\" id=\"subActivity\" name=\"subActivity\" placeholder=\"Nazwa oceny\">\n" +
+            "            <label for=\"maxPoints\">Maksymalna liczba punktów:</label>\n" +
+            "            <input type=\"number\" class=\"form-control\" id=\"maxPoints\" name=\"maxPoints\" placeholder=\"Maksymalna liczba punktów\">"
+
+        let subActivities = document.getElementById('subActivities');
+        subActivities.append(newDiv);
+    }
+    function deleteFormPart(){
+        let oldDiv = document.getElementsByClassName('subActivities-class');
+        if(oldDiv.length > 1){
+            oldDiv = oldDiv[oldDiv.length-1];
+            oldDiv.remove();
+        }
+
+    }
+</script>
 <body style="background-color: #ecf1fc;">
 
 <div th:replace="fragments/header :: header"></div>
@@ -44,18 +66,20 @@
             <input type="number" class="form-control" id="passValue" th:name="passValue" placeholder="Liczba punktów potrzebnych do zdania aktywności">
         </div>
 
-        <div class="form-group" th:each="i: ${#numbers.sequence(0, howMany-1)}">
-            <label for="subActivity">Nazwa części oceny:</label>
-            <input type="text" class="form-control" id="subActivity" th:name="subActivity" placeholder="Nazwa oceny">
-            <label for="maxPoints">Maksymalna liczba punktów:</label>
-            <input type="number" class="form-control" id="maxPoints" th:name="maxPoints" placeholder="Maksymalna liczba punktów">
+        <div class="form-group" id="subActivities">
+            <div class="subActivities-class">
+                <label for="subActivity">Nazwa części oceny:</label>
+                <input type="text" class="form-control" id="subActivity" th:name="subActivity" placeholder="Nazwa oceny">
+                <label for="maxPoints">Maksymalna liczba punktów:</label>
+                <input type="number" class="form-control" id="maxPoints" th:name="maxPoints" placeholder="Maksymalna liczba punktów">
+            </div>
         </div>
 
         <div class="form-group">
-            <a th:href="|${howMany+1}?id=${course.getId()}|">Dodaj nową część oceny</a>
+            <input type="button" onclick="addNewFormPart()" value="Dodaj nową część oceny" class="btn btn-primary" />
         </div>
         <div class="form-group">
-            <a th:href="|${howMany-1}?id=${course.getId()}|">Usuń część oceny</a>
+            <input type="button" onclick="deleteFormPart()" value="Usuń część oceny" class="btn btn-primary" />
         </div>
 
         <div class="pt-3">
