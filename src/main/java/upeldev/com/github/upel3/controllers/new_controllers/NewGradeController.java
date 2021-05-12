@@ -78,7 +78,7 @@ public class NewGradeController {
                 return "redirect:/error";
             }
 
-            if(gradeService.findGradeByCourseUserActivity(currentCourse, modifiedUser, currentActivity).size() == 0){
+            if(gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).size() == 0){
                 Grade newGrade = new StudentGrade(modifiedUser, currentActivity);
                 newGrade.setDescription(description);
                 gradeService.save(newGrade);
@@ -90,7 +90,7 @@ public class NewGradeController {
                 }
             }
             else{
-                Grade oldGrade = gradeService.findGradeByCourseUserActivity(currentCourse, modifiedUser, currentActivity).get(0);
+                Grade oldGrade = gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).get(0);
                 oldGrade.setDescription(description);
                 for(int i = 0; i < subActivities.size(); i++){
                     SubGrade subGrade = oldGrade.getSubGrades().get(i);

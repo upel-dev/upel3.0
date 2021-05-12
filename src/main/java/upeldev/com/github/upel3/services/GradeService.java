@@ -43,14 +43,13 @@ public class GradeService {
         return gradeRepository.findGradeByActivity(activity);
     }
 
-    public List<Grade> findGradeByCourseUserActivity(Course course, User user, Activity activity){
+    public List<Grade> findGradeByCourseAndUserAndActivity(Course course, User user, Activity activity){
         return studentGradeRepository.findGradeByCourseAndUserAndActivity(course.getId(), user.getId(), activity.getId());
     }
 
     public Grade findGradeById(Long id){
         return gradeRepository.findGradeById(id);
     }
-
 
     public List<Grade> findAll(){
         return StreamSupport.stream(gradeRepository.findAll().spliterator(), false)
@@ -63,6 +62,18 @@ public class GradeService {
 
     public List<Grade> findGradeByCourseAndUser(Course course, User user){
         return studentGradeRepository.findGradeByCourseAndUser(course.getId(), user.getId());
+    }
+
+    public List<Grade> findGradeByCourseAndGroupAndActivity(Course course, StudentGroup group, Activity activity){
+        return groupGradeRepository.findGradeByCourseAndGroupAndActivity(course.getId(), group.getId(), activity.getId());
+    }
+
+    public List<Grade> findGradeByCourseAndGroup(Course course, StudentGroup group){
+        return groupGradeRepository.findGradeByCourseAndGroup(course.getId(), group.getId());
+    }
+
+    public List<Grade> findGradeByGroup(StudentGroup group){
+        return groupGradeRepository.findGradeByGroup(group);
     }
 
     public long deleteById(Long id){return gradeRepository.deleteById(id);}
