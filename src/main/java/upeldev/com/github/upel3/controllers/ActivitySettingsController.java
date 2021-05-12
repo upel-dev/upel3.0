@@ -123,6 +123,30 @@ public class ActivitySettingsController {
         return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
     }
 
+    @RequestMapping(value = "/activity_settings/subactivity_edit/{courseId}/{activityId}/{subActivityId}", method = RequestMethod.POST)
+    public String editSubActivity(@PathVariable("courseId") Long courseId,
+                                  @PathVariable("activityId") Long activityId,
+                                  @PathVariable("subActivityId") Long subActivityId,
+                                  @ModelAttribute(value = "subActivity") SubActivity subActivity,
+                                  Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+
+        Course currentCourse = courseService.findCourseById(courseId);
+        model.addAttribute("user", currentUser);
+
+        SubActivity currentSubActivity = subActivityService.findById(subActivityId);
+
+        if(subActivity.getName() != null && !subActivity.getName().isEmpty())
+            currentSubActivity.setName(subActivity.getName());
+        if(subActivity.getMaxValue() >= 0)
+            currentSubActivity.setMaxValue(subActivity.getMaxValue());
+        if(subActivity.getWeight() >= 0)
+            currentSubActivity.setWeight(subActivity.getWeight());
+        subActivityService.save(currentSubActivity);
+
+        return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
+    }
+
     @RequestMapping(value = "/activity_settings/subactivity_delete/{courseId}/{activityId}/{subActivityId}", method = RequestMethod.GET)
     public String deleteSubActivity(@PathVariable("courseId") Long courseId,
                                   @PathVariable("activityId") Long activityId,
@@ -134,6 +158,7 @@ public class ActivitySettingsController {
         model.addAttribute("user", currentUser);
 
         Activity currentActivity = activityService.findActivityById(activityId);
+
 
         for(SubActivity subActivity : subActivityService.findByActivity(currentActivity)){
             if(subActivity.getId().equals(subActivityId)){

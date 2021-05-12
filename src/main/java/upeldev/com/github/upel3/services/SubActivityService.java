@@ -19,7 +19,9 @@ public class SubActivityService {
         this.subActivityRepository = subActivityRepository;
     }
 
-    public List<SubActivity> findAll(){return subActivityRepository.findAll(); }
+    public List<SubActivity> findAll(){ return subActivityRepository.findAll(); }
+
+    public SubActivity findById(long id){ return subActivityRepository.findById(id); }
 
     public SubActivity save(SubActivity subActivityDTO){ return subActivityRepository.save(subActivityDTO); }
 

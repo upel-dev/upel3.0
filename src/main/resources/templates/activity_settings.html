@@ -110,7 +110,8 @@
                 th:action="|/activity_settings/grade_aggregation/${course.getId()}/${activity.getId()}|"
                 th:object="${activity}">
                 <div class="col-8 ml-0 pl-0">
-                    <select class="form-select form-select-lg mb-3" th:field="*{aggregation}">
+                    <select class="form-control-sm bg-light text-dark w-100"
+                             th:field="*{aggregation}">
                         <option th:each="aggreg: ${T(upeldev.com.github.upel3.model.GradeAggregation).values()}"
                             th:value="${{aggreg}}"
                             th:text="${aggreg}">
@@ -125,25 +126,32 @@
     </header>
 </section>
 
-<section class="container py-3 border-bottom">
+<section class="container py-3 border-bottom" th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.GradeAggregation).WAVG}">
     <table class="table table-hover table-bordered bg-light">
         <thead>
             <tr>
                 <td class="text-nowrap"><strong>Nazwa zadania</strong></td>
+                <td th:if="${displayWeight}" class="text-nowrap"><strong>Waga zadania</strong></td>
                 <td class="text-nowrap"><strong>Pula punktów</strong></td>
                 <td colspan="2"><strong>Akcje</strong></td>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="subActivity, iterStat : ${activity.getSubActivities()}">
-                <form th:action="|/activity_settings/subactivity_edit/${course.getId()}/${activity.getId()}/${subActivity.getId()}|">
+            <tr th:each="subActivity, iterStat : ${activity.getSubActivities()}" th:object="${subActivity}">
+                <form th:method="post"
+                      th:action="|/activity_settings/subactivity_edit/${course.getId()}/${activity.getId()}/${subActivity.getId()}|"
+                      >
                     <td class="col">
-                        <input type="text" class="form-control" th:name="subActivityName"
-                                  th:placeholder="${subActivity.getName()}" th:value="${subActivity.getName()}">
+                        <input type="text" class="form-control" th:name="name"
+                                  th:placeholder="${subActivity.getName()}" th:value="*{name}">
+                    </td>
+                    <td class="col" th:if="${displayWeight}">
+                        <input type="number" class="form-control" th:name="weight"
+                               th:placeholder="${subActivity.getWeight()}" th:value="*{weight}">
                     </td>
                     <td class="col">
-                        <input type="number" class="form-control" th:name="subActivityMax"
-                               th:placeholder="${subActivity.getMaxValue()}" th:value="${subActivity.getMaxValue()}">
+                        <input type="number" class="form-control" th:name="maxValue"
+                               th:placeholder="${subActivity.getMaxValue()}" th:value="*{maxValue}">
                     </td>
                     <td class="col">
                         <a type="button" class="btn btn-danger"
@@ -157,9 +165,9 @@
         </tbody>
         <thead>
             <tr>
-                <td><strong>Suma punktów</strong></td>
+                <td><strong th:text="${activity.getAggregation()}">Suma punktów</strong></td>
                 <td class="text-center"><strong th:text="${activity.getMaxPoints()}"></strong></td>
-                <td colspan="2"></td>
+                <td colspan="3"></td>
             </tr>
         </thead>
     </table>
