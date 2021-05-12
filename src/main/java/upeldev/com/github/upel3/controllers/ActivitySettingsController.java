@@ -3,10 +3,7 @@ package upeldev.com.github.upel3.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.*;
 
@@ -43,6 +40,7 @@ public class ActivitySettingsController {
         model.addAttribute("user", currentUser);
 
         Activity currentActivity = activityService.findActivityById(activityId);
+        model.addAttribute("activity", currentActivity);
         List<SubActivity> subActivities =  currentActivity.getSubActivities();
 
         try{
@@ -125,6 +123,30 @@ public class ActivitySettingsController {
         return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
     }
 
+    @RequestMapping(value = "/activity_settings/subactivity_edit/{courseId}/{activityId}/{subActivityId}", method = RequestMethod.POST)
+    public String editSubActivity(@PathVariable("courseId") Long courseId,
+                                  @PathVariable("activityId") Long activityId,
+                                  @PathVariable("subActivityId") Long subActivityId,
+                                  @ModelAttribute(value = "subActivity") SubActivity subActivity,
+                                  Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+
+        Course currentCourse = courseService.findCourseById(courseId);
+        model.addAttribute("user", currentUser);
+
+        SubActivity currentSubActivity = subActivityService.findById(subActivityId);
+
+        if(subActivity.getName() != null && !subActivity.getName().isEmpty())
+            currentSubActivity.setName(subActivity.getName());
+        if(subActivity.getMaxValue() >= 0)
+            currentSubActivity.setMaxValue(subActivity.getMaxValue());
+        if(subActivity.getWeight() >= 0)
+            currentSubActivity.setWeight(subActivity.getWeight());
+        subActivityService.save(currentSubActivity);
+
+        return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
+    }
+
     @RequestMapping(value = "/activity_settings/subactivity_delete/{courseId}/{activityId}/{subActivityId}", method = RequestMethod.GET)
     public String deleteSubActivity(@PathVariable("courseId") Long courseId,
                                   @PathVariable("activityId") Long activityId,
@@ -136,6 +158,7 @@ public class ActivitySettingsController {
         model.addAttribute("user", currentUser);
 
         Activity currentActivity = activityService.findActivityById(activityId);
+
 
         for(SubActivity subActivity : subActivityService.findByActivity(currentActivity)){
             if(subActivity.getId().equals(subActivityId)){
@@ -164,5 +187,27 @@ public class ActivitySettingsController {
         }
 
         return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
+    }
+
+    @RequestMapping(value = "/activity_settings/grade_aggregation/{courseId}/{activityId}", method = RequestMethod.POST)
+    public String editAggregation(@PathVariable("courseId") Long courseId,
+                                @PathVariable("activityId") Long activityId,
+                                @ModelAttribute(value = "activity") Activity activity,
+                                Model model, Principal principal) {
+
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
+
+        Course currentCourse = courseService.findCourseById(courseId);
+
+        Activity currentActivity = activityService.findActivityById(activityId);
+        model.addAttribute("activity", currentActivity);
+
+        if(activity.getAggregation() != null){
+            activityService.changeAggregation(currentActivity, activity.getAggregation());
+        }
+
+        return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
+
     }
 }

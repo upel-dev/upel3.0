@@ -30,6 +30,9 @@ public class Activity {
     @Column
     private String description;
 
+    @Enumerated
+    private GradeAggregation aggregation = GradeAggregation.SUM;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Course course;
@@ -59,8 +62,10 @@ public class Activity {
 
     public double getMaxPoints(){
         double value = 0;
-        for(SubActivity subActiv : this.subActivities){
-            value += subActiv.getMaxValue();
+        switch (aggregation){
+            case SUM: return GradeAggregation.countMaxSum(subActivities);
+            case AVG: return GradeAggregation.countMaxAvg(subActivities);
+            case WAVG: return GradeAggregation.countMaxWavg(subActivities);
         }
         return value;
     }

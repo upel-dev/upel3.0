@@ -33,8 +33,7 @@ public class SubGrade {
     @ManyToOne(fetch = FetchType.EAGER)
     private Grade grade;
 
-    @Column
-    private double weight = 1;
+
 
 
     public SubGrade(SubActivity subActivity, Grade grade, double value){

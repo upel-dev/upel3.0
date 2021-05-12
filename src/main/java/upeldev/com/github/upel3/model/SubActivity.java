@@ -35,6 +35,9 @@ public class SubActivity {
     @ManyToOne(fetch = FetchType.EAGER)
     private Activity activity;
 
+    @Column
+    private double weight = 1;
+
     @OneToMany(
             mappedBy = "subActivity",
             cascade = CascadeType.ALL,
