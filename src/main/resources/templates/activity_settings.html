@@ -110,7 +110,7 @@
                 th:action="|/activity_settings/grade_aggregation/${course.getId()}/${activity.getId()}|"
                 th:object="${activity}">
                 <div class="col-8 ml-0 pl-0">
-                    <select class="form-control-sm bg-light text-dark w-100"
+                    <select class="form-control bg-light text-dark w-100"
                              th:field="*{aggregation}">
                         <option th:each="aggreg: ${T(upeldev.com.github.upel3.model.ElementAggregation).values()}"
                             th:value="${{aggreg}}"
@@ -139,8 +139,7 @@
         <tbody>
             <tr th:each="subActivity, iterStat : ${activity.getSubActivities()}" th:object="${subActivity}">
                 <form th:method="post"
-                      th:action="|/activity_settings/subactivity_edit/${course.getId()}/${activity.getId()}/${subActivity.getId()}|"
-                      >
+                      th:action="|/activity_settings/subactivity_edit/${course.getId()}/${activity.getId()}/${subActivity.getId()}|">
                     <td class="col">
                         <input type="text" class="form-control" th:name="name"
                                   th:placeholder="${subActivity.getName()}" th:value="*{name}">

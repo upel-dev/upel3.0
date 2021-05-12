@@ -26,9 +26,17 @@
             <li class="breadcrumb-item active" aria-current="page">Strona główna kursu</li>
         </ol>
     </nav>
-    <p class="pb-3 border-bottom">
+    <p class="pb-3">
         <strong>Opis kursu: </strong>
         <span th:text="${course.getDescription()}">Opis kursu.</span>
+    </p>
+    <p class="pb-3">
+        <strong th:text="'Maksymalna ' + ${course.getAggregation().toString().toLowerCase()} + ' punktów w kursie:'"></strong>
+        <span th:text="${course.getValue()}"></span>
+    </p>
+    <p class="pb-3 border-bottom">
+        <strong>Próg zdawalności:</strong>
+        <span th:text="${course.getPassValue()}"></span>
     </p>
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
         Tutaj możesz podejrzeć wszystkie kwestie dotyczące danego kursu.
@@ -68,9 +76,21 @@
             <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${activity.getName()}">Laboratorium 1 - Chyba biblioteki i makefile</h2>
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2">
                 <div class="justify-content-center col-9">
-                    <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <p class="pb-3 border-bottom" th:if="${course.getEnrolledStudents().contains(user)}">
+                        <strong th:text="'Zdobyta ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></strong>
+                        <span th:text="${@activityService.getStudentGradeInActivity(activity, user).getValue()}"></span>
+                    </p>
+                    <p class="pb-3 border-bottom">
+                        <strong th:text="'Maksymalna ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></strong>
+                        <span th:text="${activity.getValue()}"></span>
+                    </p>
+                    <p class="pb-3 border-bottom">
+                        <strong>Próg zdawalności:</strong>
+                        <span th:text="${activity.getPassValue()}"></span>
+                    </p>
+                    <p th:text="${activity.getDescription()}">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
                 </div>
-                <div class="text-end mr-3" style="text-align: right;">
+                <div class="text-end mr-3 justify-content-end">
                     <a type="button" class="btn btn-primary" th:href="|activity?id=${activity.getId()}|">Przejdź do aktywności</a>
                 </div>
             </div>

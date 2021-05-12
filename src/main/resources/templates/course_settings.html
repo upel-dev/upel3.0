@@ -6,7 +6,7 @@
 
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
-<body style="background-color: #ecf1fc;">
+<body style="background-color: #ecf1fc;" th:with="roles=${T(upeldev.com.github.upel3.model.Role)}">
 
 <div th:replace="fragments/header :: header"></div>
 
@@ -55,7 +55,55 @@
                     </select>
                 </div>
                 <div class="col-4 mx-0 px-0">
-                    <button type="submit" class="btn btn-primary px-0 mx-0 col">Zatwierdź</button>
+                    <button type="submit" class="btn btn-primary px-0 mx-0 col">Zmień widoczność</button>
+                </div>
+            </form>
+        </div>
+    </header>
+</section>
+
+<section class="container py-2 border-bottom" th:if="${user.getRoles().contains(roles.LECTURER)}">
+    <header class="d-flex flex-wrap align-items-center justify-content-center py-1 mx-0 px-0">
+        <div class="col-6 mx-0 px-0">
+            <h5 class="align-middle my-0">Sposób agregacji ocen aktywności w  kursie:</h5>
+        </div>
+
+        <div class="mx-0 px-0 col-6">
+            <form class="px-0 mx-0 col-12 form-inline" method="post"
+                  th:action="|/course_settings/aggregation_edit/${course.getId()}|"
+                  th:object="${course}">
+                <div class="col-8 ml-0 pl-0">
+                    <select class="custom-select my-1 col"
+                            th:field="*{aggregation}">
+                        <option th:each="aggreg: ${T(upeldev.com.github.upel3.model.ElementAggregation).values()}"
+                                th:value="${{aggreg}}"
+                                th:text="${aggreg}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-4 mx-0 px-0">
+                    <button type="submit" class="btn btn-primary px-0 mx-0 col">Zmień agregację</button>
+                </div>
+            </form>
+        </div>
+    </header>
+</section>
+
+<section class="container py-2 border-bottom" th:if="${user.getRoles().contains(roles.LECTURER)}">
+    <header class="d-flex flex-wrap align-items-center justify-content-center py-1 mx-0 px-0">
+        <div class="col-6 mx-0 px-0">
+            <h5 class="align-middle my-0">Liczba punktów potrzebna do zaliczenia kursu:</h5>
+        </div>
+
+        <div class="mx-0 px-0 col-6">
+            <form class="px-0 mx-0 col-12 form-inline" method="post"
+                  th:action="|/course_settings/passval/${course.getId()}|">
+                <div class="col-8 ml-0 pl-0">
+                    <input type="number" class="form-control w-100" th:name="passValue"
+                           th:placeholder="${course.getPassValue()}" th:value="${course.getPassValue()}">
+                </div>
+                <div class="col-4 mx-0 px-0">
+                    <button type="submit" class="btn btn-primary px-0 mx-0 col">Zmień próg</button>
                 </div>
             </form>
         </div>

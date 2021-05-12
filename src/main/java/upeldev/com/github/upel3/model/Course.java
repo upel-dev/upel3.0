@@ -27,7 +27,10 @@ public class Course implements Aggregator {
     private String description;
 
     @Column
-    private ElementAggregation aggregation;
+    private Double passValue = 0.0;
+
+    @Column
+    private ElementAggregation aggregation = ElementAggregation.SUM;
 
     @OneToOne
     private AccessCode accessCode;

@@ -23,7 +23,7 @@ public class SubActivity implements Aggregable {
     private Long id;
 
     @Column
-    private int maxValue;
+    private double maxValue = 0.0;
 
     @Column(nullable = false)
     private String name;

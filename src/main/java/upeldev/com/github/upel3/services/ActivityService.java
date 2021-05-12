@@ -6,6 +6,7 @@ import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.repositories.ActivityRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ActivityService {
@@ -64,11 +65,23 @@ public class ActivityService {
         activityRepository.save(activity);
     }
 
+    public Grade getStudentGradeInActivity(Activity activity, User user){
+
+        if(!activity.getCourse().getEnrolledStudents().contains(user)){
+            throw new IllegalArgumentException("User must be a student of the course");
+        }
+
+        return activity.getGrades()
+                .stream()
+                .filter(grade -> grade.getUser().equals(user))
+                .collect(Collectors.toList()).get(0);
+
+    }
+
     public void changeAggregation(Activity activity, ElementAggregation aggregation){
         if(aggregation == null){
             throw new IllegalArgumentException("Aggregation cannot be empty");
         }
-        System.out.println("Changing agregation to " + aggregation);
 
         activity.setAggregation(aggregation);
         activityRepository.save(activity);
