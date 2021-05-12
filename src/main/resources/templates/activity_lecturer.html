@@ -46,7 +46,8 @@
     </p>
 </section>
 
-<section class="container py-3">
+<section class="container py-3"
+         th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.GradeAggregation).WAVG}">
     <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom border-top">
         <div class="col-8 mx-0 px-0">
             <h6 class="align-middle my-0">Punkty potrzebne, aby zdać tę aktywność:</h6>
@@ -81,13 +82,14 @@
             <p class="my-0"><strong th:text="${activity.getAggregation()}">-</strong></p>
         </div>
     </header>
-    <table class="table table-hover table-bordered bg-light">
+    <table class="table table-hover table-bordered bg-light" >
         <thead>
         <tr>
             <th scope="col">Użytkownik</th>
             <th scope="col">Zaawansowane</th>
             <th scope="col" th:text="${activity.getAggregation()}">Suma</th>
-            <th scope="col" class="text-nowrap" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
+            <th scope="col" class="text-nowrap" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}">
+            </th>
         </tr>
         </thead>
 
@@ -107,7 +109,6 @@
                 </td>
                 <td class="col text-nowrap align-middle">
                     <p class="align-middle mb-1"><strong th:text="${grade.getValue()}"></strong></p>
-
                 </td>
                 <td class="col text-nowrap" th:each="subGrade : ${grade.getSubGrades()}">
                     <input type="number" class="form-control" th:name="subGrade"
@@ -131,7 +132,13 @@
             </tr>
         </form>
         </tbody>
-
+        <tr th:if="${displayWeight}">
+            <th scope="col">Waga</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col" class="text-nowrap" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getWeight()}">
+            </th>
+        </tr>
         <thead style="border-top: 3px solid #343a40;">
         <tr th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER')}">
             <th scope="col" colspan="3">Użytkownik</th>

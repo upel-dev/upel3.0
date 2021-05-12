@@ -36,7 +36,8 @@
     </p>
 </section>
 
-<section class="container py-3">
+<section class="container py-3"
+         th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.GradeAggregation).WAVG}">
     <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom border-top">
         <div class="col-6 mx-0 px-0">
             <h6 class="align-middle my-0">Punkty potrzebne, aby zdać tę aktywność:</h6>
@@ -78,12 +79,18 @@
             <th scope="col" th:text="${activity.getAggregation()}">Łączna wartość</th>
             <th scope="col" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
         </tr>
-
         <tr th:each="grade : ${grades}">
             <td scope="col" th:text="${grade.getUser().getFirstName()} + ' ' + ${grade.getUser().getLastName()}"></td>
             <td scope="col" th:text="${grade.getDescription()}"></td>
             <td scope="col" th:text="${grade.getValue()}"></td>
             <td scope="col" th:each="subGrade : ${grade.getSubGrades()}" th:text="${subGrade.getValue()}"></td>
+        </tr>
+        <tr  th:if="${displayWeight}">
+            <th scope="col">Waga</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col" class="text-nowrap" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getWeight()}">
+            </th>
         </tr>
         </thead>
     </table>
