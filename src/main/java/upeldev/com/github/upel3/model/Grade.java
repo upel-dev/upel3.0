@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Grade {
+public class Grade implements Aggregator {
 
     @Id
     @EqualsAndHashCode.Include
@@ -42,8 +42,6 @@ public class Grade {
     )
     private List<SubGrade> subGrades = new ArrayList<>();
 
-
-
     public Grade(User user, Activity activity){
         this.user = user;
         this.activity = activity;
@@ -52,9 +50,9 @@ public class Grade {
     public double getValue(){
         double value = 0;
         switch (activity.getAggregation()){
-            case SUM: return GradeAggregation.countSum(subGrades);
-            case AVG: return GradeAggregation.countAvg(subGrades);
-            case WAVG: return GradeAggregation.countWavg(subGrades);
+            case SUM: return ElementAggregation.countSum(subGrades);
+            case AVG: return ElementAggregation.countAvg(subGrades);
+            case WAVG: return ElementAggregation.countWavg(subGrades);
         }
         return value;
     }

@@ -112,7 +112,7 @@
                 <div class="col-8 ml-0 pl-0">
                     <select class="form-control-sm bg-light text-dark w-100"
                              th:field="*{aggregation}">
-                        <option th:each="aggreg: ${T(upeldev.com.github.upel3.model.GradeAggregation).values()}"
+                        <option th:each="aggreg: ${T(upeldev.com.github.upel3.model.ElementAggregation).values()}"
                             th:value="${{aggreg}}"
                             th:text="${aggreg}">
                         </option>
@@ -126,7 +126,7 @@
     </header>
 </section>
 
-<section class="container py-3 border-bottom" th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.GradeAggregation).WAVG}">
+<section class="container py-3 border-bottom" th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.ElementAggregation).WAVG}">
     <table class="table table-hover table-bordered bg-light">
         <thead>
             <tr>
@@ -166,7 +166,7 @@
         <thead>
             <tr>
                 <td><strong th:text="${activity.getAggregation()}">Suma punktów</strong></td>
-                <td class="text-center"><strong th:text="${activity.getMaxPoints()}"></strong></td>
+                <td class="text-center"><strong th:text="${activity.getValue()}"></strong></td>
                 <td colspan="3"></td>
             </tr>
         </thead>

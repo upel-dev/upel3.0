@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SubActivity {
+public class SubActivity implements Aggregable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,4 +51,13 @@ public class SubActivity {
         this.name = name;
     }
 
+    @Override
+    public double getAggregableValue() {
+        return getMaxValue();
+    }
+
+    @Override
+    public double getAggregableWeight() {
+        return getWeight();
+    }
 }

@@ -47,7 +47,7 @@
 </section>
 
 <section class="container py-3"
-         th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.GradeAggregation).WAVG}">
+         th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.ElementAggregation).WAVG}">
     <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom border-top">
         <div class="col-8 mx-0 px-0">
             <h6 class="align-middle my-0">Punkty potrzebne, aby zdać tę aktywność:</h6>
@@ -71,7 +71,7 @@
             <h6 class="align-middle my-0">Pula punktów przewidziana dla tej aktywności:</h6>
         </div>
         <div class="mx-0 px-0 col-6 text-right my-2">
-            <p class="my-0"><strong th:text="${activity.getMaxPoints()}">-</strong></p>
+            <p class="my-0"><strong th:text="${activity.getValue()}">-</strong></p>
         </div>
     </header>
     <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-4 px-0 border-bottom">

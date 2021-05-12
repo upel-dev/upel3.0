@@ -64,7 +64,7 @@ public class ActivityService {
         activityRepository.save(activity);
     }
 
-    public void changeAggregation(Activity activity, GradeAggregation aggregation){
+    public void changeAggregation(Activity activity, ElementAggregation aggregation){
         if(aggregation == null){
             throw new IllegalArgumentException("Aggregation cannot be empty");
         }
