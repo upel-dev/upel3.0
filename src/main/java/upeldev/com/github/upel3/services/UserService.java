@@ -78,6 +78,10 @@ public class UserService {
             throw new IllegalArgumentException("Student has to have an index number");
         }
 
+        if (userDto.getRoles().contains(Role.STUDENT) && findByIndexNumber(userDto.getIndexNumber()) != null){
+            throw new IllegalArgumentException("Student's index must be unique");
+        }
+
         String passwordEncrypted = new BCryptPasswordEncoder().encode(userDto.getPassword());
         userDto.setPassword(passwordEncrypted);
 
