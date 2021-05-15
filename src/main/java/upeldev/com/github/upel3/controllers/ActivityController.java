@@ -121,7 +121,7 @@ public class ActivityController {
             if(currentUser.getCoursesEnrolledIn().contains(course)) return "activity_student";
 
             if(!currentUser.getRoles().contains(Role.ADMIN)){
-                model.addAttribute(errorMsg);
+                model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
 
