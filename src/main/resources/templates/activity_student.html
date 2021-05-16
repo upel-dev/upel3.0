@@ -76,8 +76,8 @@
         <thead>
         <tr>
             <th scope="col" class="text-nowrap">Użytkownik</th>
-            <th scope="col" class="text-nowrap" th:text="${activity.getAggregation()}">Łączna wartość</th>
-            <th scope="col" class="text-nowrap"
+            <th scope="col" class="text-nowrap text-center" th:text="${activity.getAggregation()}">Łączna wartość</th>
+            <th scope="col" class="text-nowrap text-center"
                 th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
         </tr>
         </thead>
@@ -86,9 +86,9 @@
             th:style="${grade.getValue()} >= ${grade.getActivity().getPassValue()} ? 'background-color: #d0faa3' : 'background-color: #ff978f'">
             <td class="col text-nowrap align-middle"
                 th:text="${grade.getUser().getFirstName()} + ' ' + ${grade.getUser().getLastName()}"></td>
-            <td class="col text-nowrap align-middle text-center"
+            <td class="col text-nowrap align-middle text-center" style="font-weight: bold"
                 th:text="${grade.getValue()}"></td>
-            <td class="col text-nowrap align-middle text-center"
+            <td class="col text-nowrap align-middle text-center" style="min-width: 10ch;"
                 th:each="subGrade : ${grade.getSubGrades()}" th:text="${subGrade.getValue()}"></td>
         </tr>
         </tbody>
