@@ -7,7 +7,7 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
     <link rel="shortcut icon" href="https://upel2.cel.agh.edu.pl/wiet/theme/image.php/celupel/theme/1619178409/favicon" />
 </head>
-<body style="background-color: #ecf1fc;">
+<body style="background-color: #ecf1fc;" th:with="roles=${T(upeldev.com.github.upel3.model.Role)}">
 
 <div th:replace="fragments/header :: header"></div>
 
@@ -31,14 +31,14 @@
 </section>
 
 <section class="container py-2 border-bottom border-top"
-         th:unless="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'STUDENT')}">
+         th:unless="${user.getRoles().contains(roles.STUDENT)}">
     <header class="d-flex flex-wrap align-items-center py-1 mx-0 px-0">
         <div class="col-3 mx-0 px-0">
             <h6 class="align-middle my-0">Nazwa kursu:</h6>
         </div>
 
         <div class="mx-0 px-0 col-9">
-            <form class="px-0 mx-0 col-12 form-inline" method="get"
+            <form class="px-0 mx-0 col-12 form-inline" method="post"
                   th:action="|/course_settings/name/${course.getId()}|">
                 <div class="col-10 ml-0 pl-0">
                     <input type="text" class="form-control w-100" th:name="courseName"
@@ -53,8 +53,8 @@
 </section>
 
 <section class="container py-3 border-bottom"
-         th:unless="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'STUDENT')}">
-    <form method="get" th:action="|/course_settings/description/${course.getId()}|">
+         th:unless="${user.getRoles().contains(roles.STUDENT)}">
+    <form method="post" th:action="|/course_settings/description/${course.getId()}|">
         <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-0 px-0">
             <div class="col-3 mx-0 px-0 h-100 align-top">
                 <h6 class="align-top mb-3 border-bottom border-light mr-3 pb-3">Opis kursu:</h6>

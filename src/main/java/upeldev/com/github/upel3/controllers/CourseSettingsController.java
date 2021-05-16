@@ -66,7 +66,7 @@ public class CourseSettingsController {
         return "redirect:/course_settings?id="+courseId;
     }
 
-    @RequestMapping(value = "/course_settings/description/{courseId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/course_settings/description/{courseId}", method = RequestMethod.POST)
     public String editDescription(@PathVariable("courseId") Long courseId,
                                   @RequestParam(value = "description") String description,
                                   Model model, Principal principal) {
@@ -80,7 +80,7 @@ public class CourseSettingsController {
         return "redirect:/course_settings?id="+courseId;
     }
 
-    @RequestMapping(value = "/course_settings/name/{courseId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/course_settings/name/{courseId}", method = RequestMethod.POST)
     public String changeCourseName(@PathVariable("courseId") Long courseId,
                                      @RequestParam(value = "courseName") String courseName,
                                      Model model, Principal principal) {
