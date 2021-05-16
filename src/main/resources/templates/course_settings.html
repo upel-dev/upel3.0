@@ -31,7 +31,7 @@
 </section>
 
 <section class="container py-2 border-bottom border-top"
-         th:unless="${user.getRoles().contains(roles.STUDENT)}">
+         th:if="${user.getRoles().contains(roles.LECTURER) or user.getRoles().contains(roles.ADMIN)}">
     <header class="d-flex flex-wrap align-items-center py-1 mx-0 px-0">
         <div class="col-3 mx-0 px-0">
             <h6 class="align-middle my-0">Nazwa kursu:</h6>
@@ -53,7 +53,7 @@
 </section>
 
 <section class="container py-3 border-bottom"
-         th:unless="${user.getRoles().contains(roles.STUDENT)}">
+         th:if="${user.getRoles().contains(roles.LECTURER) or user.getRoles().contains(roles.ADMIN)}">
     <form method="post" th:action="|/course_settings/description/${course.getId()}|">
         <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-0 px-0">
             <div class="col-3 mx-0 px-0 h-100 align-top">
