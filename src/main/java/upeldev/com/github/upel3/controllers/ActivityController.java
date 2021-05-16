@@ -69,11 +69,14 @@ public class ActivityController {
 
             model.addAttribute("activity", activity);
 
+            Course course = activity.getCourse();
+            model.addAttribute("course", course);
+
             int passValue = activity.getPassValue();
             double maxPoints = activity.getMaxPoints();
             double points = 0;
             List<Grade> grades;
-            if(currentUser.getRoles().contains(Role.STUDENT)){
+            if(currentUser.getRoles().contains(Role.STUDENT) || (currentUser.getRoles().contains(Role.LECTURER) && !currentUser.getCoursesLectured().contains(course))){
                 grades = gradeService.findGradeByCourseUserActivity(activity.getCourse(), currentUser, activity);
                 if(!grades.isEmpty()) points = grades.get(grades.size() - 1).getValue();
             }
@@ -83,8 +86,7 @@ public class ActivityController {
 
             model.addAttribute("grades", grades);
 
-            Course course = activity.getCourse();
-            model.addAttribute("course", course);
+
 
             if(currentUser.getCoursesLectured().contains(course) || currentUser.getRoles().contains(Role.ADMIN)) return "activity_lecturer";
 
