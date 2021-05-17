@@ -13,7 +13,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Course {
+public class Course implements Aggregator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +25,12 @@ public class Course {
 
     @Column
     private String description;
+
+    @Column
+    private Double passValue = 0.0;
+
+    @Column
+    private ElementAggregation aggregation = ElementAggregation.SUM;
 
     @OneToOne
     private AccessCode accessCode;
@@ -77,4 +83,14 @@ public class Course {
     }
 
 
+    @Override
+    public double getValue() {
+        double value = 0;
+        switch (aggregation){
+            case SUM: return ElementAggregation.countSum(activity);
+            case AVG: return ElementAggregation.countAvg(activity);
+            case WAVG: return ElementAggregation.countWavg(activity);
+        }
+        return value;
+    }
 }

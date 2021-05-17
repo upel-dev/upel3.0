@@ -3,10 +3,7 @@ package upeldev.com.github.upel3.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import upeldev.com.github.upel3.model.Activity;
 import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.User;
@@ -63,6 +60,41 @@ public class CourseSettingsController {
         else if(hide == 1 && !isHidden){
             userService.hideCourse(currentUser, course);
         }
+        return "redirect:/course_settings?id="+courseId;
+    }
+
+    @RequestMapping(value = "/course_settings/aggregation_edit/{courseId}", method = RequestMethod.POST)
+    public String editAggregation(@PathVariable("courseId") Long courseId,
+                                  @ModelAttribute("course") Course course,
+                                  Model model, Principal principal){
+
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
+
+        Course currentCourse = courseService.findCourseById(courseId);
+
+        currentCourse.setAggregation(course.getAggregation());
+        courseService.save(currentCourse);
+
+
+        return "redirect:/course_settings?id="+courseId;
+
+    }
+
+    @RequestMapping(value = "/course_settings/passval/{courseId}", method = RequestMethod.POST)
+    public String editPassValue(@PathVariable("courseId") Long courseId,
+                                  @ModelAttribute("course") Course course,
+                                  Model model, Principal principal){
+
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
+
+        Course currentCourse = courseService.findCourseById(courseId);
+
+        currentCourse.setPassValue(course.getPassValue());
+        courseService.save(currentCourse);
+
+
         return "redirect:/course_settings?id="+courseId;
     }
 
