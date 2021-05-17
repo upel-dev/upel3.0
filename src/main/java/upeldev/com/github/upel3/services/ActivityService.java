@@ -82,7 +82,6 @@ public class ActivityService {
         if(aggregation == null){
             throw new IllegalArgumentException("Aggregation cannot be empty");
         }
-
         activity.setAggregation(aggregation);
         activityRepository.save(activity);
     }
