@@ -76,7 +76,7 @@ public class ActivityController {
             double maxPoints = activity.getMaxPoints();
             double points = 0;
             List<Grade> grades;
-            if(currentUser.getRoles().contains(Role.STUDENT) || (currentUser.getRoles().contains(Role.LECTURER) && !currentUser.getCoursesLectured().contains(course))){
+            if(currentUser.getCoursesEnrolledIn().contains(course)){
                 grades = gradeService.findGradeByCourseUserActivity(activity.getCourse(), currentUser, activity);
                 if(!grades.isEmpty()) points = grades.get(grades.size() - 1).getValue();
             }
