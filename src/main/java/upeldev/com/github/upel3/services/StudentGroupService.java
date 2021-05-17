@@ -36,7 +36,7 @@ public class StudentGroupService {
         return studentGroupRepository.findById(id);
     }
 
-    List<StudentGroup> findByCourse(Course course){
+    public List<StudentGroup> findByCourse(Course course){
         return studentGroupRepository.findByCourse(course);
     }
 
