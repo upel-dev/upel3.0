@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class SubGrade {
+public class SubGrade implements Aggregable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
@@ -40,5 +40,15 @@ public class SubGrade {
         this.subActivity = subActivity;
         this.grade = grade;
         this.value = value;
+    }
+
+    @Override
+    public double getAggregableValue() {
+        return getValue();
+    }
+
+    @Override
+    public double getAggregableWeight() {
+        return getSubActivity().getAggregableWeight();
     }
 }

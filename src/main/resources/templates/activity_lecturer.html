@@ -5,6 +5,7 @@
     <title>UPeL3.0</title>
 
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="shortcut icon" href="https://upel2.cel.agh.edu.pl/wiet/theme/image.php/celupel/theme/1619178409/favicon" />
     <style>
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -47,7 +48,7 @@
 </section>
 
 <section class="container py-3"
-         th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.GradeAggregation).WAVG}">
+         th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.ElementAggregation).WAVG}">
     <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom border-top">
         <div class="col-8 mx-0 px-0">
             <h6 class="align-middle my-0">Punkty potrzebne, aby zdać tę aktywność:</h6>
@@ -66,29 +67,29 @@
             </form>
         </div>
     </header>
-    <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-4 px-0 border-bottom">
+    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom">
         <div class="col-6 mx-0 px-0 my-2">
             <h6 class="align-middle my-0">Pula punktów przewidziana dla tej aktywności:</h6>
         </div>
         <div class="mx-0 px-0 col-6 text-right my-2">
-            <p class="my-0"><strong th:text="${activity.getMaxPoints()}">-</strong></p>
+            <p class="my-0"><strong th:text="${activity.getValue()}">-</strong></p>
         </div>
     </header>
-    <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-4 px-0 border-bottom">
-        <div class="col-6 mx-0 px-0 my-2">
-            <h6 class="align-middle my-0">Sposób agregacji ocen dla tej aktywności:</h6>
-        </div>
-        <div class="mx-0 px-0 col-6 text-right my-2">
-            <p class="my-0"><strong th:text="${activity.getAggregation()}">-</strong></p>
-        </div>
-    </header>
+<!--    <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-4 px-0 border-bottom">-->
+<!--        <div class="col-6 mx-0 px-0 my-2">-->
+<!--            <h6 class="align-middle my-0">Sposób agregacji ocen dla tej aktywności:</h6>-->
+<!--        </div>-->
+<!--        <div class="mx-0 px-0 col-6 text-right my-2">-->
+<!--            <p class="my-0"><strong th:text="${activity.getAggregation()}">-</strong></p>-->
+<!--        </div>-->
+<!--    </header>-->
     <table class="table table-hover table-bordered bg-light" >
         <thead>
         <tr>
             <th scope="col">Użytkownik</th>
             <th scope="col">Zaawansowane</th>
-            <th scope="col" th:text="${activity.getAggregation()}">Suma</th>
-            <th scope="col" class="text-nowrap" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}">
+            <th scope="col" class="text-nowrap" th:text="${activity.getAggregation()}">Suma</th>
+            <th scope="col" class="text-nowrap text-center" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}">
             </th>
         </tr>
         </thead>
@@ -107,11 +108,11 @@
                         Pokaż
                     </button>
                 </td>
-                <td class="col text-nowrap align-middle">
+                <td class="col text-nowrap text-center align-middle">
                     <p class="align-middle mb-1"><strong th:text="${grade.getValue()}"></strong></p>
                 </td>
                 <td class="col text-nowrap" th:each="subGrade : ${grade.getSubGrades()}">
-                    <input type="number" class="form-control" th:name="subGrade"
+                    <input type="number" class="form-control" style="min-width: 10ch;" th:name="subGrade"
                            th:placeholder="${subGrade.getValue()}" th:value="${subGrade.getValue()}">
                 </td>
             </tr>
@@ -136,13 +137,14 @@
             <th scope="col">Waga</th>
             <th scope="col"></th>
             <th scope="col"></th>
-            <th scope="col" class="text-nowrap" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getWeight()}">
+            <th scope="col" class="text-nowrap text-center" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getWeight()}">
             </th>
         </tr>
         <thead style="border-top: 3px solid #343a40;">
         <tr th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER')}">
             <th scope="col" colspan="3">Użytkownik</th>
-            <th scope="col" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
+            <th scope="col" class="text-center"
+                th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
         </tr>
         </thead>
 
@@ -159,7 +161,7 @@
 
                 <td scope="col" th:each="subActivity : ${activity.getSubActivities()}">
                     <input type="number" class="form-control" th:id="${subActivity.getName()}" th:name="subGrade"
-                           placeholder="0" value="0">
+                           placeholder="0" value="0" style="min-width: 10ch;">
                 </td>
 
             </tr>

@@ -69,8 +69,8 @@ public class ActivityController {
 
             model.addAttribute("activity", activity);
 
-            int passValue = activity.getPassValue();
-            double maxPoints = activity.getMaxPoints();
+            double passValue = activity.getPassValue();
+            double maxPoints = activity.getValue();
             double points = 0;
             List<Grade> grades;
             if(currentUser.getRoles().contains(Role.STUDENT)){
@@ -121,7 +121,7 @@ public class ActivityController {
             if(currentUser.getCoursesEnrolledIn().contains(course)) return "activity_student";
 
             if(!currentUser.getRoles().contains(Role.ADMIN)){
-                model.addAttribute(errorMsg);
+                model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
 

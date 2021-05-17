@@ -60,13 +60,12 @@ public class NewUserController {
             String password = generateRandomPassword();
             User newUser = new User(firstName, lastName, email, password);
 
-            newUser.setIndexNumber(index);
-
             switch (role) {
                 case "0":
                     throw new IllegalArgumentException();
                 case "1":
                     newUser.getRoles().add(Role.STUDENT);
+                    newUser.setIndexNumber(index);
                     model.addAttribute("new_user_role", "Student"); // To be removed when email service is implemented
                     break;
                 case "2":

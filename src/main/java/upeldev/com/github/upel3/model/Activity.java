@@ -13,16 +13,17 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Activity {
+public class Activity implements Aggregator, Aggregable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
     private Long id;
 
     @Column
-    private int passValue = 0;
+    private double passValue = 0;
 
-
+    @Column
+    private double weight = 1.0;
 
     @Column(nullable = false)
     private String name;
@@ -31,7 +32,7 @@ public class Activity {
     private String description;
 
     @Enumerated
-    private GradeAggregation aggregation = GradeAggregation.SUM;
+    private ElementAggregation aggregation = ElementAggregation.SUM;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
@@ -60,14 +61,24 @@ public class Activity {
         this.name = name;
     }
 
-    public double getMaxPoints(){
+    @Override
+    public double getValue(){
         double value = 0;
         switch (aggregation){
-            case SUM: return GradeAggregation.countMaxSum(subActivities);
-            case AVG: return GradeAggregation.countMaxAvg(subActivities);
-            case WAVG: return GradeAggregation.countMaxWavg(subActivities);
+            case SUM: return ElementAggregation.countSum(subActivities);
+            case AVG: return ElementAggregation.countAvg(subActivities);
+            case WAVG: return ElementAggregation.countWavg(subActivities);
         }
         return value;
     }
 
+    @Override
+    public double getAggregableValue() {
+        return getValue();
+    }
+
+    @Override
+    public double getAggregableWeight() {
+        return getWeight();
+    }
 }

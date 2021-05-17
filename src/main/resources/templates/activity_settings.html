@@ -5,6 +5,7 @@
     <title>UPeL3.0</title>
 
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="shortcut icon" href="https://upel2.cel.agh.edu.pl/wiet/theme/image.php/celupel/theme/1619178409/favicon" />
     <style>
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -110,9 +111,9 @@
                 th:action="|/activity_settings/grade_aggregation/${course.getId()}/${activity.getId()}|"
                 th:object="${activity}">
                 <div class="col-8 ml-0 pl-0">
-                    <select class="form-control-sm bg-light text-dark w-100"
+                    <select class="form-control bg-light text-dark w-100"
                              th:field="*{aggregation}">
-                        <option th:each="aggreg: ${T(upeldev.com.github.upel3.model.GradeAggregation).values()}"
+                        <option th:each="aggreg: ${T(upeldev.com.github.upel3.model.ElementAggregation).values()}"
                             th:value="${{aggreg}}"
                             th:text="${aggreg}">
                         </option>
@@ -126,7 +127,7 @@
     </header>
 </section>
 
-<section class="container py-3 border-bottom" th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.GradeAggregation).WAVG}">
+<section class="container py-3 border-bottom" th:with="displayWeight=${activity.getAggregation()==T(upeldev.com.github.upel3.model.ElementAggregation).WAVG}">
     <table class="table table-hover table-bordered bg-light">
         <thead>
             <tr>
@@ -139,8 +140,7 @@
         <tbody>
             <tr th:each="subActivity, iterStat : ${activity.getSubActivities()}" th:object="${subActivity}">
                 <form th:method="post"
-                      th:action="|/activity_settings/subactivity_edit/${course.getId()}/${activity.getId()}/${subActivity.getId()}|"
-                      >
+                      th:action="|/activity_settings/subactivity_edit/${course.getId()}/${activity.getId()}/${subActivity.getId()}|">
                     <td class="col">
                         <input type="text" class="form-control" th:name="name"
                                   th:placeholder="${subActivity.getName()}" th:value="*{name}">
@@ -166,7 +166,7 @@
         <thead>
             <tr>
                 <td><strong th:text="${activity.getAggregation()}">Suma punktów</strong></td>
-                <td class="text-center"><strong th:text="${activity.getMaxPoints()}"></strong></td>
+                <td class="text-center"><strong th:text="${activity.getValue()}"></strong></td>
                 <td colspan="3"></td>
             </tr>
         </thead>
