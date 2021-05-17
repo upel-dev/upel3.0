@@ -5,6 +5,7 @@
     <title>UPeL3.0</title>
 
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="shortcut icon" href="https://upel2.cel.agh.edu.pl/wiet/theme/image.php/celupel/theme/1619178409/favicon" />
 </head>
 <body style="background-color: #ecf1fc;">
 
@@ -54,6 +55,15 @@
             <p class="my-0"><strong th:text="${activity.getValue()}">-</strong></p>
         </div>
     </header>
+
+<!--    <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-4 px-0 border-bottom">-->
+<!--        <div class="col-6 mx-0 px-0 my-2">-->
+<!--            <h6 class="align-middle my-0">Sposób agregacji ocen dla tej aktywności:</h6>-->
+<!--        </div>-->
+<!--        <div class="mx-0 px-0 col-6 text-right my-2">-->
+<!--            <p class="my-0"><strong th:text="${activity.getAggregation()}">-</strong></p>-->
+<!--        </div>-->
+<!--   </header> -->
     <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-4 px-0 border-bottom">
         <div class="col-6 mx-0 px-0">
             <h6 class="align-middle my-0">Status aktywności:</h6>
@@ -62,42 +72,46 @@
             <p class="my-0"><strong th:text="${status}">-</strong></p>
         </div>
     </header>
-<!--    <header class="d-flex flex-wrap align-items-center py-2 mt-0 mb-4 px-0 border-bottom">-->
-<!--        <div class="col-6 mx-0 px-0 my-2">-->
-<!--            <h6 class="align-middle my-0">Sposób agregacji ocen dla tej aktywności:</h6>-->
-<!--        </div>-->
-<!--        <div class="mx-0 px-0 col-6 text-right my-2">-->
-<!--            <p class="my-0"><strong th:text="${activity.getAggregation()}">-</strong></p>-->
-<!--        </div>-->
-    </header>
 
     <table class="table table-hover table-bordered bg-light">
         <thead>
         <tr>
-            <th scope="col">Użytkownik</th>
-            <th scope="col">Opis oceny</th>
-            <th scope="col" th:text="${activity.getAggregation()}">Łączna wartość</th>
-            <th scope="col" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
+            <th scope="col" class="text-nowrap">Użytkownik</th>
+            <th scope="col" class="text-nowrap text-center" th:text="${activity.getAggregation()}">Łączna wartość</th>
+            <th scope="col" class="text-nowrap text-center"
+                th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
         </tr>
-        <tr th:each="grade : ${grades}">
-            <td scope="col" th:text="${grade.getUser().getFirstName()} + ' ' + ${grade.getUser().getLastName()}"></td>
-            <td scope="col" th:text="${grade.getDescription()}"></td>
-            <td scope="col" th:text="${grade.getValue()}"></td>
-            <td scope="col" th:each="subGrade : ${grade.getSubGrades()}">
+        </thead>
+        <tbody>
+        <tr th:each="grade : ${grades}"
+            th:style="${grade.getValue()} >= ${grade.getActivity().getPassValue()} ? 'background-color: #d0faa3' : 'background-color: #ff978f'">
+            <td class="col text-nowrap align-middle"
+                th:text="${grade.getUser().getFirstName()} + ' ' + ${grade.getUser().getLastName()}"></td>
+            <td class="col text-nowrap align-middle text-center" style="font-weight: bold"
+                th:text="${grade.getValue()}"></td>
+            <td class="col text-nowrap align-middle text-center" style="min-width: 10ch;"
+                th:each="subGrade : ${grade.getSubGrades()}">
                 <span><strong th:text="${subGrade.getValue()}"></strong></span>
                 <span>/</span>
                 <span th:text="${subGrade.getSubActivity().getMaxValue()}"></span>
-            </td>
+          </td>
         </tr>
-        <tr  th:if="${displayWeight}">
-            <th scope="col">Waga</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col" class="text-nowrap" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getWeight()}">
+        </tbody>
+        <thead>
+        <tr th:if="${displayWeight}">
+            <th scope="col" colspan="2" style="font-weight: normal;">Waga</th>
+            <th scope="col" class="text-nowrap text-center" th:each="subActivity : ${activity.getSubActivities()}"
+                th:text="${subActivity.getWeight()}" style="font-weight: normal;">
             </th>
         </tr>
         </thead>
     </table>
+</section>
+
+<section class="container py-3" th:if="${!grades.isEmpty() and !grades.get(0).getDescription().isEmpty()}">
+    <p>Komentarz prowadzącego:</p>
+    <textarea class="form-control col w-100" th:name="description" rows="3" disabled
+              th:text="${grades.get(0).getDescription()}"></textarea>
 </section>
 
 <section class="container py-3">
