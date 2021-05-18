@@ -66,7 +66,6 @@ public class ActivityService {
     }
 
     public Grade getStudentGradeInActivity(Activity activity, User user){
-
         if(!activity.getCourse().getEnrolledStudents().contains(user)){
             throw new IllegalArgumentException("User must be a student of the course");
         }
@@ -76,9 +75,7 @@ public class ActivityService {
                 .filter(grade -> grade instanceof StudentGrade ? ((StudentGrade) grade).getUser().equals(user) :
                                 ((GroupGrade) grade).getGroup().getStudents().contains(user)
                 )
-                .map(StudentGrade.class::cast)
                 .collect(Collectors.toList()).get(0);
-
     }
 
     public void changeAggregation(Activity activity, ElementAggregation aggregation){

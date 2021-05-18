@@ -106,11 +106,6 @@ public class DataLoader {
                 gradeService.save(grade);
             }
         }
-
-        StudentGroup studentGroup = new StudentGroup("Benjamins", activities.get(0).getCourse(), Set.of(users.get(0), users.get(1)));
-        studentGroupService.save(studentGroup);
-        GroupGrade groupGrade = new GroupGrade(studentGroup, activities.get(0));
-        gradeService.save(groupGrade);
     }
 
     private void populateSubActivity() {

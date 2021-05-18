@@ -42,6 +42,7 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Grade> grade = new ArrayList<>();
 
     @ManyToMany(mappedBy = "enrolledStudents", cascade = CascadeType.DETACH)
