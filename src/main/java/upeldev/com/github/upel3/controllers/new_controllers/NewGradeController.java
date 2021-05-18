@@ -20,14 +20,16 @@ public class NewGradeController {
     private final ActivityService activityService;
     private final GradeService gradeService;
     private final SubGradeService subGradeService;
+    private final StudentGroupService studentGroupService;
 
     @Autowired
-    public NewGradeController(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubGradeService subGradeService){
+    public NewGradeController(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubGradeService subGradeService, StudentGroupService studentGroupService){
         this.userService = userService;
         this.courseService = courseService;
         this.activityService = activityService;
         this.gradeService = gradeService;
         this.subGradeService = subGradeService;
+        this.studentGroupService = studentGroupService;
     }
 
     @RequestMapping(value = "/new_grade")
@@ -102,7 +104,72 @@ public class NewGradeController {
 
         }
         catch (IllegalArgumentException e){
-            String errorMsg = "Podano nieprawidłowe argumenty podczas tworzenia kursu.";
+            String errorMsg = "Błąd podczas dodawania oceny studentowi.";
+            model.addAttribute("errorMsg", errorMsg);
+            return "error";
+        }
+
+        return "redirect:/activity?id="+activityId;
+    }
+
+    @RequestMapping(value = "/create_group_grade/{courseId}/{activityId}", method = RequestMethod.GET)
+    public String createGroupGrade(@PathVariable("courseId") Long courseId,
+                               @PathVariable("activityId") Long activityId,
+                               @RequestParam(value = "studentGroupId")  Long studentGroupId,
+                               @RequestParam(value = "description")  String description,
+                               @RequestParam("subGrade") double[] subActivityId,
+                               Model model,Principal principal){
+        User currentUser = userService.findByEmail(principal.getName());
+
+        StudentGroup modifiedGroup = studentGroupService.findById(studentGroupId);
+
+        Course currentCourse = courseService.findCourseById(courseId);
+        model.addAttribute("user", currentUser);
+
+        Activity currentActivity = activityService.findActivityById(activityId);
+
+
+
+        List<SubActivity> subActivities =  currentActivity.getSubActivities();
+
+        try{
+            if(!currentUser.getRoles().contains(Role.ADMIN) && !currentCourse.getLecturers().contains(currentUser)){
+                String errorMsg = "Nie masz wystarczających uprawnień, aby utworzyć kurs";
+                model.addAttribute("errorMsg", errorMsg);
+                return "redirect:/error";
+            }
+
+            if(subActivities.size() != subActivityId.length){
+                String errorMsg = "Nie wypełniono wszystkich wymaganych pól";
+                model.addAttribute("errorMsg", errorMsg);
+                return "redirect:/error";
+            }
+
+            if(gradeService.findGradeByCourseAndGroupAndActivity(currentCourse, modifiedGroup, currentActivity).size() == 0){
+                Grade newGrade = new GroupGrade(modifiedGroup, currentActivity);
+                newGrade.setDescription(description);
+                gradeService.save(newGrade);
+
+
+                for(int i = 0; i < subActivities.size(); i++){
+                    SubGrade subGrade = new SubGrade(subActivities.get(i), newGrade, subActivityId[i]);
+                    subGradeService.save(subGrade);
+                }
+            }
+            else{
+                Grade oldGrade = gradeService.findGradeByCourseAndGroupAndActivity(currentCourse, modifiedGroup, currentActivity).get(0);
+                oldGrade.setDescription(description);
+                for(int i = 0; i < subActivities.size(); i++){
+                    SubGrade subGrade = oldGrade.getSubGrades().get(i);
+                    subGrade.setValue(subActivityId[i]);
+                }
+                gradeService.save(oldGrade);
+
+            }
+
+        }
+        catch (IllegalArgumentException e){
+            String errorMsg = "Bład podczas dodawania oceny grupie.";
             model.addAttribute("errorMsg", errorMsg);
             return "error";
         }

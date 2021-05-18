@@ -77,8 +77,10 @@ public class ActivityController {
             double points = 0;
             List<Grade> grades;
             if(currentUser.getCoursesEnrolledIn().contains(course)){
-                grades = gradeService.findGradeByCourseAndUserAndActivity(activity.getCourse(), currentUser, activity);
-                if(!grades.isEmpty()) points = grades.get(grades.size() - 1).getValue();
+                //grades = gradeService.findGradeByCourseAndUserAndActivity(activity.getCourse(), currentUser, activity);
+                grades = activityService.getStudentGradesInActivity(activity, currentUser);
+                if(!grades.isEmpty())
+                    points = grades.get(grades.size() - 1).getValue(); //currently uses value of random grade (if there is both UserGrade and GroupGrade)
             }
             else{
                 grades = gradeService.findGradeByActivity(activity);

@@ -81,6 +81,20 @@ public class ActivityService {
         return studentGrade.get(0);
     }
 
+    public List<Grade> getStudentGradesInActivity(Activity activity, User user){
+        if(!activity.getCourse().getEnrolledStudents().contains(user)){
+            throw new IllegalArgumentException("User must be a student of the course");
+        }
+        List<Grade> studentGrade =  activity.getGrades()
+                .stream()
+                .filter(grade -> grade instanceof StudentGrade ? ((StudentGrade) grade).getUser().equals(user) :
+                        ((GroupGrade) grade).getGroup().getStudents().contains(user)
+                )
+                .collect(Collectors.toList());
+
+        return studentGrade;
+    }
+
     public void changeAggregation(Activity activity, ElementAggregation aggregation){
         if(aggregation == null){
             throw new IllegalArgumentException("Aggregation cannot be empty");
