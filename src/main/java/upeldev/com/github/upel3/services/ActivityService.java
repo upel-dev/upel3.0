@@ -73,7 +73,10 @@ public class ActivityService {
 
         return activity.getGrades()
                 .stream()
-                .filter(grade -> grade.getUser().equals(user))
+                .filter(grade -> grade instanceof StudentGrade ? ((StudentGrade) grade).getUser().equals(user) :
+                                ((GroupGrade) grade).getGroup().getStudents().contains(user)
+                )
+                .map(StudentGrade.class::cast)
                 .collect(Collectors.toList()).get(0);
 
     }
