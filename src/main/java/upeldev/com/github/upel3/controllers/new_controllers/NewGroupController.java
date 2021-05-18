@@ -33,7 +33,24 @@ public class NewGroupController {
         this.studentGroupService = studentGroupService;
     }
 
-    @RequestMapping(value = "/new_course_group/{courseId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/new_group/{courseId}", method = RequestMethod.GET)
+    public String addGroupPage(
+            @PathVariable("courseId") Long courseId,
+            Model model,
+            Principal principal)
+    {
+        User currentUser = userService.findByEmail(principal.getName());
+        Course course = courseService.findCourseById(courseId);
+
+        model.addAttribute("courseId", courseId);
+        model.addAttribute("user", currentUser);
+        model.addAttribute("course", course);
+
+
+        return "new_templates/new_group";
+    }
+
+    @RequestMapping(value = "/create_group/{courseId}", method = RequestMethod.GET)
     public String addGroupWithStudents(
             @RequestParam(value = "groupName") String groupName,
             @PathVariable("courseId") Long courseId,
@@ -45,6 +62,7 @@ public class NewGroupController {
         List<StudentGroup> groups = studentGroupService.findByCourse(course);
         //List<StudentGroup> group = studentGroupService.findByName(groupName);
         Set<User> students = new HashSet<>();
+        Long groupId;
 
         model.addAttribute("courseId", courseId);
         model.addAttribute("user", currentUser);
@@ -70,14 +88,15 @@ public class NewGroupController {
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }*/
-            else
-                studentGroupService.createStudentGroup(groupName, course, students);
+            StudentGroup group = studentGroupService.createStudentGroup(groupName, course, students);
+            groupId = group.getId();
+
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Podano nieprawidłowe argumenty podczas dodawania kursanta.";
             model.addAttribute("errorMsg", errorMsg);
             return "error";
         }
-        return "redirect:/course_students?id="+courseId;
+        return String.format("redirect:/course_group_details/%d/%d", courseId, groupId);
     }
 }

@@ -38,6 +38,7 @@ public class DataLoader {
         populateGrade();
         populateSubActivity();
         populateSubGrade();
+        populateGroups();
     }
 
     public void populateCourses(){
@@ -49,17 +50,17 @@ public class DataLoader {
         courseService.addStudentToCourse(secondCourse.getId(), "benjamin@gmail.com");
 
         userService.hideCourse(userService.findByEmail("benjamin@gmail.com"), secondCourse);
+    }
 
+    public void populateGroups(){
         Set<User> students = new HashSet<>();
         students.add(userService.findByEmail("benjamin@gmail.com"));
         //students.add(userService.findByEmail("bmw@gmail.com"));
 
-        studentGroupService.createStudentGroup("First Group", firstCourse, students);
+        List<Course> courses = courseService.findAll();
+        Course course = courses.get(0);
 
-    }
-
-    public void populateGroups(){
-
+        studentGroupService.createStudentGroup("First Group", course, students);
     }
 
     public void populateUsers() {
