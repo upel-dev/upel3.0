@@ -7,13 +7,12 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.util.*;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Course {
+public class Course implements Aggregator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +24,12 @@ public class Course {
 
     @Column
     private String description;
+
+    @Column
+    private Double passValue = 0.0;
+
+    @Column
+    private ElementAggregation aggregation = ElementAggregation.SUM;
 
     @OneToOne
     private AccessCode accessCode;
@@ -57,6 +62,9 @@ public class Course {
             )
     private List<Activity> activity = new ArrayList<>();
 
+    @OneToMany
+    private Set<StudentGroup> groups = new HashSet<>();
+
 
     public Course(String name, String description){
         this.name = name;
@@ -76,5 +84,14 @@ public class Course {
         if(!this.activity.contains(activity)) this.activity.add(activity);
     }
 
-
+    @Override
+    public double getValue() {
+        double value = 0;
+        switch (aggregation){
+            case SUM: return ElementAggregation.countSum(activity);
+            case AVG: return ElementAggregation.countAvg(activity);
+            case WAVG: return ElementAggregation.countWavg(activity);
+        }
+        return value;
+    }
 }

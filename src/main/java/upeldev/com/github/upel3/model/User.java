@@ -38,7 +38,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(
-            mappedBy = "user",
+//            mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
@@ -61,6 +61,8 @@ public class User {
     )
     private Set<Course> hiddenCourses = new HashSet<>();
 
+    @ManyToMany
+    private Set<StudentGroup> groups = new HashSet<>();
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
