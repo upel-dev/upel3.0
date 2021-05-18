@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class DataLoader {
@@ -16,14 +18,17 @@ public class DataLoader {
     private final GradeService gradeService;
     private final SubActivityService subActivityService;
     private final SubGradeService subGradeService;
+    private final StudentGroupService studentGroupService;
     @Autowired
-    public DataLoader(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubActivityService subActivityService, SubGradeService subGradeService) {
+    public DataLoader(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubActivityService subActivityService, SubGradeService subGradeService, StudentGroupService studentGroupService) {
         this.userService = userService;
         this.courseService = courseService;
         this.activityService = activityService;
         this.subActivityService = subActivityService;
         this.gradeService = gradeService;
         this.subGradeService = subGradeService;
+        this.studentGroupService = studentGroupService;
+
     }
 
     public void populateData(){
@@ -44,6 +49,16 @@ public class DataLoader {
         courseService.addStudentToCourse(secondCourse.getId(), "benjamin@gmail.com");
 
         userService.hideCourse(userService.findByEmail("benjamin@gmail.com"), secondCourse);
+
+        Set<User> students = new HashSet<>();
+        students.add(userService.findByEmail("benjamin@gmail.com"));
+        //students.add(userService.findByEmail("bmw@gmail.com"));
+
+        studentGroupService.createStudentGroup("First Group", firstCourse, students);
+
+    }
+
+    public void populateGroups(){
 
     }
 

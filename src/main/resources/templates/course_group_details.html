@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -16,6 +16,7 @@
         <h2 class="my-0">Lista studentów zapisanych na kurs</h2>
 
         <div class="text-end">
+            <a type="button" class="btn btn-primary" th:href="|/course_groups?id=${course.getId()}|">Powrót do listy grup</a>
             <a type="button" class="btn btn-primary" th:href="|/course?id=${course.getId()}|">Powrót do kursu</a>
         </div>
     </header>
@@ -23,33 +24,41 @@
         <ol class="breadcrumb" style="background-color: #ecf1fc">
             <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
             <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Grupy Kursu</li>
+            <li class="breadcrumb-item"><a th:href="|/course_groups?id=${course.getId()}|" th:text="Grupy">Grupy</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a th:text="${group.getName()}">Uczestnicy grupy</li>
         </ol>
     </nav>
-    <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić listę uczestników kursu.</p>
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić listę uczestników grupy.</p>
 </section>
+
+<div th:if="${user.getCoursesLectured().contains(course)}" class="container pb-3">
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
+        Tu możesz dodać studentów do obecnej grupy, poprzez wpisanie numerów ich indeksów.
+    </p>
+    <form th:action="|/new_group_student/${course.getId()}/${group.getId()}|">
+        <div class="form-group">
+            <label for="userId">Numer indeksu dodawanego studenta:</label>
+            <input type="number" min="100000" max="999999" class="form-control" placeholder="Sześciocyfrowy numer indeksu" id="userId" th:name="userId">
+        </div>
+        <div class="pt-3">
+            <button type="submit" class="btn btn-primary">Dodaj studenta</button>
+        </div>
+    </form>
+</div>
 
 <section class="container py-3">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pb-3  mb-3 border-bottom">
-        <h2 class="pb-2">Grupy</h2>
-        <div th:if="${user.getCoursesLectured().contains(course)}" class="text-end">
-            <a type="button" class="btn btn-primary" th:href="|/new_course|">Dodaj grupę</a>
-        </div>
-    </header>
-    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Lista wszystkich grup utworzonych w ramach przeglądanego obecnie kursu.
-    </p>
-</section>
-
-<section th:each="group : ${groups}">
-    <article class="container py-1 mb-3">
-        <div style="background-color: #d6dff5; border: 3px solid #343a40;">
-            <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${group.getName()}">Nazwa Grupy</h2>
-                <div class="text-end mr-3 mb-2" style="text-align: right;">
-                    <a type="button" class="btn btn-primary" th:href="|course_group_details/${course.getId()}/${group.getId()}|">Przejdź do grupy</a>
-                </div>
-        </div>
-    </article>
+    <table class="table table-hover table-bordered bg-light">
+        <thead>
+        <tr>
+            <th scope="col">Studenci</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${group.getStudents()}">
+            <td th:text="${student.getEmail()}">Opis</td>
+        </tr>
+        </tbody>
+    </table>
 </section>
 
 <div th:replace="fragments/footer :: footer"></div>

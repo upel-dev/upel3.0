@@ -13,40 +13,25 @@
 
 <section class="container py-3">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 pb-2 mb-0" style="border-top: 3px solid #343a40;">
-        <h2 class="my-0">Tworzenie nowego kursu</h2>
-
+        <h2 class="my-0">Tworzenie nowej grupy</h2>
         <div class="text-end">
             <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
         </div>
     </header>
-    <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
-        <ol class="breadcrumb" style="background-color: #ecf1fc">
-            <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Tworzenie nowego kursu</li>
-        </ol>
-    </nav>
-    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tu możesz utworzyć nowy kurs. Wpisz jego nazwę oraz uzupełnij krótki opis.
-    </p>
 </section>
 
 <div class="container pb-3">
-    <form th:action="@{/create_course}">
+    <form th:action="|/new_course_group/${courseId}|">
         <div class="form-group">
-            <label for="courseName">Nazwa kursu:</label>
-            <input type="text" class="form-control" id="courseName" th:name="courseName" placeholder="Nazwa kursu">
-            <small id="nameHelp" class="form-text text-muted">Uczestnicy Twojego kursu będą go widzieć u siebie pod tą nazwą. Zadbaj o to by była zwięzła i jednoznaczna, np. nazwa realizowanego przedmiotu.</small>
-        </div>
-        <div class="form-group">
-            <label for="courseDescription">Opis kursu:</label>
-            <textarea class="form-control" id="courseDescription" th:name="courseDescription" rows="3"></textarea>
+            <label for="groupName">Nazwa grupy:</label>
+            <input type="text" class="form-control" id="groupName" th:name="groupName">
         </div>
         <div class="pt-3">
-            <button type="submit" class="btn btn-primary">Utwórz kurs</button>
-            <small id="newCourseHelp" class="form-text text-muted">Po utworzeniu kursu otrzymasz unikalny kod, dzięki któremu studenci będą w stanie samodzielnie dołączyć do kursu. Kod ten znajdziesz także później w ustawieniach kursu.</small>
+            <button type="submit" class="btn btn-primary">Utwórz Grupę</button>
         </div>
     </form>
 </div>
+
 
 <div th:replace="fragments/footer :: footer"></div>
 

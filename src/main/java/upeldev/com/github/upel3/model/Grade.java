@@ -25,6 +25,10 @@ public class Grade implements Aggregator {
 
     @JsonIgnore
     @ManyToOne
+    protected User user;
+
+    @JsonIgnore
+    @ManyToOne
     protected Activity activity;
 
     @Column
@@ -37,8 +41,8 @@ public class Grade implements Aggregator {
     )
     protected List<SubGrade> subGrades = new ArrayList<>();
 
-    public Grade(User user, Activity activity){
-        this.user = user;
+    public Grade(/*User user, */Activity activity){
+        //this.user = user;
         this.activity = activity;
     }
 

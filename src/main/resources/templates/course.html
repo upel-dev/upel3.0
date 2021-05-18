@@ -47,7 +47,7 @@
 <div class="container pb-3">
     <div class="row text-light align-items-start justify-content-center">
         <div class="d-flex p-2">
-            <a type="button" class="btn btn-primary" href="#">Strona główna</a>
+            <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Strona główna</a>
         </div>
         <div class="d-flex p-2">
             <a type="button" class="btn btn-primary" th:href="|course_students?id=${course.getId()}|">Uczestnicy</a>

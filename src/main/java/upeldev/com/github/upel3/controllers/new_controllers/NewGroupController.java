@@ -16,7 +16,9 @@ import upeldev.com.github.upel3.services.StudentGroupService;
 import upeldev.com.github.upel3.services.UserService;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class NewGroupController {
@@ -33,43 +35,43 @@ public class NewGroupController {
 
     @RequestMapping(value = "/new_course_group/{courseId}", method = RequestMethod.GET)
     public String addGroupWithStudents(
-            @RequestParam(value = "userId") String userId,
+            @RequestParam(value = "groupName") String groupName,
             @PathVariable("courseId") Long courseId,
             Model model,
             Principal principal)
     {
         User currentUser = userService.findByEmail(principal.getName());
-        Course currentCourse = courseService.findCourseById(courseId);
-        List<StudentGroup> groups = studentGroupService.findByCourse(currentCourse);
+        Course course = courseService.findCourseById(courseId);
+        List<StudentGroup> groups = studentGroupService.findByCourse(course);
+        //List<StudentGroup> group = studentGroupService.findByName(groupName);
+        Set<User> students = new HashSet<>();
 
-
-        model.addAttribute("user", currentUser);
         model.addAttribute("courseId", courseId);
+        model.addAttribute("user", currentUser);
+        model.addAttribute("course", course);
         model.addAttribute("groups", groups);
 
         try {
-            if (currentUser.getRoles().contains(Role.STUDENT)){
-                String errorMsg = "Nie masz wystarczających uprawnień aby dodać nowego kursanta.";
+            if (!currentUser.getCoursesLectured().contains(course)){
+                String errorMsg = "Nie masz wystarczających uprawnień aby stworzyć nową grupę.";
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
 
-            User newStudent = userService.findByIndexNumber(userId);
-
-            if (newStudent == null)
+            if (groupName == null)
             {
-                String errorMsg = "Niepoprawny numer indeksu.";
+                String errorMsg = "Niepoprawny nazwa.";
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
-            if (currentCourse.getEnrolledStudents().contains(newStudent))
+/*            if (groups.contains(group))
             {
-                String errorMsg = "Student już jest zapisany do kursu.";
+                String errorMsg = "Nazwa w użyciu";
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
-            }
+            }*/
             else
-                courseService.addStudentToCourse(currentCourse.getId(), newStudent.getId());
+                studentGroupService.createStudentGroup(groupName, course, students);
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Podano nieprawidłowe argumenty podczas dodawania kursanta.";
