@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 @Setter
 @NoArgsConstructor
 @Entity
-public class StudentGrade extends Grade{
+public class StudentGrade extends Grade {
 
     @JsonIgnore
     @ManyToOne
@@ -21,5 +21,15 @@ public class StudentGrade extends Grade{
     public StudentGrade(User user, Activity activity) {
         super(activity);
         this.user = user;
+    }
+
+    @Override
+    public String getGradeOwnerName() {
+        return user.getFirstName() + " " + user.getLastName();
+    }
+
+    @Override
+    public String getGradeOwnerUsername() {
+        return user.getEmail();
     }
 }

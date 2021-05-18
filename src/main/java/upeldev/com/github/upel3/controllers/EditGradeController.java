@@ -20,14 +20,21 @@ public class EditGradeController {
     private final ActivityService activityService;
     private final GradeService gradeService;
     private final SubGradeService subGradeService;
+    private final StudentGroupService studentGroupService;
 
     @Autowired
-    public EditGradeController(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubGradeService subGradeService){
+    public EditGradeController(UserService userService,
+                               CourseService courseService,
+                               ActivityService activityService,
+                               GradeService gradeService,
+                               SubGradeService subGradeService,
+                               StudentGroupService studentGroupService){
         this.userService = userService;
         this.courseService = courseService;
         this.activityService = activityService;
         this.gradeService = gradeService;
         this.subGradeService = subGradeService;
+        this.studentGroupService = studentGroupService;
     }
 
     @RequestMapping(value = "/edit_grade/{courseId}/{activityId}/{userName}", method = RequestMethod.GET)
@@ -38,8 +45,6 @@ public class EditGradeController {
                                @RequestParam("subGrade") double[] subActivityId,
                                Model model, Principal principal){
         User currentUser = userService.findByEmail(principal.getName());
-
-        User modifiedUser = userService.findByEmail(userName);
 
         Course currentCourse = courseService.findCourseById(courseId);
         model.addAttribute("user", currentUser);
@@ -63,25 +68,50 @@ public class EditGradeController {
                 return "redirect:/error";
             }
 
-            if(gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).size() == 0){
-                Grade newGrade = new StudentGrade(modifiedUser, currentActivity);
-                newGrade.setDescription(description);
-                gradeService.save(newGrade);
+            User modifiedUser = userService.findByEmail(userName);
+            if (modifiedUser != null){ // if student grade
+                if(gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).size() == 0){
+                    Grade newGrade = new StudentGrade(modifiedUser, currentActivity);
+                    newGrade.setDescription(description);
+                    gradeService.save(newGrade);
 
-
-                for(int i = 0; i < subActivities.size(); i++){
-                    SubGrade subGrade = new SubGrade(subActivities.get(i), newGrade, subActivityId[i]);
-                    subGradeService.save(subGrade);
+                    for(int i = 0; i < subActivities.size(); i++){
+                        SubGrade subGrade = new SubGrade(subActivities.get(i), newGrade, subActivityId[i]);
+                        subGradeService.save(subGrade);
+                    }
+                }
+                else{
+                    Grade oldGrade = gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).get(0);
+                    oldGrade.setDescription(description);
+                    for(int i = 0; i < subActivities.size(); i++){
+                        SubGrade subGrade = oldGrade.getSubGrades().get(i);
+                        subGrade.setValue(subActivityId[i]);
+                    }
+                    gradeService.save(oldGrade);
                 }
             }
-            else{
-                Grade oldGrade = gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).get(0);
-                oldGrade.setDescription(description);
-                for(int i = 0; i < subActivities.size(); i++){
-                    SubGrade subGrade = oldGrade.getSubGrades().get(i);
-                    subGrade.setValue(subActivityId[i]);
+            else {  // if group grade
+                StudentGroup modifiedGroup = studentGroupService.findByName(userName).get(0);
+
+                if(gradeService.findGradeByCourseAndGroupAndActivity(currentCourse, modifiedGroup, currentActivity).size() == 0){
+                    Grade newGrade = new GroupGrade(modifiedGroup, currentActivity);
+                    newGrade.setDescription(description);
+                    gradeService.save(newGrade);
+
+                    for(int i = 0; i < subActivities.size(); i++){
+                        SubGrade subGrade = new SubGrade(subActivities.get(i), newGrade, subActivityId[i]);
+                        subGradeService.save(subGrade);
+                    }
                 }
-                gradeService.save(oldGrade);
+                else{
+                    GroupGrade oldGrade = (GroupGrade) gradeService.findGradeByCourseAndGroupAndActivity(currentCourse, modifiedGroup, currentActivity).get(0);
+                    oldGrade.setDescription(description);
+                    for(int i = 0; i < subActivities.size(); i++){
+                        SubGrade subGrade = oldGrade.getSubGrades().get(i);
+                        subGrade.setValue(subActivityId[i]);
+                    }
+                    gradeService.save(oldGrade);
+                }
 
             }
 

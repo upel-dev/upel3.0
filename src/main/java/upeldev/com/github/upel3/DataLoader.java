@@ -19,6 +19,7 @@ public class DataLoader {
     private final SubActivityService subActivityService;
     private final SubGradeService subGradeService;
     private final StudentGroupService studentGroupService;
+
     @Autowired
     public DataLoader(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubActivityService subActivityService, SubGradeService subGradeService, StudentGroupService studentGroupService) {
         this.userService = userService;
@@ -28,7 +29,6 @@ public class DataLoader {
         this.gradeService = gradeService;
         this.subGradeService = subGradeService;
         this.studentGroupService = studentGroupService;
-
     }
 
     public void populateData(){
@@ -101,11 +101,16 @@ public class DataLoader {
             Activity activity = activities.get(i % activities.size());
             Course course = activity.getCourse();
             if(!activity.getCourse().getLecturers().contains(user) && activity.getCourse().getEnrolledStudents().contains(user) && gradeService.findGradeByCourseAndUserAndActivity(course, user, activity).size()==0) {
-                Grade grade = new StudentGrade(user, activity);
+                StudentGrade grade = new StudentGrade(user, activity);
                 grade.setDescription("Opis " + i);
                 gradeService.save(grade);
             }
         }
+
+        StudentGroup studentGroup = new StudentGroup("Benjamins", activities.get(0).getCourse(), Set.of(users.get(0), users.get(1)));
+        studentGroupService.save(studentGroup);
+        GroupGrade groupGrade = new GroupGrade(studentGroup, activities.get(0));
+        gradeService.save(groupGrade);
     }
 
     private void populateSubActivity() {
