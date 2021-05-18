@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>UPeL3.0</title>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="shortcut icon" href="https://upel2.cel.agh.edu.pl/wiet/theme/image.php/celupel/theme/1619178409/favicon" />
+</head>
+<body style="background-color: #ecf1fc;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<section class="container py-3">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 pb-2 mb-0" style="border-top: 3px solid #343a40;">
+        <h2 class="my-0">Lista grup studentów</h2>
+        <div class="text-end">
+            <a type="button" class="btn btn-primary" th:href="|/course?id=${course.getId()}|">Powrót do kursu</a>
+        </div>
+    </header>
+    <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: #ecf1fc">
+            <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
+            <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Lista grup</li>
+        </ol>
+    </nav>
+</section>
+
+<section class="container py-3">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pb-3  mb-3 border-bottom">
+        <h2 class="pb-2">Grupy</h2>
+        <div th:if="${user.getCoursesLectured().contains(course)}" class="text-end">
+            <a type="button" class="btn btn-primary" th:href="|/new_group/${course.getId()}|">Dodaj grupę</a>
+        </div>
+    </header>
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
+        Lista wszystkich grup utworzonych w ramach przeglądanego obecnie kursu.
+    </p>
+</section>
+
+<section th:each="group : ${groups}">
+    <article class="container py-1 mb-3">
+        <div style="background-color: #d6dff5; border: 3px solid #343a40;">
+            <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${group.getName()}">Nazwa Grupy</h2>
+                <div class="text-end mr-3 mb-2" style="text-align: right;">
+                    <a type="button" class="btn btn-primary" th:href="|course_group_details/${course.getId()}/${group.getId()}|">Przejdź do grupy</a>
+                </div>
+        </div>
+    </article>
+</section>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class DataLoader {
@@ -16,14 +18,17 @@ public class DataLoader {
     private final GradeService gradeService;
     private final SubActivityService subActivityService;
     private final SubGradeService subGradeService;
+    private final StudentGroupService studentGroupService;
+
     @Autowired
-    public DataLoader(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubActivityService subActivityService, SubGradeService subGradeService) {
+    public DataLoader(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubActivityService subActivityService, SubGradeService subGradeService, StudentGroupService studentGroupService) {
         this.userService = userService;
         this.courseService = courseService;
         this.activityService = activityService;
         this.subActivityService = subActivityService;
         this.gradeService = gradeService;
         this.subGradeService = subGradeService;
+        this.studentGroupService = studentGroupService;
     }
 
     public void populateData(){
@@ -33,6 +38,7 @@ public class DataLoader {
         populateGrade();
         populateSubActivity();
         populateSubGrade();
+        populateGroups();
     }
 
     public void populateCourses(){
@@ -44,7 +50,17 @@ public class DataLoader {
         courseService.addStudentToCourse(secondCourse.getId(), "benjamin@gmail.com");
 
         userService.hideCourse(userService.findByEmail("benjamin@gmail.com"), secondCourse);
+    }
 
+    public void populateGroups(){
+        Set<User> students = new HashSet<>();
+        students.add(userService.findByEmail("benjamin@gmail.com"));
+        //students.add(userService.findByEmail("bmw@gmail.com"));
+
+        List<Course> courses = courseService.findAll();
+        Course course = courses.get(0);
+
+        studentGroupService.createStudentGroup("First Group", course, students);
     }
 
     public void populateUsers() {
@@ -85,7 +101,7 @@ public class DataLoader {
             Activity activity = activities.get(i % activities.size());
             Course course = activity.getCourse();
             if(!activity.getCourse().getLecturers().contains(user) && activity.getCourse().getEnrolledStudents().contains(user) && gradeService.findGradeByCourseAndUserAndActivity(course, user, activity).size()==0) {
-                Grade grade = new StudentGrade(user, activity);
+                StudentGrade grade = new StudentGrade(user, activity);
                 grade.setDescription("Opis " + i);
                 gradeService.save(grade);
             }

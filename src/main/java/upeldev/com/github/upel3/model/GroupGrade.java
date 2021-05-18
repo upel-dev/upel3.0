@@ -22,4 +22,14 @@ public class GroupGrade extends Grade{
         super(activity);
         this.group = group;
     }
+
+    @Override
+    public String getGradeOwnerName() {
+        return group.getName();
+    }
+
+    @Override
+    public String getGradeOwnerUsername() {
+        return group.getName();
+    }
 }

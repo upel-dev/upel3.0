@@ -86,7 +86,7 @@
         <tr th:each="grade : ${grades}"
             th:style="${grade.getValue()} >= ${grade.getActivity().getPassValue()} ? 'background-color: #d0faa3' : 'background-color: #ff978f'">
             <td class="col text-nowrap align-middle"
-                th:text="${grade.getUser().getFirstName()} + ' ' + ${grade.getUser().getLastName()}"></td>
+                th:text="${grade.getGradeOwnerName()}"></td>
             <td class="col text-nowrap align-middle text-center" style="font-weight: bold"
                 th:text="${grade.getValue()}"></td>
             <td class="col text-nowrap align-middle text-center" style="min-width: 10ch;"

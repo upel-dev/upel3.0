@@ -29,4 +29,10 @@ public class StudentGroup {
     @ManyToMany
     private Set<User> students = new HashSet<>();
 
+    public StudentGroup(String name, Course course, Set<User> students){
+        this.name = name;
+        this.course = course;
+        this.students = students;
+    }
+
 }

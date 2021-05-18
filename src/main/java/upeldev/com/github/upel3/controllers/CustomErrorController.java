@@ -24,8 +24,8 @@ public class CustomErrorController implements ErrorController {
 
     @RequestMapping(value = "/error")
     public String errorPage(Model model, Principal principal) {
-        User currentUser = userService.findByEmail(principal.getName());
-        model.addAttribute("user", currentUser);
+//        User currentUser = userService.findByEmail(principal.getName());
+//        model.addAttribute("user", currentUser);
 
         String errorMsg = "Nieznany błąd";
         model.addAttribute("errorMsg", errorMsg);

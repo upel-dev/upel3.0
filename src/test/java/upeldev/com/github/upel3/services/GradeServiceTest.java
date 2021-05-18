@@ -35,35 +35,35 @@ class GradeServiceTest {
             }
         }
     }
-    @Test
-    void findGradeByCourseAndUser(){
-        List<Course> courses = courseService.findAll();
-        List<User> users = userService.findAll();
+//    @Test
+//    void findGradeByCourseAndUser(){
+//        List<Course> courses = courseService.findAll();
+//        List<User> users = userService.findAll();
+//
+//        for(User user : users){
+//            for(Course course : courses){
+//                List<Grade> grades = gradeService.findGradeByCourseAndUser(course, user);
+//
+//                for(Grade ig : grades){
+//                    assertEquals(course.getId() ,ig.getActivity().getCourse().getId());
+//                    assertEquals(user ,ig.getUser());
+//                }
+//            }
+//        }
+//    }
 
-        for(User user : users){
-            for(Course course : courses){
-                List<Grade> grades = gradeService.findGradeByCourseAndUser(course, user);
-
-                for(Grade ig : grades){
-                    assertEquals(course.getId() ,ig.getActivity().getCourse().getId());
-                    assertEquals(user ,ig.getUser());
-                }
-            }
-        }
-    }
-
-    @Test
-    public void findGradeByUserTest(){
-        List<User> users = userService.findAll();
-
-        for(User user : users){
-            List<Grade> grades = gradeService.findGradeByUser(user);
-            for(Grade ig : grades){
-                assertEquals(user ,ig.getUser());
-            }
-
-        }
-    }
+//    @Test
+//    public void findGradeByUserTest(){
+//        List<User> users = userService.findAll();
+//
+//        for(User user : users){
+//            List<Grade> grades = gradeService.findGradeByUser(user);
+//            for(Grade ig : grades){
+//                assertEquals(user ,ig.getUser());
+//            }
+//
+//        }
+//    }
 
     @Test
     public void findGradeByIdTest(){

@@ -79,6 +79,12 @@ public class GradeService {
     public long deleteById(Long id){return gradeRepository.deleteById(id);}
 
     public Grade save(Grade gradeDTO){
+        if (gradeDTO instanceof StudentGrade){
+            studentGradeRepository.save((StudentGrade) gradeDTO);
+        }
+        else if (gradeDTO instanceof GroupGrade){
+            groupGradeRepository.save((GroupGrade) gradeDTO);
+        }
         return gradeRepository.save(gradeDTO);
     }
 

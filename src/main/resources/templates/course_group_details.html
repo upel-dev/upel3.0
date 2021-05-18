@@ -13,27 +13,29 @@
 
 <section class="container py-3">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 pb-2 mb-0" style="border-top: 3px solid #343a40;">
-        <h2 class="my-0">Lista studentów zapisanych na kurs</h2>
+        <h2 class="my-0">Lista studentów zapisanych do <a th:text="${group.getName()}"></a></h2>
 
         <div class="text-end">
-            <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
+            <a type="button" class="btn btn-primary" th:href="|/course_groups?id=${course.getId()}|">Powrót do listy grup</a>
+            <a type="button" class="btn btn-primary" th:href="|/course?id=${course.getId()}|">Powrót do kursu</a>
         </div>
     </header>
     <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
         <ol class="breadcrumb" style="background-color: #ecf1fc">
             <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
             <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Uczestnicy kursu</li>
+            <li class="breadcrumb-item"><a th:href="|/course_groups?id=${course.getId()}|" th:text="Grupy">Grupy</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a th:text="${group.getName()}">Uczestnicy grupy</li>
         </ol>
     </nav>
-    <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić listę uczestników kursu.</p>
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić listę uczestników grupy.</p>
 </section>
 
 <div th:if="${user.getCoursesLectured().contains(course)}" class="container pb-3">
     <p class="pb-3" style="border-bottom: 3px solid #343a40;">
-        Tu możesz dodać studentów do obecnego kursu, poprzez wpisanie numerów ich indeksów.
+        Tu możesz dodać studentów do obecnej grupy, poprzez wpisanie numerów ich indeksów.
     </p>
-    <form th:action="|/new_course_students/${course.getId()}|">
+    <form th:action="|/new_group_student/${course.getId()}/${group.getId()}|">
         <div class="form-group">
             <label for="userId">Numer indeksu dodawanego studenta:</label>
             <input type="number" min="100000" max="999999" class="form-control" placeholder="Sześciocyfrowy numer indeksu" id="userId" th:name="userId">
@@ -52,7 +54,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="student : ${course.getEnrolledStudents()}">
+        <tr th:each="student : ${group.getStudents()}">
             <td th:text="${student.getEmail()}">Opis</td>
         </tr>
         </tbody>

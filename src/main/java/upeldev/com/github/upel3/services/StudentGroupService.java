@@ -9,6 +9,7 @@ import upeldev.com.github.upel3.repositories.StudentGroupRepository;
 import upeldev.com.github.upel3.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -27,20 +28,25 @@ public class StudentGroupService {
         return studentGroupRepository.save(group);
     }
 
+    public StudentGroup createStudentGroup(String name, Course course, Set<User> students){
+        StudentGroup studentGroup = new StudentGroup(name, course, students);
+        return save(studentGroup);
+    }
+
     public List<StudentGroup> findAll(){
         return StreamSupport.stream(studentGroupRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
-    StudentGroup findById(Long id){
+    public StudentGroup findById(Long id){
         return studentGroupRepository.findById(id);
     }
 
-    List<StudentGroup> findByCourse(Course course){
+    public List<StudentGroup> findByCourse(Course course){
         return studentGroupRepository.findByCourse(course);
     }
 
-    List<StudentGroup> findByName(String name){
+    public List<StudentGroup> findByName(String name){
         return studentGroupRepository.findByName(name);
     }
 

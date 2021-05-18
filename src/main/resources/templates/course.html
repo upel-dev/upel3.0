@@ -53,6 +53,9 @@
             <a type="button" class="btn btn-primary" th:href="|course_students?id=${course.getId()}|">Uczestnicy</a>
         </div>
         <div class="d-flex p-2">
+            <a type="button" class="btn btn-primary" th:href="|course_groups?id=${course.getId()}|">Grupy</a>
+        </div>
+        <div class="d-flex p-2">
             <a type="button" class="btn btn-primary" href="#">Leaderboard</a>
         </div>
     </div>
@@ -62,7 +65,7 @@
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pb-3 pt-4 mb-3 border-bottom" style="border-top: 3px solid #343a40;">
         <h2 class="pb-2">Aktywności</h2>
 
-        <div th:if="${#strings.contains(#strings.setJoin(user.getRoles(), ','), 'LECTURER') and user.getCoursesLectured().contains(course)}" class="text-end">
+        <div th:if="${user.getCoursesLectured().contains(course)}" class="text-end">
             <a type="button" class="btn btn-primary" th:href="|new_activity/1?id=${course.getId()}|">Dodaj aktywność</a>
         </div>
     </header>

@@ -72,12 +72,12 @@ public class ActivityController {
             Course course = activity.getCourse();
             model.addAttribute("course", course);
 
-            int passValue = activity.getPassValue();
-            double maxPoints = activity.getMaxPoints();
+            double passValue = activity.getPassValue();
+            double maxPoints = activity.getValue();
             double points = 0;
             List<Grade> grades;
             if(currentUser.getCoursesEnrolledIn().contains(course)){
-                grades = gradeService.findGradeByCourseUserActivity(activity.getCourse(), currentUser, activity);
+                grades = gradeService.findGradeByCourseAndUserAndActivity(activity.getCourse(), currentUser, activity);
                 if(!grades.isEmpty()) points = grades.get(grades.size() - 1).getValue();
             }
             else{
