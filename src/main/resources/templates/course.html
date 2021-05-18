@@ -79,11 +79,13 @@
         <div style="background-color: #d6dff5; border: 3px solid #343a40;">
             <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${activity.getName()}">Laboratorium 1 - Chyba biblioteki i makefile</h2>
             <div class="d-flex flex-wrap align-content-center justify-content-center justify-content-md-between py-2">
-                <div class="justify-content-center col-9">
-                    <p class="pb-3 border-bottom" th:if="${course.getEnrolledStudents().contains(user)}">
-                        <strong th:text="'Zdobyta ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></strong>
-                        <span th:text="${@activityService.getStudentGradeInActivity(activity, user).getValue()}"></span>
-                    </p>
+                <div class="justify-content-center col-9" >
+                    <div th:if="${course.getEnrolledStudents().contains(user)}" th:with="studentGrade=${@activityService.getStudentGradeInActivity(activity, user)}">
+                        <p class="pb-3 border-bottom" th:if="${studentGrade!=null}">
+                            <strong th:text="'Zdobyta ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></strong>
+                            <span th:text="${studentGrade.getValue()}"></span>
+                        </p>
+                    </div>
                     <p class="pb-3 border-bottom">
                         <strong th:text="'Maksymalna ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></strong>
                         <span th:text="${activity.getValue()}"></span>

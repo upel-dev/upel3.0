@@ -55,7 +55,7 @@ public class Activity implements Aggregator, Aggregable {
 
 
 
-    public Activity(Course course, int passValue, String name){
+    public Activity(Course course, double passValue, String name){
         this.course = course;
         this.passValue = passValue;
         this.name = name;
