@@ -63,6 +63,12 @@ public class Course implements Aggregator {
     private List<Activity> activity = new ArrayList<>();
 
     @OneToMany
+            (
+                    mappedBy = "course",
+                    cascade = CascadeType.ALL,
+                    orphanRemoval = true,
+                    fetch = FetchType.EAGER
+            )
     private Set<StudentGroup> groups = new HashSet<>();
 
 
