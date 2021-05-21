@@ -96,10 +96,10 @@
 
         <tbody th:each="grade, iterStat : ${grades}"
                th:style="${grade.getValue()} >= ${grade.getActivity().getPassValue()} ? 'background-color: #d0faa3' : 'background-color: #ff978f'">
-        <form th:action="|/edit_grade/${course.getId()}/${activity.getId()}/${grade.getGradeOwnerUsername()}|">
+        <form th:action="|/edit_grade/${course.getId()}/${activity.getId()}/${grade.getUser().getEmail()}|">
             <tr>
                 <td class="col text-nowrap align-middle">
-                    <p class="align-middle mb-1" th:text="${grade.getGradeOwnerName()}"></p>
+                    <p class="align-middle mb-1" th:text="${grade.getGradeOwnerUsername()}"></p>
                 </td>
                 <td class="col text-nowrap text-center">
                     <button class="btn btn-primary" type="button" data-toggle="collapse"

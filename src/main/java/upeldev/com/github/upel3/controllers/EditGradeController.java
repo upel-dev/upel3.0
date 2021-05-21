@@ -78,42 +78,27 @@ public class EditGradeController {
         return "redirect:/activity?id="+activityId;
     }
 
-    private Grade findModifiedGrade(String userName, Course currentCourse, Activity currentActivity){
+    private Grade findModifiedGrade(String userName, Course currentCourse, Activity currentActivity) {
         Grade grade = null;
 
         User modifiedUser = userService.findByEmail(userName);
-        StudentGroup modifiedGroup = studentGroupService.findByName(userName).isEmpty() ?
-                null : studentGroupService.findByName(userName).get(0);
 
-        if (modifiedUser != null){ // if student grade
-            if (gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).isEmpty()){
-                grade = new StudentGrade(modifiedUser, currentActivity);
-            }
-            else{
-                grade = gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).get(0);
-            }
+        if (gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).isEmpty()){
+            grade = new Grade(modifiedUser, currentActivity);
         }
-        else if (modifiedGroup != null){  // if group grade
-            if (gradeService.findGradeByCourseAndGroupAndActivity(currentCourse, modifiedGroup, currentActivity).isEmpty()){
-                grade = new GroupGrade(modifiedGroup, currentActivity);
-            }
-            else{
-                grade = gradeService.findGradeByCourseAndGroupAndActivity(currentCourse, modifiedGroup, currentActivity).get(0);
-            }
+        else{
+            grade = gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).get(0);
         }
 
         return grade;
     }
 
-    private boolean isGradeNew(String userName, Course currentCourse, Activity currentActivity){
+    private boolean isGradeNew(String userName, Course currentCourse, Activity currentActivity) {
         boolean isNewGrade = false;
 
         User modifiedUser = userService.findByEmail(userName);
-        StudentGroup modifiedGroup = studentGroupService.findByName(userName).isEmpty() ?
-                null : studentGroupService.findByName(userName).get(0);
 
-        if ((modifiedUser != null && gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).isEmpty())
-                || (modifiedGroup != null && gradeService.findGradeByCourseAndGroupAndActivity(currentCourse, modifiedGroup, currentActivity).isEmpty())){
+        if (gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).isEmpty()){
             isNewGrade = true;
         }
 

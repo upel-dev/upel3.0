@@ -83,10 +83,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="grade : ${grades}"
+        <tr th:if="${grade != null}"
             th:style="${grade.getValue()} >= ${grade.getActivity().getPassValue()} ? 'background-color: #d0faa3' : 'background-color: #ff978f'">
             <td class="col text-nowrap align-middle"
-                th:text="${grade.getGradeOwnerName()}"></td>
+                th:text="${grade.getGradeOwnerUsername()}"></td>
             <td class="col text-nowrap align-middle text-center" style="font-weight: bold"
                 th:text="${grade.getValue()}"></td>
             <td class="col text-nowrap align-middle text-center" style="min-width: 10ch;"
@@ -108,10 +108,10 @@
     </table>
 </section>
 
-<section class="container py-3" th:if="${!grades.isEmpty() and !grades.get(0).getDescription().isEmpty()}">
+<section class="container py-3" th:if="${grade != null and !grade.getDescription().isEmpty()}">
     <p>Komentarz prowadzącego:</p>
     <textarea class="form-control col w-100" th:name="description" rows="3" disabled
-              th:text="${grades.get(0).getDescription()}"></textarea>
+              th:text="${grade.getDescription()}"></textarea>
 </section>
 
 <section class="container py-3">

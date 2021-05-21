@@ -117,17 +117,15 @@ public class DataLoader {
         List<User> users = userService.findAll();
         List<Activity> activities = activityService.findAll();
 
-        for (int i = 0; i < activities.size(); i++) {
-            Activity activity = activities.get(i);
-
+        for (Activity activity : activities) {
             Set<User> usersInCourse = activity.getCourse().getEnrolledStudents();
             Iterator<User> userIterator = usersInCourse.iterator();
 
-            for(int j = 0; j < usersInCourse.size(); j++){
+            for (int j = 0; j < usersInCourse.size(); j++) {
 
                 User currentUser = userIterator.next();
 
-                StudentGrade grade = new StudentGrade(currentUser, activity);
+                Grade grade = new Grade(currentUser, activity);
                 grade.setDescription("Opis " + (j + 1));
                 gradeService.save(grade);
 

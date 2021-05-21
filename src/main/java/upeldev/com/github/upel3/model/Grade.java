@@ -23,6 +23,10 @@ public class Grade {
 
     @JsonIgnore
     @ManyToOne
+    private User user;
+
+    @JsonIgnore
+    @ManyToOne
     protected Activity activity;
 
     @Column
@@ -35,7 +39,8 @@ public class Grade {
     )
     protected List<SubGrade> subGrades = new ArrayList<>();
 
-    public Grade(Activity activity){
+    public Grade(User user, Activity activity){
+        this.user = user;
         this.activity = activity;
     }
 
@@ -47,5 +52,9 @@ public class Grade {
             case WAVG: return ElementAggregation.countWavg(subGrades);
         }
         return value;
+    }
+
+    public String getGradeOwnerUsername(){
+        return user.getFirstName() + " "  + user.getLastName();
     }
 }
