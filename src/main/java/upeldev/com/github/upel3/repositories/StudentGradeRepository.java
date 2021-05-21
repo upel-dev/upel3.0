@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import upeldev.com.github.upel3.model.Grade;
-import upeldev.com.github.upel3.model.StudentGrade;
 import upeldev.com.github.upel3.model.User;
 
 import java.util.List;

@@ -15,9 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class Grade implements Aggregator {
-
-
+public class Grade {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,8 +48,4 @@ public abstract class Grade implements Aggregator {
         }
         return value;
     }
-
-    public abstract String getGradeOwnerName();
-
-    public abstract String getGradeOwnerUsername();
 }
