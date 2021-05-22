@@ -71,27 +71,12 @@ public class ActivityService {
         }
         List<Grade> studentGrade =  activity.getGrades()
                 .stream()
-                .filter(grade -> grade instanceof StudentGrade ? ((StudentGrade) grade).getUser().equals(user) :
-                        ((GroupGrade) grade).getGroup().getStudents().contains(user)
-                )
+                .filter(grade -> grade.getUser().equals(user))
                 .collect(Collectors.toList());
 
         if(studentGrade.isEmpty()) return null;
 
         return studentGrade.get(0);
-    }
-
-    public List<Grade> getStudentGradesInActivity(Activity activity, User user){
-        if(!activity.getCourse().getEnrolledStudents().contains(user)){
-            throw new IllegalArgumentException("User must be a student of the course");
-        }
-
-        return activity.getGrades()
-                .stream()
-                .filter(grade -> grade instanceof StudentGrade ? ((StudentGrade) grade).getUser().equals(user) :
-                        ((GroupGrade) grade).getGroup().getStudents().contains(user)
-                )
-                .collect(Collectors.toList());
     }
 
     public void changeAggregation(Activity activity, ElementAggregation aggregation){

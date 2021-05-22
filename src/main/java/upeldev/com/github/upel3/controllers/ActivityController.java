@@ -12,6 +12,7 @@ import upeldev.com.github.upel3.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -75,20 +76,17 @@ public class ActivityController {
             double passValue = activity.getPassValue();
             double maxPoints = activity.getValue();
             double points = 0;
-            List<Grade> grades;
+
             if(currentUser.getCoursesEnrolledIn().contains(course)){
-                //grades = gradeService.findGradeByCourseAndUserAndActivity(activity.getCourse(), currentUser, activity);
-                grades = activityService.getStudentGradesInActivity(activity, currentUser);
-                if(!grades.isEmpty())
-                    points = grades.get(grades.size() - 1).getValue(); //currently uses value of random grade (if there is both UserGrade and GroupGrade)
+                Grade grade = activityService.getStudentGradeInActivity(activity, currentUser);
+                if(grade != null)
+                    points = grade.getValue();
+                model.addAttribute("grade", grade);
             }
             else{
-                grades = gradeService.findGradeByActivity(activity);
+                List<Grade> grades = gradeService.findGradeByActivity(activity);
+                model.addAttribute("grades", grades);
             }
-
-            model.addAttribute("grades", grades);
-
-
 
             if(currentUser.getCoursesLectured().contains(course) || currentUser.getRoles().contains(Role.ADMIN)) return "activity_lecturer";
 

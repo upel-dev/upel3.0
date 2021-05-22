@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.repositories.GradeRepository;
-import upeldev.com.github.upel3.repositories.GroupGradeRepository;
-import upeldev.com.github.upel3.repositories.StudentGradeRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,16 +13,10 @@ import java.util.stream.StreamSupport;
 @Service
 public class GradeService {
     private final GradeRepository gradeRepository;
-    private final StudentGradeRepository studentGradeRepository;
-    private final GroupGradeRepository groupGradeRepository;
 
     @Autowired
-    public GradeService(GradeRepository gradeRepository,
-                        StudentGradeRepository studentGradeRepository,
-                        GroupGradeRepository groupGradeRepository) {
+    public GradeService(GradeRepository gradeRepository) {
         this.gradeRepository = gradeRepository;
-        this.studentGradeRepository = studentGradeRepository;
-        this.groupGradeRepository = groupGradeRepository;
     }
 
     public boolean canUserAddGrade(Grade gradeDTO, User user){
@@ -36,7 +29,7 @@ public class GradeService {
     }
 
     public List<Grade> findGradeByUser(User user){
-        return studentGradeRepository.findGradeByUser(user);
+        return gradeRepository.findGradeByUser(user);
     }
 
     public List<Grade> findGradeByActivity(Activity activity){
@@ -44,7 +37,7 @@ public class GradeService {
     }
 
     public List<Grade> findGradeByCourseAndUserAndActivity(Course course, User user, Activity activity){
-        return studentGradeRepository.findGradeByCourseAndUserAndActivity(course.getId(), user.getId(), activity.getId());
+        return gradeRepository.findGradeByCourseAndUserAndActivity(course.getId(), user.getId(), activity.getId());
     }
 
     public Grade findGradeById(Long id){
@@ -61,30 +54,15 @@ public class GradeService {
     }
 
     public List<Grade> findGradeByCourseAndUser(Course course, User user){
-        return studentGradeRepository.findGradeByCourseAndUser(course.getId(), user.getId());
+        return gradeRepository.findGradeByCourseAndUser(course.getId(), user.getId());
     }
 
-    public List<Grade> findGradeByCourseAndGroupAndActivity(Course course, StudentGroup group, Activity activity){
-        return groupGradeRepository.findGradeByCourseAndGroupAndActivity(course.getId(), group.getId(), activity.getId());
+    public long deleteById(Long id) {
+        return gradeRepository.deleteById(id);
     }
-
-    public List<Grade> findGradeByCourseAndGroup(Course course, StudentGroup group){
-        return groupGradeRepository.findGradeByCourseAndGroup(course.getId(), group.getId());
-    }
-
-    public List<Grade> findGradeByGroup(StudentGroup group){
-        return groupGradeRepository.findGradeByGroup(group);
-    }
-
-    public long deleteById(Long id){return gradeRepository.deleteById(id);}
 
     public Grade save(Grade gradeDTO){
-        if (gradeDTO instanceof StudentGrade){
-            studentGradeRepository.save((StudentGrade) gradeDTO);
-        }
-        else if (gradeDTO instanceof GroupGrade){
-            groupGradeRepository.save((GroupGrade) gradeDTO);
-        }
+        gradeRepository.save(gradeDTO);
         return gradeRepository.save(gradeDTO);
     }
 

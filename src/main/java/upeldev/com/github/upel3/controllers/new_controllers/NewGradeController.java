@@ -80,27 +80,7 @@ public class NewGradeController {
                 return "redirect:/error";
             }
 
-            if(gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).size() == 0){
-                Grade newGrade = new StudentGrade(modifiedUser, currentActivity);
-                newGrade.setDescription(description);
-                gradeService.save(newGrade);
-
-
-                for(int i = 0; i < subActivities.size(); i++){
-                    SubGrade subGrade = new SubGrade(subActivities.get(i), newGrade, subActivityId[i]);
-                    subGradeService.save(subGrade);
-                }
-            }
-            else{
-                Grade oldGrade = gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).get(0);
-                oldGrade.setDescription(description);
-                for(int i = 0; i < subActivities.size(); i++){
-                    SubGrade subGrade = oldGrade.getSubGrades().get(i);
-                    subGrade.setValue(subActivityId[i]);
-                }
-                gradeService.save(oldGrade);
-
-            }
+            addOrModifyGrade(description, subActivityId, currentCourse, currentActivity, subActivities, modifiedUser);
 
         }
         catch (IllegalArgumentException e){
@@ -119,17 +99,14 @@ public class NewGradeController {
                                @RequestParam(value = "description")  String description,
                                @RequestParam("subGrade") double[] subActivityId,
                                Model model,Principal principal){
+
         User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
 
         StudentGroup modifiedGroup = studentGroupService.findById(studentGroupId);
 
         Course currentCourse = courseService.findCourseById(courseId);
-        model.addAttribute("user", currentUser);
-
         Activity currentActivity = activityService.findActivityById(activityId);
-
-
-
         List<SubActivity> subActivities =  currentActivity.getSubActivities();
 
         try{
@@ -145,28 +122,9 @@ public class NewGradeController {
                 return "redirect:/error";
             }
 
-            if(gradeService.findGradeByCourseAndGroupAndActivity(currentCourse, modifiedGroup, currentActivity).size() == 0){
-                Grade newGrade = new GroupGrade(modifiedGroup, currentActivity);
-                newGrade.setDescription(description);
-                gradeService.save(newGrade);
-
-
-                for(int i = 0; i < subActivities.size(); i++){
-                    SubGrade subGrade = new SubGrade(subActivities.get(i), newGrade, subActivityId[i]);
-                    subGradeService.save(subGrade);
-                }
+            for(User modifiedUser : modifiedGroup.getStudents()) {
+                addOrModifyGrade(description, subActivityId, currentCourse, currentActivity, subActivities, modifiedUser);
             }
-            else{
-                Grade oldGrade = gradeService.findGradeByCourseAndGroupAndActivity(currentCourse, modifiedGroup, currentActivity).get(0);
-                oldGrade.setDescription(description);
-                for(int i = 0; i < subActivities.size(); i++){
-                    SubGrade subGrade = oldGrade.getSubGrades().get(i);
-                    subGrade.setValue(subActivityId[i]);
-                }
-                gradeService.save(oldGrade);
-
-            }
-
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Bład podczas dodawania oceny grupie.";
@@ -175,6 +133,34 @@ public class NewGradeController {
         }
 
         return "redirect:/activity?id="+activityId;
+    }
+
+    private void addOrModifyGrade(String description,
+                                  double[] subActivityId,
+                                  Course currentCourse, Activity currentActivity,
+                                  List<SubActivity> subActivities,
+                                  User modifiedUser) {
+        if(gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).size() == 0){
+            Grade newGrade = new Grade(modifiedUser, currentActivity);
+            newGrade.setDescription(description);
+            gradeService.save(newGrade);
+
+
+            for(int i = 0; i < subActivities.size(); i++){
+                SubGrade subGrade = new SubGrade(subActivities.get(i), newGrade, subActivityId[i]);
+                subGradeService.save(subGrade);
+            }
+        }
+        else{
+            Grade oldGrade = gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).get(0);
+            oldGrade.setDescription(description);
+            for(int i = 0; i < subActivities.size(); i++){
+                SubGrade subGrade = oldGrade.getSubGrades().get(i);
+                subGrade.setValue(subActivityId[i]);
+            }
+            gradeService.save(oldGrade);
+
+        }
     }
 
 }

@@ -15,13 +15,15 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class Grade implements Aggregator {
-
-
+public class Grade {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
+
+    @JsonIgnore
+    @ManyToOne
+    private User user;
 
     @JsonIgnore
     @ManyToOne
@@ -37,7 +39,8 @@ public abstract class Grade implements Aggregator {
     )
     protected List<SubGrade> subGrades = new ArrayList<>();
 
-    public Grade(Activity activity){
+    public Grade(User user, Activity activity){
+        this.user = user;
         this.activity = activity;
     }
 
@@ -51,7 +54,7 @@ public abstract class Grade implements Aggregator {
         return value;
     }
 
-    public abstract String getGradeOwnerName();
-
-    public abstract String getGradeOwnerUsername();
+    public String getGradeOwnerUsername(){
+        return user.getFirstName() + " "  + user.getLastName();
+    }
 }
