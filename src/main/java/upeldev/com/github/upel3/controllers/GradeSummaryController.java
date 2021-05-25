@@ -84,11 +84,11 @@ public class GradeSummaryController {
         String status;
         if(userValue < currentCourse.getPassValue()){
             model.addAttribute("barColor", "bg-danger");
-            status = "Niezaliczone";
+            status = "Niezaliczony";
         }
         else{
             model.addAttribute("barColor", "bg-success");
-            status = "Zaliczone";
+            status = "Zaliczony";
         }
         model.addAttribute("status", status);
 
