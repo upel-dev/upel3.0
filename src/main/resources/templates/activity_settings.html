@@ -143,15 +143,15 @@
                       th:action="|/activity_settings/subactivity_edit/${course.getId()}/${activity.getId()}/${subActivity.getId()}|">
                     <td class="col">
                         <input type="text" class="form-control" th:name="name"
-                                  th:placeholder="${subActivity.getName()}" th:value="*{name}" required>
+                                  th:placeholder="${subActivity.getName()}" th:value="*{name}">
                     </td>
                     <td class="col" th:if="${displayWeight}">
                         <input type="number" class="form-control" th:name="weight"
-                               th:placeholder="${subActivity.getWeight()}" th:value="*{weight}" required>
+                               th:placeholder="${subActivity.getWeight()}" th:value="*{weight}">
                     </td>
                     <td class="col">
                         <input type="number" class="form-control" th:name="maxValue"
-                               th:placeholder="${subActivity.getMaxValue()}" th:value="*{maxValue}" required>
+                               th:placeholder="${subActivity.getMaxValue()}" th:value="*{maxValue}">
                     </td>
                     <td class="col">
                         <a type="button" class="btn btn-danger"

@@ -13,7 +13,6 @@ import upeldev.com.github.upel3.services.SubActivityService;
 import upeldev.com.github.upel3.services.UserService;
 
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +32,7 @@ public class NewActivityController {
     }
 
     @RequestMapping(value = "/new_activity/{howMany}")
-    public String newActivity(@PathVariable("howMany") int howMany, @RequestParam(value = "id")  Long courseId, Model model, Principal principal) {
+    public String newCourse(@PathVariable("howMany") int howMany, @RequestParam(value = "id")  Long courseId, Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
         Course currentCourse = courseService.findCourseById(courseId);
@@ -45,13 +44,13 @@ public class NewActivityController {
     }
 
     @RequestMapping(value = "/create_activity/{id}")
-    public String createActivity(
+    public String createCourse(
             @PathVariable("id") Long id,
             @RequestParam(value = "activityName") String activityName,
             @RequestParam(value = "activityDescription") String activityDescription,
-            @RequestParam(value = "passValue")  String passValue,
+            @RequestParam(value = "passValue")  int passValue,
             @RequestParam(value = "subActivity")  String[] subActivityName,
-            @RequestParam(value = "maxPoints")  String[] maxPoints,
+            @RequestParam(value = "maxPoints")  int[] maxPoints,
             Model model,
             Principal principal) {
 
@@ -66,23 +65,7 @@ public class NewActivityController {
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
-
-            // This fixes weird bug which occurs when there is only one subactivity and one of the fields is empty
-            if(subActivityName.length < 1 || maxPoints.length < 1){
-                throw new IllegalArgumentException("No subactiviy");
-            }
-
-            int passValueInt;
-            int[] maxPointsInt;
-            try {
-                passValueInt = Integer.parseInt(passValue);
-                maxPointsInt = Arrays.stream(maxPoints).mapToInt(Integer::parseInt).toArray();
-            }
-            catch (NumberFormatException e){
-                throw new IllegalArgumentException("Empty fields");
-            }
-
-            Activity newActivity = activityService.createActivity(currentCourse, passValueInt, activityName);
+            Activity newActivity = activityService.createActivity(currentCourse, passValue, activityName);
             newActivity.setDescription(activityDescription);
             List<Activity> activities =  currentCourse.getActivity();
             model.addAttribute("activities", activities);
@@ -91,7 +74,7 @@ public class NewActivityController {
             model.addAttribute("courses", courses);
 
             for(int i = 0; i < subActivityName.length; i++){
-                SubActivity subActivity = new SubActivity(newActivity, maxPointsInt[i], subActivityName[i]);
+                SubActivity subActivity = new SubActivity(newActivity, maxPoints[i], subActivityName[i]);
                 subActivityService.save(subActivity);
             }
 

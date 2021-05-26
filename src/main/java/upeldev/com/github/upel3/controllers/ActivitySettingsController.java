@@ -31,7 +31,7 @@ public class ActivitySettingsController {
     }
 
     @RequestMapping(value = "/activity_settings/{courseId}/{activityId}", method = RequestMethod.GET)
-    public String editActivity(@PathVariable("courseId") Long courseId,
+    public String editGrades(@PathVariable("courseId") Long courseId,
                              @PathVariable("activityId") Long activityId,
                              Model model, Principal principal){
         User currentUser = userService.findByEmail(principal.getName());
@@ -63,7 +63,7 @@ public class ActivitySettingsController {
     @RequestMapping(value = "/activity_settings/passval/{courseId}/{activityId}", method = RequestMethod.GET)
     public String editPassValue(@PathVariable("courseId") Long courseId,
                                 @PathVariable("activityId") Long activityId,
-                                @RequestParam(value = "passValue") String passValue,
+                                @RequestParam(value = "passValue") Integer passValue,
                                 Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
 
@@ -72,17 +72,7 @@ public class ActivitySettingsController {
 
         Activity currentActivity = activityService.findActivityById(activityId);
 
-        double passValueDouble;
-        try {
-            passValueDouble = Double.parseDouble(passValue);
-        }
-        catch (NumberFormatException e){
-            String errorMsg = "Nie podano wartości";
-            model.addAttribute("errorMsg", errorMsg);
-            return "error";
-        }
-
-        activityService.changePassValue(currentActivity, passValueDouble);
+        activityService.changePassValue(currentActivity, passValue);
 
         return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
     }
@@ -98,6 +88,7 @@ public class ActivitySettingsController {
         model.addAttribute("user", currentUser);
 
         Activity currentActivity = activityService.findActivityById(activityId);
+
         activityService.changeDescription(currentActivity, description);
 
         return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);

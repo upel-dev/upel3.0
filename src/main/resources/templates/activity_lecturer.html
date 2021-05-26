@@ -160,7 +160,7 @@
                 </td>
 
                 <td scope="col" th:each="subActivity : ${activity.getSubActivities()}">
-                    <input type="number" class="form-control" th:id="${subActivity.getName()}" th:name="subGradeValues"
+                    <input type="number" class="form-control" th:id="${subActivity.getName()}" th:name="subGrade"
                            placeholder="0" value="0" style="min-width: 10ch;">
                 </td>
 
@@ -200,7 +200,7 @@
                 </td>
 
                 <td scope="col" th:each="subActivity : ${activity.getSubActivities()}">
-                    <input type="number" class="form-control" th:id="${subActivity.getName()}" th:name="subGradeValues"
+                    <input type="number" class="form-control" th:id="${subActivity.getName()}" th:name="subGrade"
                            placeholder="0" value="0" style="min-width: 10ch;">
                 </td>
 

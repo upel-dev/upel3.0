@@ -11,7 +11,6 @@ import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.*;
 
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -43,7 +42,7 @@ public class EditGradeController {
                                @PathVariable("activityId") Long activityId,
                                @PathVariable("userName")  String userName,
                                @RequestParam(value = "description")  String description,
-                               @RequestParam("subGrade") String[] subGradeValues,
+                               @RequestParam("subGrade") double[] subActivityId,
                                Model model, Principal principal){
         User currentUser = userService.findByEmail(principal.getName());
 
@@ -60,26 +59,15 @@ public class EditGradeController {
                 return "redirect:/error";
             }
 
-            if(subActivities.size() != subGradeValues.length){
+            if(subActivities.size() != subActivityId.length){
                 String errorMsg = "Nie wypełniono wszystkich wymaganych pól";
                 model.addAttribute("errorMsg", errorMsg);
                 return "redirect:/error";
             }
 
-            double[] subGradeValuesDouble;
-            try {
-                subGradeValuesDouble = Arrays.stream(subGradeValues).mapToDouble(Double::parseDouble).toArray();
-            }
-            catch (NumberFormatException e){
-                String errorMsg = "Nie wypełniono wszystkich wymaganych pól";
-                model.addAttribute("errorMsg", errorMsg);
-                return "error";
-            }
-
-
             Grade grade = findModifiedGrade(userName, currentCourse, currentActivity);
             boolean isNewGrade = isGradeNew(userName, currentCourse, currentActivity);
-            editGrade(grade, subActivities, description, isNewGrade, subGradeValuesDouble);
+            editGrade(grade, subActivities, description, isNewGrade, subActivityId);
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Podano nieprawidłowe argumenty podczas tworzenia kursu.";

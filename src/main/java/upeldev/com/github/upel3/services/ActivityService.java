@@ -6,7 +6,6 @@ import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.repositories.ActivityRepository;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +48,11 @@ public class ActivityService {
     }
 
     public void changeDescription(Activity activity, String newDescription){
-        activity.setDescription(Objects.requireNonNullElse(newDescription, ""));
+        if (newDescription == null || newDescription.isEmpty()){
+            throw new IllegalArgumentException("New activity description cannot be empty");
+        }
+
+        activity.setDescription(newDescription);
         activityRepository.save(activity);
     }
 
@@ -84,7 +87,7 @@ public class ActivityService {
         activityRepository.save(activity);
     }
 
-    public void changePassValue(Activity activity, double newPassValue){
+    public void changePassValue(Activity activity, int newPassValue){
         activity.setPassValue(newPassValue);
         activityRepository.save(activity);
     }
