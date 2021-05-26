@@ -13,6 +13,7 @@ import upeldev.com.github.upel3.services.SubActivityService;
 import upeldev.com.github.upel3.services.UserService;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -48,9 +49,9 @@ public class NewActivityController {
             @PathVariable("id") Long id,
             @RequestParam(value = "activityName") String activityName,
             @RequestParam(value = "activityDescription") String activityDescription,
-            @RequestParam(value = "passValue")  int passValue,
+            @RequestParam(value = "passValue")  String passValue,
             @RequestParam(value = "subActivity")  String[] subActivityName,
-            @RequestParam(value = "maxPoints")  int[] maxPoints,
+            @RequestParam(value = "maxPoints")  String[] maxPoints,
             Model model,
             Principal principal) {
 
@@ -65,7 +66,25 @@ public class NewActivityController {
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
-            Activity newActivity = activityService.createActivity(currentCourse, passValue, activityName);
+
+            // This fixes weird bug which occurs when there is only one subactivity and one of the fields is empty
+            if(subActivityName.length < 1 || maxPoints.length < 1){
+                throw new IllegalArgumentException("No subactiviy");
+            }
+
+            int passValueInt;
+            int[] maxPointsInt = new int[maxPoints.length];
+            try {
+                passValueInt = Integer.parseInt(passValue);
+                for(int i = 0; i < maxPointsInt.length; i++){
+                    maxPointsInt[i] = Integer.parseInt(maxPoints[i]);
+                }
+            }
+            catch (NumberFormatException e){
+                throw new IllegalArgumentException("Empty fields");
+            }
+
+            Activity newActivity = activityService.createActivity(currentCourse, passValueInt, activityName);
             newActivity.setDescription(activityDescription);
             List<Activity> activities =  currentCourse.getActivity();
             model.addAttribute("activities", activities);
@@ -74,7 +93,7 @@ public class NewActivityController {
             model.addAttribute("courses", courses);
 
             for(int i = 0; i < subActivityName.length; i++){
-                SubActivity subActivity = new SubActivity(newActivity, maxPoints[i], subActivityName[i]);
+                SubActivity subActivity = new SubActivity(newActivity, maxPointsInt[i], subActivityName[i]);
                 subActivityService.save(subActivity);
             }
 
