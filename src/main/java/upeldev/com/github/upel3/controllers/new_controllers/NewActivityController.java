@@ -33,7 +33,7 @@ public class NewActivityController {
     }
 
     @RequestMapping(value = "/new_activity/{howMany}")
-    public String newCourse(@PathVariable("howMany") int howMany, @RequestParam(value = "id")  Long courseId, Model model, Principal principal) {
+    public String newActivity(@PathVariable("howMany") int howMany, @RequestParam(value = "id")  Long courseId, Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
         Course currentCourse = courseService.findCourseById(courseId);
@@ -45,7 +45,7 @@ public class NewActivityController {
     }
 
     @RequestMapping(value = "/create_activity/{id}")
-    public String createCourse(
+    public String createActivity(
             @PathVariable("id") Long id,
             @RequestParam(value = "activityName") String activityName,
             @RequestParam(value = "activityDescription") String activityDescription,
@@ -73,12 +73,10 @@ public class NewActivityController {
             }
 
             int passValueInt;
-            int[] maxPointsInt = new int[maxPoints.length];
+            int[] maxPointsInt;
             try {
                 passValueInt = Integer.parseInt(passValue);
-                for(int i = 0; i < maxPointsInt.length; i++){
-                    maxPointsInt[i] = Integer.parseInt(maxPoints[i]);
-                }
+                maxPointsInt = Arrays.stream(maxPoints).mapToInt(Integer::parseInt).toArray();
             }
             catch (NumberFormatException e){
                 throw new IllegalArgumentException("Empty fields");

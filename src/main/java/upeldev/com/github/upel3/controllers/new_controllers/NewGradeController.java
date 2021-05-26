@@ -11,6 +11,7 @@ import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.services.*;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -33,9 +34,9 @@ public class NewGradeController {
     }
 
     @RequestMapping(value = "/new_grade")
-    public String newCourse(@RequestParam(value = "courseId")  Long courseId,
-                            @RequestParam(value = "activityId")  Long activityId,
-                            Model model, Principal principal) {
+    public String newGrade(@RequestParam(value = "courseId")  Long courseId,
+                           @RequestParam(value = "activityId")  Long activityId,
+                           Model model, Principal principal) {
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
         Course currentCourse = courseService.findCourseById(courseId);
@@ -48,12 +49,12 @@ public class NewGradeController {
     }
 
     @RequestMapping(value = "/create_grade/{courseId}/{activityId}", method = RequestMethod.GET)
-    public String createCourse(@PathVariable("courseId") Long courseId,
-                               @PathVariable("activityId") Long activityId,
-                               @RequestParam(value = "userName")  String userName,
-                               @RequestParam(value = "description")  String description,
-                               @RequestParam("subGrade") double[] subActivityId,
-                               Model model,Principal principal){
+    public String createGrade(@PathVariable("courseId") Long courseId,
+                              @PathVariable("activityId") Long activityId,
+                              @RequestParam(value = "userName")  String userName,
+                              @RequestParam(value = "description")  String description,
+                              @RequestParam("subGradeValues") String[] subGradeValues,
+                              Model model,Principal principal){
         User currentUser = userService.findByEmail(principal.getName());
 
         User modifiedUser = userService.findByEmail(userName);
@@ -64,23 +65,33 @@ public class NewGradeController {
         Activity currentActivity = activityService.findActivityById(activityId);
 
 
-
         List<SubActivity> subActivities =  currentActivity.getSubActivities();
 
         try{
             if(!currentUser.getRoles().contains(Role.ADMIN) && !currentCourse.getLecturers().contains(currentUser)){
                 String errorMsg = "Nie masz wystarczających uprawnień, aby utworzyć kurs";
                 model.addAttribute("errorMsg", errorMsg);
-                return "redirect:/error";
+                return "error";
             }
 
-            if(subActivities.size() != subActivityId.length){
+            if(subActivities.size() != subGradeValues.length){
                 String errorMsg = "Nie wypełniono wszystkich wymaganych pól";
                 model.addAttribute("errorMsg", errorMsg);
-                return "redirect:/error";
+                return "error";
             }
 
-            addOrModifyGrade(description, subActivityId, currentCourse, currentActivity, subActivities, modifiedUser);
+            double[] subGradeValuesDouble;
+            try {
+                subGradeValuesDouble = Arrays.stream(subGradeValues).mapToDouble(Double::parseDouble).toArray();
+            }
+            catch (NumberFormatException e){
+                String errorMsg = "Nie wypełniono wszystkich wymaganych pól";
+                model.addAttribute("errorMsg", errorMsg);
+                return "error";
+            }
+
+
+            addOrModifyGrade(description, subGradeValuesDouble, currentCourse, currentActivity, subActivities, modifiedUser);
 
         }
         catch (IllegalArgumentException e){
@@ -94,12 +105,11 @@ public class NewGradeController {
 
     @RequestMapping(value = "/create_group_grade/{courseId}/{activityId}", method = RequestMethod.GET)
     public String createGroupGrade(@PathVariable("courseId") Long courseId,
-                               @PathVariable("activityId") Long activityId,
-                               @RequestParam(value = "studentGroupId")  Long studentGroupId,
-                               @RequestParam(value = "description")  String description,
-                               @RequestParam("subGrade") double[] subActivityId,
-                               Model model,Principal principal){
-
+                                   @PathVariable("activityId") Long activityId,
+                                   @RequestParam(value = "studentGroupId")  Long studentGroupId,
+                                   @RequestParam(value = "description")  String description,
+                                   @RequestParam("subGradeValues") String[] subGradeValues,
+                                   Model model,Principal principal){
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
 
@@ -113,17 +123,27 @@ public class NewGradeController {
             if(!currentUser.getRoles().contains(Role.ADMIN) && !currentCourse.getLecturers().contains(currentUser)){
                 String errorMsg = "Nie masz wystarczających uprawnień, aby utworzyć kurs";
                 model.addAttribute("errorMsg", errorMsg);
-                return "redirect:/error";
+                return "error";
             }
 
-            if(subActivities.size() != subActivityId.length){
+            if(subActivities.size() != subGradeValues.length){
                 String errorMsg = "Nie wypełniono wszystkich wymaganych pól";
                 model.addAttribute("errorMsg", errorMsg);
-                return "redirect:/error";
+                return "/error";
+            }
+
+            double[] subGradeValuesDouble;
+            try {
+                subGradeValuesDouble = Arrays.stream(subGradeValues).mapToDouble(Double::parseDouble).toArray();
+            }
+            catch (NumberFormatException e){
+                String errorMsg = "Nie wypełniono wszystkich wymaganych pól";
+                model.addAttribute("errorMsg", errorMsg);
+                return "error";
             }
 
             for(User modifiedUser : modifiedGroup.getStudents()) {
-                addOrModifyGrade(description, subActivityId, currentCourse, currentActivity, subActivities, modifiedUser);
+                addOrModifyGrade(description, subGradeValuesDouble, currentCourse, currentActivity, subActivities, modifiedUser);
             }
         }
         catch (IllegalArgumentException e){
@@ -136,18 +156,18 @@ public class NewGradeController {
     }
 
     private void addOrModifyGrade(String description,
-                                  double[] subActivityId,
+                                  double[] subGradeValues,
                                   Course currentCourse, Activity currentActivity,
                                   List<SubActivity> subActivities,
                                   User modifiedUser) {
-        if(gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).size() == 0){
+        if(gradeService.findGradeByCourseAndUserAndActivity(currentCourse, modifiedUser, currentActivity).isEmpty()){
             Grade newGrade = new Grade(modifiedUser, currentActivity);
             newGrade.setDescription(description);
             gradeService.save(newGrade);
 
 
             for(int i = 0; i < subActivities.size(); i++){
-                SubGrade subGrade = new SubGrade(subActivities.get(i), newGrade, subActivityId[i]);
+                SubGrade subGrade = new SubGrade(subActivities.get(i), newGrade, subGradeValues[i]);
                 subGradeService.save(subGrade);
             }
         }
@@ -156,7 +176,7 @@ public class NewGradeController {
             oldGrade.setDescription(description);
             for(int i = 0; i < subActivities.size(); i++){
                 SubGrade subGrade = oldGrade.getSubGrades().get(i);
-                subGrade.setValue(subActivityId[i]);
+                subGrade.setValue(subGradeValues[i]);
             }
             gradeService.save(oldGrade);
 
