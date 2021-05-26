@@ -25,17 +25,16 @@ public abstract class StudentAchievement<T> {
 
     protected boolean isAchieved = false;
 
-    @Transient
     protected AchievementType type;
 
     @ManyToOne
-    protected User student;
+    protected User user;
 
     @ManyToOne
     protected Course course;
 
-    public StudentAchievement(User student, Course course, AchievementType type){
-        this.student = student;
+    public StudentAchievement(User user, Course course, AchievementType type){
+        this.user = user;
         this.course = course;
         this.type = type;
 

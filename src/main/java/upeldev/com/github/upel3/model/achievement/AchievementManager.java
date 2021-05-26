@@ -23,25 +23,41 @@ public class AchievementManager {
         Grade grade = gradeEvent.getValue();
         Activity activity = grade.getActivity();
 
+        GradeAchievement achievement;
+
         if(grade.getValue() == activity.getValue() && activity.getValue() != 0){
 
-            StudentAchievement<Grade> achievement =
-                    new GradeAchievement(
-                            grade,
-                            grade.getUser(),
-                            activity.getCourse(),
-                            AchievementType.MAXED_ACTIVITIES
-                    );
+            achievement = studentAchievementService.findByUserAndType(grade.getUser(), AchievementType.MAXED_ACTIVITIES);
+
+            if(achievement == null){
+                achievement = new GradeAchievement(
+                                grade,
+                                grade.getUser(),
+                                activity.getCourse(),
+                                AchievementType.MAXED_ACTIVITIES);
+            }
+            else{
+                achievement.update(grade);
+            }
+            studentAchievementService.save(achievement);
 
         }
         if(grade.getValue() >= activity.getPassValue()){
-            StudentAchievement<Grade> achievement =
-                    new GradeAchievement(
-                            grade,
-                            grade.getUser(),
-                            activity.getCourse(),
-                            AchievementType.PASSED_ACTIVITIES
-                    );
+
+            achievement = studentAchievementService.findByUserAndType(grade.getUser(), AchievementType.PASSED_ACTIVITIES);
+            if(achievement == null) {
+                achievement =
+                        new GradeAchievement(
+                                grade,
+                                grade.getUser(),
+                                activity.getCourse(),
+                                AchievementType.PASSED_ACTIVITIES
+                        );
+            }
+            else{
+                achievement.update(grade);
+            }
+            studentAchievementService.save(achievement);
         }
 
     }
