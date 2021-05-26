@@ -1,8 +1,10 @@
 package upeldev.com.github.upel3.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
+import upeldev.com.github.upel3.model.achievement.AchievementEvent;
 import upeldev.com.github.upel3.repositories.GradeRepository;
 
 import java.util.ArrayList;
@@ -13,10 +15,12 @@ import java.util.stream.StreamSupport;
 @Service
 public class GradeService {
     private final GradeRepository gradeRepository;
+    private final ApplicationEventPublisher publisher;
 
     @Autowired
-    public GradeService(GradeRepository gradeRepository) {
+    public GradeService(GradeRepository gradeRepository, ApplicationEventPublisher publisher) {
         this.gradeRepository = gradeRepository;
+        this.publisher = publisher;
     }
 
     public boolean canUserAddGrade(Grade gradeDTO, User user){
@@ -25,6 +29,7 @@ public class GradeService {
         if(!user.getRoles().contains(Role.LECTURER)) return false;
 
         return user.getCoursesLectured().contains(gradeDTO.getActivity().getCourse());
+
 
     }
 
@@ -62,6 +67,7 @@ public class GradeService {
     }
 
     public Grade save(Grade gradeDTO){
+        publisher.publishEvent(new AchievementEvent<>(this, gradeDTO));
         gradeRepository.save(gradeDTO);
         return gradeRepository.save(gradeDTO);
     }
