@@ -31,20 +31,45 @@
         <strong>Opis kursu: </strong>
         <span th:text="${course.getDescription()}">Opis kursu.</span>
     </p>
-    <p class="pb-3">
-        <strong th:text="'Maksymalna ' + ${course.getAggregation().toString().toLowerCase()} + ' punktów w kursie:'"></strong>
-        <span th:text="${course.getValue()}"></span>
-    </p>
-    <p class="pb-3 border-bottom">
-        <strong>Próg zdawalności:</strong>
-        <span th:text="${course.getPassValue()}"></span>
-    </p>
-    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
+    <p class="mt-2 pb-3">
         Tutaj możesz podejrzeć wszystkie kwestie dotyczące danego kursu.
     </p>
+    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom border-top">
+        <div class="col-6 mx-0 px-0">
+            <h6 class="align-middle my-0"
+                th:text="'Maksymalna ' + ${course.getAggregation().toString().toLowerCase()} + ' punktów w kursie:'"></h6>
+        </div>
+        <div class="mx-0 px-0 col-6 text-right">
+            <p class="my-0"><strong th:text="${course.getValue()}">-</strong></p>
+        </div>
+    </header>
+    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom">
+        <div class="col-6 mx-0 px-0">
+            <h6 class="align-middle my-0">Próg zdawalności:</h6>
+        </div>
+        <div class="mx-0 px-0 col-6 text-right">
+            <p class="my-0"><strong th:text="${course.getPassValue()}">-</strong></p>
+        </div>
+    </header>
+    <header th:if="${shouldSeePersonalSummary}" class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom">
+        <div class="col-6 mx-0 px-0">
+            <h6 class="align-middle my-0">Twój wynik:</h6>
+        </div>
+        <div class="mx-0 px-0 col-6 text-right">
+            <p class="my-0"><strong th:text="${userValue}">-</strong></p>
+        </div>
+    </header>
+    <div th:if="${shouldSeePersonalSummary}" class="mx-0 mb-3 mt-4 px-0 py-0">
+        <p th:text="|Uzyskana wartość procentowa w kursie: ${percentage}%|"></p>
+        <div class="progress">
+            <div th:class="|progress-bar ${barColor}|" role="progressbar" th:style="|width: ${basePercentage}%|"></div>
+            <div class="progress-bar bg-info" role="progressbar" th:style="|width: ${bonusPercentage}%|"></div>
+        </div>
+    </div>
+    <div class="mt-2 pb-3" style="border-bottom: 3px solid #343a40;"></div>
 </section>
 
-<div class="container pb-3">
+<div class="container pb-0">
     <div class="row text-light align-items-start justify-content-center">
         <div class="d-flex p-2">
             <a type="button" class="btn btn-primary" href="#">Strona główna</a>
@@ -81,26 +106,43 @@
     <article class="container py-1 mb-3">
         <div style="background-color: #d6dff5; border: 3px solid #343a40;">
             <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${activity.getName()}">Laboratorium 1 - Chyba biblioteki i makefile</h2>
+            <p class="mx-3 pb-3 pt-2 mb-0" style="border-bottom: 2px solid #343a40;">
+                <strong>Opis aktywności: </strong>
+                <span th:text="${activity.getDescription()}">Opis aktywności.</span>
+            </p>
             <div class="d-flex flex-wrap align-content-center justify-content-center justify-content-md-between py-2">
                 <div class="justify-content-center col-9" >
-                    <div th:if="${course.getEnrolledStudents().contains(user)}" th:with="studentGrade=${@activityService.getStudentGradeInActivity(activity, user)}">
-                        <p class="pb-3 border-bottom" th:if="${studentGrade!=null}">
-                            <strong th:text="'Zdobyta ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></strong>
-                            <span th:text="${studentGrade.getValue()}"></span>
-                        </p>
-                    </div>
-                    <p class="pb-3 border-bottom">
-                        <strong th:text="'Maksymalna ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></strong>
-                        <span th:text="${activity.getValue()}"></span>
-                    </p>
-                    <p class="pb-3 border-bottom">
-                        <strong>Próg zdawalności:</strong>
-                        <span th:text="${activity.getPassValue()}"></span>
-                    </p>
-                    <p th:text="${activity.getDescription()}">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+                    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom border-top border-light">
+                        <div class="col-6 mx-0 px-0">
+                            <h6 class="align-middle my-0"
+                                th:text="'Maksymalna ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></h6>
+                        </div>
+                        <div class="mx-0 px-0 col-6 text-right">
+                            <p class="my-0"><strong th:text="${activity.getValue()}">-</strong></p>
+                        </div>
+                    </header>
+                    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom border-light">
+                        <div class="col-6 mx-0 px-0">
+                            <h6 class="align-middle my-0">Próg zdawalności:</h6>
+                        </div>
+                        <div class="mx-0 px-0 col-6 text-right">
+                            <p class="my-0"><strong th:text="${activity.getPassValue()}">-</strong></p>
+                        </div>
+                    </header>
+                    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom border-light"
+                            th:if="${course.getEnrolledStudents().contains(user)}"
+                            th:with="studentGrade=${@activityService.getStudentGradeInActivity(activity, user)}">
+                        <div class="col-6 mx-0 px-0">
+                            <h6 class="align-middle my-0"
+                                th:text="'Zdobyta ' + ${activity.getAggregation().toString().toLowerCase()} + ' punktów:'"></h6>
+                        </div>
+                        <div class="mx-0 px-0 col-6 text-right">
+                            <p class="my-0"><strong th:text="${studentGrade.getValue()}">-</strong></p>
+                        </div>
+                    </header>
                 </div>
-                <div class="text-end mr-3 justify-content-end" style="display: flex; justify-content: flex-end; flex-direction: column; margin-bottom: 1rem;">
-                    <a type="button" class="btn btn-primary" th:href="|activity?id=${activity.getId()}|">Przejdź do aktywności</a>
+                <div class="text-end mr-3 my-0 justify-content-center align-content-center" style="display: flex; justify-content: flex-end; flex-direction: column; margin-bottom: 1rem;">
+                    <a type="button" class="btn btn-primary align-middle" th:href="|activity?id=${activity.getId()}|">Przejdź do aktywności</a>
                 </div>
             </div>
         </div>
