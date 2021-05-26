@@ -3,6 +3,7 @@ package upeldev.com.github.upel3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import upeldev.com.github.upel3.model.*;
+import upeldev.com.github.upel3.model.achievement.StudentAchievement;
 import upeldev.com.github.upel3.services.*;
 
 import java.util.*;
@@ -33,6 +34,7 @@ public class DataLoader {
     public void populateData(){
         populateUsers();
         populateCourses();
+        populateAchievements();
         populateActivity();
         populateGrade();
         populateSubActivity();
@@ -147,8 +149,17 @@ public class DataLoader {
         for(SubActivity subActivity : subActivities){
             for(Grade grade : subActivity.getActivity().getGrades()){
                 SubGrade subGrade = new SubGrade(subActivity, grade, (int)(Math.random()*subActivity.getMaxValue()));
+                grade.getSubGrades().add(subGrade);
                 subGradeService.save(subGrade);
+                gradeService.save(grade);
             }
+
         }
+    }
+
+    public void populateAchievements(){
+//        StudentAchievement achievement = new StudentAchievement();
+//        achievement.setStudent(userService.findByEmail("benjamin@gmail.com"));
+//        System.out.println("New achievement created");
     }
 }

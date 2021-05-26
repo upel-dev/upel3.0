@@ -34,8 +34,6 @@ public class SubGrade implements Aggregable {
     private Grade grade;
 
 
-
-
     public SubGrade(SubActivity subActivity, Grade grade, double value){
         this.subActivity = subActivity;
         this.grade = grade;

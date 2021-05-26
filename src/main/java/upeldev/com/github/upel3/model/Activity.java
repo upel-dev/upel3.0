@@ -3,6 +3,8 @@ package upeldev.com.github.upel3.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class Activity implements Aggregator, Aggregable {
     )
     private List<Grade> grades = new ArrayList<>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(
             mappedBy = "activity",
             cascade = CascadeType.ALL,
