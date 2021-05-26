@@ -76,11 +76,16 @@ public class ActivityController {
             double passValue = activity.getPassValue();
             double maxPoints = activity.getValue();
             double points = 0;
+            boolean gradeIsSet = false;
 
             if(currentUser.getCoursesEnrolledIn().contains(course)){
                 Grade grade = activityService.getStudentGradeInActivity(activity, currentUser);
-                if(grade != null)
+                if(grade != null){
                     points = grade.getValue();
+                    gradeIsSet = true;
+                }
+
+
                 model.addAttribute("grade", grade);
             }
             else{
@@ -91,9 +96,9 @@ public class ActivityController {
             if(currentUser.getCoursesLectured().contains(course) || currentUser.getRoles().contains(Role.ADMIN)) return "activity_lecturer";
 
             // Progress bar
-
             String status;
-            if(points == 0){
+
+            if(!gradeIsSet){
                 status = "Brak przydzielonych punktów";
             }
             else if(points < passValue){
