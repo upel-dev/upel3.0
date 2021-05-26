@@ -3,6 +3,8 @@ package upeldev.com.github.upel3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import upeldev.com.github.upel3.model.*;
+import upeldev.com.github.upel3.model.achievement.Achievement;
+import upeldev.com.github.upel3.model.achievement.AchievementType;
 import upeldev.com.github.upel3.model.achievement.StudentAchievement;
 import upeldev.com.github.upel3.services.*;
 
@@ -19,9 +21,18 @@ public class DataLoader {
     private final SubActivityService subActivityService;
     private final SubGradeService subGradeService;
     private final StudentGroupService studentGroupService;
+    private final AchievementService achievementService;
 
     @Autowired
-    public DataLoader(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubActivityService subActivityService, SubGradeService subGradeService, StudentGroupService studentGroupService) {
+    public DataLoader(UserService userService,
+                      CourseService courseService,
+                      ActivityService activityService,
+                      GradeService gradeService,
+                      SubActivityService subActivityService,
+                      SubGradeService subGradeService,
+                      StudentGroupService studentGroupService,
+                      AchievementService achievementService
+    ) {
         this.userService = userService;
         this.courseService = courseService;
         this.activityService = activityService;
@@ -29,6 +40,7 @@ public class DataLoader {
         this.gradeService = gradeService;
         this.subGradeService = subGradeService;
         this.studentGroupService = studentGroupService;
+        this.achievementService = achievementService;
     }
 
     public void populateData(){
@@ -158,8 +170,9 @@ public class DataLoader {
     }
 
     public void populateAchievements(){
-//        StudentAchievement achievement = new StudentAchievement();
-//        achievement.setStudent(userService.findByEmail("benjamin@gmail.com"));
-//        System.out.println("New achievement created");
+
+        Achievement achievement = new Achievement(AchievementType.MAXED_ACTIVITIES);
+        achievement.addCourse(courseService.findAll().get(0));
+
     }
 }
