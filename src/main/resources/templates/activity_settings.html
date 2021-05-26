@@ -53,7 +53,7 @@
                   th:action="|/activity_settings/name/${course.getId()}/${activity.getId()}|">
                 <div class="col-10 ml-0 pl-0">
                     <input type="text" class="form-control w-100" th:name="activityName"
-                           th:placeholder="${activity.getName()}" th:value="${activity.getName()}">
+                           th:placeholder="${activity.getName()}" th:value="${activity.getName()}" required>
                 </div>
                 <div class="col-2 mx-0 px-0">
                     <button type="submit" class="btn btn-primary px-0 mx-0 col">Zmień nazwę</button>
@@ -90,7 +90,7 @@
                   th:action="|/activity_settings/passval/${course.getId()}/${activity.getId()}|">
                 <div class="col-8 ml-0 pl-0">
                     <input type="number" class="form-control w-100" th:name="passValue"
-                           th:placeholder="${activity.getPassValue()}" th:value="${activity.getPassValue()}">
+                           th:placeholder="${activity.getPassValue()}" th:value="${activity.getPassValue()}" required>
                 </div>
                 <div class="col-4 mx-0 px-0">
                     <button type="submit" class="btn btn-primary px-0 mx-0 col">Zmień próg</button>
@@ -143,15 +143,15 @@
                       th:action="|/activity_settings/subactivity_edit/${course.getId()}/${activity.getId()}/${subActivity.getId()}|">
                     <td class="col">
                         <input type="text" class="form-control" th:name="name"
-                                  th:placeholder="${subActivity.getName()}" th:value="*{name}">
+                                  th:placeholder="${subActivity.getName()}" th:value="*{name}" required>
                     </td>
                     <td class="col" th:if="${displayWeight}">
                         <input type="number" class="form-control" th:name="weight"
-                               th:placeholder="${subActivity.getWeight()}" th:value="*{weight}">
+                               th:placeholder="${subActivity.getWeight()}" th:value="*{weight}" required>
                     </td>
                     <td class="col">
                         <input type="number" class="form-control" th:name="maxValue"
-                               th:placeholder="${subActivity.getMaxValue()}" th:value="*{maxValue}">
+                               th:placeholder="${subActivity.getMaxValue()}" th:value="*{maxValue}" required>
                     </td>
                     <td class="col">
                         <a type="button" class="btn btn-danger"
