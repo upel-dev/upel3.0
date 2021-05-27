@@ -10,6 +10,8 @@ import upeldev.com.github.upel3.services.AchievementService;
 import upeldev.com.github.upel3.services.ActivityService;
 import upeldev.com.github.upel3.services.StudentAchievementService;
 
+import java.util.Set;
+
 @Component
 public class AchievementManager {
 
@@ -19,55 +21,28 @@ public class AchievementManager {
     @Autowired
     public AchievementManager(
             AchievementService achievementService,
-            StudentAchievementService studentAchievementService
-    ){
+            StudentAchievementService studentAchievementService){
+
         this.achievementService = achievementService;
         this.studentAchievementService = studentAchievementService;
     }
 
     @EventListener
     public void handleAchievementEvent(AchievementEvent<Grade> gradeEvent){
-        //TODO: simplify and check whether course contains this achievement
+
         Grade grade = gradeEvent.getValue();
         Activity activity = grade.getActivity();
         Course course = activity.getCourse();
 
-        GradeAchievement achievement;
+        Set<AchievementType> activeTypes = achievementService.findAchievementTypesInCourse(course);
 
-
-        if(grade.getValue() == activity.getValue() && activity.getValue() != 0){
-
-            achievement = studentAchievementService.findByUserAndType(grade.getUser(), AchievementType.MAXED_ACTIVITIES);
-
-            if(achievement == null){
-                achievement = new GradeAchievement(
-                                grade,
-                                grade.getUser(),
-                                activity.getCourse(),
-                                AchievementType.MAXED_ACTIVITIES);
-            }
-            else{
-                achievement.update(grade);
-            }
-            studentAchievementService.save(achievement);
-
+        if(activeTypes.contains(AchievementType.MAXED_ACTIVITIES) &&
+                grade.getValue() == activity.getValue() && activity.getValue() != 0) {
+            studentAchievementService.createOrUpdate(grade, AchievementType.MAXED_ACTIVITIES);
         }
-        if(grade.getValue() >= activity.getPassValue()){
-
-            achievement = studentAchievementService.findByUserAndType(grade.getUser(), AchievementType.PASSED_ACTIVITIES);
-            if(achievement == null) {
-                achievement =
-                        new GradeAchievement(
-                                grade,
-                                grade.getUser(),
-                                activity.getCourse(),
-                                AchievementType.PASSED_ACTIVITIES
-                        );
-            }
-            else{
-                achievement.update(grade);
-            }
-            studentAchievementService.save(achievement);
+        if(activeTypes.contains(AchievementType.PASSED_ACTIVITIES) &&
+                grade.getValue() >= activity.getPassValue()){
+            studentAchievementService.createOrUpdate(grade, AchievementType.PASSED_ACTIVITIES);
         }
 
     }

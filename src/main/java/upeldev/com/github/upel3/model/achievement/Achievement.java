@@ -21,21 +21,14 @@ public class Achievement {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @OneToMany
-    private Set<Course> courses = new LinkedHashSet<>();
+    @ManyToOne
+    private Course course;
 
     private AchievementType type;
 
-    public Achievement(AchievementType type){
+    public Achievement(AchievementType type, Course course){
         this.type = type;
-    }
-
-    public void addCourse(Course course){
-        courses.add(course);
-    }
-
-    public void removeCourse(Course course){
-        courses.remove(course);
+        this.course = course;
     }
 
 }
