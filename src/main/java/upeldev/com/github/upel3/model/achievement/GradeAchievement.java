@@ -9,6 +9,7 @@ import upeldev.com.github.upel3.model.Activity;
 import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.Grade;
 import upeldev.com.github.upel3.model.User;
+import upeldev.com.github.upel3.services.GradeService;
 
 import javax.persistence.*;
 import java.util.ArrayList;

@@ -6,8 +6,11 @@ import org.springframework.stereotype.Component;
 import upeldev.com.github.upel3.model.Activity;
 import upeldev.com.github.upel3.model.Course;
 import upeldev.com.github.upel3.model.Grade;
+import upeldev.com.github.upel3.model.SubGrade;
+import upeldev.com.github.upel3.model.achievement.event.AchievementEvent;
+import upeldev.com.github.upel3.model.achievement.event.GradeEvent;
+import upeldev.com.github.upel3.model.achievement.event.SubGradeEvent;
 import upeldev.com.github.upel3.services.AchievementService;
-import upeldev.com.github.upel3.services.ActivityService;
 import upeldev.com.github.upel3.services.StudentAchievementService;
 
 import java.util.Set;
@@ -28,7 +31,7 @@ public class AchievementManager {
     }
 
     @EventListener
-    public void handleAchievementEvent(AchievementEvent<Grade> gradeEvent){
+    public void handleAchievementEvent(GradeEvent gradeEvent){
 
         Grade grade = gradeEvent.getValue();
         Activity activity = grade.getActivity();
@@ -44,6 +47,10 @@ public class AchievementManager {
                 grade.getValue() >= activity.getPassValue()){
             studentAchievementService.createOrUpdate(grade, AchievementType.PASSED_ACTIVITIES);
         }
+    }
+
+    @EventListener
+    public void handleAchievementEvent(SubGradeEvent subGradeEvent){
 
     }
 }

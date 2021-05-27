@@ -1,4 +1,4 @@
-package upeldev.com.github.upel3.model.achievement;
+package upeldev.com.github.upel3.model.achievement.event;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,13 +8,12 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 @Setter
-public class AchievementEvent<T> extends ApplicationEvent {
+public abstract class AchievementEvent<T> extends ApplicationEvent {
 
     private final T value;
 
     public AchievementEvent(Object source, T value) {
         super(source);
         this.value = value;
-
     }
 }

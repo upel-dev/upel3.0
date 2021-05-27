@@ -4,10 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
-import upeldev.com.github.upel3.model.achievement.AchievementEvent;
+import upeldev.com.github.upel3.model.achievement.GradeAchievement;
+import upeldev.com.github.upel3.model.achievement.event.AchievementEvent;
+import upeldev.com.github.upel3.model.achievement.event.GradeEvent;
 import upeldev.com.github.upel3.repositories.GradeRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -67,7 +68,7 @@ public class GradeService {
     }
 
     public Grade save(Grade gradeDTO){
-        publisher.publishEvent(new AchievementEvent<>(this, gradeDTO));
+        publisher.publishEvent(new GradeEvent(this, gradeDTO));
         gradeRepository.save(gradeDTO);
         return gradeRepository.save(gradeDTO);
     }
