@@ -55,7 +55,6 @@ public class NewActivityController {
             Model model,
             Principal principal) {
 
-        System.out.println(passValue);
         if(passOption.equals("no") || passValue == null){
             passValue = 0;
         }
