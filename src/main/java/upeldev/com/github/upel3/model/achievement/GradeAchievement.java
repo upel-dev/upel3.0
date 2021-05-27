@@ -22,7 +22,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class GradeAchievement extends StudentAchievement<Grade> {
+public class GradeAchievement extends StudentAchievement {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany

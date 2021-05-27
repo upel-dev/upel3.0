@@ -177,7 +177,9 @@ public class DataLoader {
     public void populateAchievements(){
 
         Course course = courseService.findAll().get(0);
-        Achievement achievement = new Achievement(AchievementType.PASSED_ACTIVITIES, course);
-        achievementService.save(achievement);
+        Achievement passedActivityAchievement = new Achievement(AchievementType.PASSED_ACTIVITIES, course);
+        Achievement maxedSubActivityAchievement = new Achievement(AchievementType.MAXED_SUBACTIVITIES, course);
+        achievementService.save(passedActivityAchievement);
+        achievementService.save(maxedSubActivityAchievement);
     }
 }

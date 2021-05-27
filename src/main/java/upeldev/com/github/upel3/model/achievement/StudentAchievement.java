@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class StudentAchievement<T> {
+public abstract class StudentAchievement {
 
     @Id
     @EqualsAndHashCode.Include

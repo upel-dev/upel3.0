@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SubGradeAchievement extends StudentAchievement<SubGrade> {
+public class SubGradeAchievement extends StudentAchievement {
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany
