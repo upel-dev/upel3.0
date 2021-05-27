@@ -22,6 +22,7 @@ public class DataLoader {
     private final SubGradeService subGradeService;
     private final StudentGroupService studentGroupService;
     private final AchievementService achievementService;
+    private final StudentAchievementService studentAchievementService;
 
     @Autowired
     public DataLoader(UserService userService,
@@ -31,7 +32,8 @@ public class DataLoader {
                       SubActivityService subActivityService,
                       SubGradeService subGradeService,
                       StudentGroupService studentGroupService,
-                      AchievementService achievementService
+                      AchievementService achievementService,
+                      StudentAchievementService studentAchievementService
     ) {
         this.userService = userService;
         this.courseService = courseService;
@@ -41,6 +43,8 @@ public class DataLoader {
         this.subGradeService = subGradeService;
         this.studentGroupService = studentGroupService;
         this.achievementService = achievementService;
+        this.studentAchievementService = studentAchievementService;
+
     }
 
     public void populateData(){
@@ -52,6 +56,7 @@ public class DataLoader {
         populateSubActivity();
         populateSubGrade();
         populateGroups();
+
     }
 
     public void populateCourses(){

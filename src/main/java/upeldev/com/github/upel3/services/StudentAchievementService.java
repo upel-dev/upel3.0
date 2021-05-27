@@ -11,15 +11,22 @@ import upeldev.com.github.upel3.model.achievement.AchievementType;
 import upeldev.com.github.upel3.model.achievement.GradeAchievement;
 import upeldev.com.github.upel3.model.achievement.StudentAchievement;
 import upeldev.com.github.upel3.repositories.GradeAchievementRepository;
+import upeldev.com.github.upel3.repositories.StudentAchievementRepository;
+
+import java.util.List;
 
 @Service
 public class StudentAchievementService {
 
     private final GradeAchievementRepository gradeAchievementRepository;
+    private final StudentAchievementRepository studentAchievementRepository;
 
     @Autowired
-    public StudentAchievementService(GradeAchievementRepository gradeAchievementRepository){
+    public StudentAchievementService(
+            GradeAchievementRepository gradeAchievementRepository,
+            StudentAchievementRepository studentAchievementRepository){
         this.gradeAchievementRepository = gradeAchievementRepository;
+        this.studentAchievementRepository = studentAchievementRepository;
     }
 
     public GradeAchievement save(GradeAchievement studentAchievement){
@@ -45,6 +52,11 @@ public class StudentAchievementService {
             achievement.update(grade);
         }
         return save(achievement);
+    }
+
+    public List<StudentAchievement<?>> findAllUsersAchievements(User user){
+        return studentAchievementRepository.findAllByUser(user);
+
     }
 
 }
