@@ -61,8 +61,8 @@ public class GradeAchievement extends StudentAchievement {
             break;
         }
 
-        if(grades.size() >= lowerLimit) isAchieved = true;
-        else isAchieved = false;
+        isAchieved = grades.size() >= lowerLimit;
+
         System.out.println("Updated " + getType() + " achievement. Current count: " + getQuantity());
 
     }
