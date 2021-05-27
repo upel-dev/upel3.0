@@ -6,6 +6,7 @@ import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.model.achievement.*;
 import upeldev.com.github.upel3.repositories.StudentAchievementRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -34,7 +35,6 @@ public class StudentAchievementService {
         User user = grade.getUser();
 
         GradeAchievement achievement = (GradeAchievement) findByUserAndType(grade.getUser(), AchievementType.PASSED_ACTIVITIES);
-
         if(achievement == null) {
             achievement = new GradeAchievement(grade, user, course, type);
         }

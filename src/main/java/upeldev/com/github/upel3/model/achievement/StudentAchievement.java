@@ -14,14 +14,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class StudentAchievement {
 
     @Id
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     protected boolean isAchieved = false;
@@ -39,7 +39,7 @@ public abstract class StudentAchievement {
         this.course = course;
         this.type = type;
 
-        System.out.println("New achievement of type " + type);
+//        System.out.println("New achievement of type " + type);
     }
 
 

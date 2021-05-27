@@ -36,12 +36,10 @@ public class AchievementManager {
 
         Set<AchievementType> activeTypes = achievementService.findAchievementTypesInCourse(course);
 
-        if(activeTypes.contains(AchievementType.MAXED_ACTIVITIES) &&
-                grade.getValue() == activity.getValue() && activity.getValue() != 0) {
+        if(activeTypes.contains(AchievementType.MAXED_ACTIVITIES)) {
             studentAchievementService.createOrUpdate(grade, AchievementType.MAXED_ACTIVITIES);
         }
-        if(activeTypes.contains(AchievementType.PASSED_ACTIVITIES) &&
-                grade.getValue() >= activity.getPassValue()){
+        if(activeTypes.contains(AchievementType.PASSED_ACTIVITIES)){
             studentAchievementService.createOrUpdate(grade, AchievementType.PASSED_ACTIVITIES);
         }
     }
@@ -55,8 +53,7 @@ public class AchievementManager {
 
         Set<AchievementType> activeTypes = achievementService.findAchievementTypesInCourse(course);
 
-        if(activeTypes.contains(AchievementType.MAXED_SUBACTIVITIES) &&
-                subGrade.getValue() == subActivity.getMaxValue() && subActivity.getMaxValue() != 0) {
+        if(activeTypes.contains(AchievementType.MAXED_SUBACTIVITIES)) {
             studentAchievementService.createOrUpdate(subGrade, AchievementType.MAXED_SUBACTIVITIES);
         }
 

@@ -26,10 +26,10 @@ public class SubGradeAchievement extends StudentAchievement {
 
     private int lowerLimit = 2;
 
-    public SubGradeAchievement(SubGrade grade, User student, Course course, AchievementType type){
+    public SubGradeAchievement(SubGrade subGrade, User student, Course course, AchievementType type){
         super(student, course, type);
         this.subGrades = new HashSet<>();
-        this.subGrades.add(grade);
+        update(subGrade);
     }
 
     public void update(SubGrade subGrade){
@@ -38,7 +38,7 @@ public class SubGradeAchievement extends StudentAchievement {
 
         switch (type){
             case MAXED_SUBACTIVITIES:
-                if(subGrade.getValue() == subActivity.getMaxValue() && subActivity.getMaxValue() != 0){
+                if(subGrade.getValue() >= subActivity.getMaxValue() && subActivity.getMaxValue() != 0){
                     subGrades.add(subGrade);
                 }
                 else{
@@ -49,6 +49,7 @@ public class SubGradeAchievement extends StudentAchievement {
 
         if(subGrades.size() >= lowerLimit) isAchieved = true;
         else isAchieved = false;
+        System.out.println("Updated " + getType() + " achievement. Current count: " + getQuantity());
 
     }
 

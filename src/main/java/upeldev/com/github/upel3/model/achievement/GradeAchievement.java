@@ -25,15 +25,16 @@ import java.util.Set;
 public class GradeAchievement extends StudentAchievement {
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany
+    @ManyToMany
     private Set<Grade> grades;
+
 
     private int lowerLimit = 2;
 
     public GradeAchievement(Grade grade, User student, Course course, AchievementType type){
         super(student, course, type);
         this.grades = new HashSet<>();
-        this.grades.add(grade);
+        update(grade);
     }
 
     public void update(Grade grade){
@@ -42,7 +43,7 @@ public class GradeAchievement extends StudentAchievement {
 
         switch (type){
             case MAXED_ACTIVITIES:
-                if(grade.getValue() == activity.getValue() && activity.getValue() != 0){
+                if(grade.getValue() >= activity.getValue() && activity.getValue() != 0){
                     grades.add(grade);
                 }
                 else{
@@ -62,6 +63,7 @@ public class GradeAchievement extends StudentAchievement {
 
         if(grades.size() >= lowerLimit) isAchieved = true;
         else isAchieved = false;
+        System.out.println("Updated " + getType() + " achievement. Current count: " + getQuantity());
 
     }
 

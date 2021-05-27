@@ -68,9 +68,9 @@ public class GradeService {
     }
 
     public Grade save(Grade gradeDTO){
-        publisher.publishEvent(new GradeEvent(this, gradeDTO));
-        gradeRepository.save(gradeDTO);
-        return gradeRepository.save(gradeDTO);
+        Grade grade = gradeRepository.save(gradeDTO);
+        publisher.publishEvent(new GradeEvent(this, grade));
+        return grade;
     }
 
     public void changeDescription(Grade grade, String newDescription){
