@@ -99,6 +99,7 @@ public class WebController {
             if(currentUser.getRoles().contains(Role.STUDENT) && currentUser.getCoursesEnrolledIn().contains(course)){
                 double userValue = 0;
                 double valueMAX = 0;
+                int passedCourses = 0;
                 shouldSeeShortSummary = true;
 
                 List<Activity> activityList = activityService.findActivityByCourse(course);
@@ -110,14 +111,15 @@ public class WebController {
 
                 if(course.getAggregation().equals(ElementAggregation.SUM)){
                     for(Grade grade : gradeList){
+                        if(grade.getValue() >= grade.getActivity().getPassValue()) passedCourses++;
                         userValue += grade.getValue();
                         valueMAX += grade.getActivity().getValue();
                     }
 
                 }
-
                 else { //TODO add agregation for ElementAggregation.WAVG
                     for(Grade grade : gradeList){
+                        if(grade.getValue() >= grade.getActivity().getPassValue()) passedCourses++;
                         userValue += grade.getValue()/grade.getActivity().getValue();
                     }
                     valueMAX = 100;
@@ -135,6 +137,7 @@ public class WebController {
                     bonusPercentage = 100 - basePercentage;
                 }
 
+                model.addAttribute("passedCourses", passedCourses);
                 model.addAttribute("gradeList", gradeList);
                 model.addAttribute("userValue", userValue);
                 model.addAttribute("valueMAX", valueMAX);

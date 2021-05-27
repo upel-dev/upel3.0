@@ -48,13 +48,16 @@ public class NewActivityController {
             @PathVariable("id") Long id,
             @RequestParam(value = "activityName") String activityName,
             @RequestParam(value = "activityDescription") String activityDescription,
-            @RequestParam(value = "passValue")  int passValue,
+            @RequestParam(value = "passValue", required=false) Integer passValue,
+            @RequestParam(value = "pass")  String passOption,
             @RequestParam(value = "subActivity")  String[] subActivityName,
             @RequestParam(value = "maxPoints")  int[] maxPoints,
             Model model,
             Principal principal) {
 
-
+        if(passOption.equals("no") || passValue == null){
+            passValue = 0;
+        }
         User currentUser = userService.findByEmail(principal.getName());
         Course currentCourse = courseService.findCourseById(id);
         model.addAttribute("user", currentUser);
