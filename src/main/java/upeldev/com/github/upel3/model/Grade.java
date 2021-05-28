@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class Grade {
     @Column
     protected String description;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(
             mappedBy = "grade",
             cascade = CascadeType.ALL,

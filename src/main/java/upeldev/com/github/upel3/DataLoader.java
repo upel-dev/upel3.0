@@ -3,6 +3,9 @@ package upeldev.com.github.upel3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import upeldev.com.github.upel3.model.*;
+import upeldev.com.github.upel3.model.achievement.Achievement;
+import upeldev.com.github.upel3.model.achievement.AchievementType;
+import upeldev.com.github.upel3.model.achievement.StudentAchievement;
 import upeldev.com.github.upel3.services.*;
 
 import java.util.*;
@@ -18,9 +21,20 @@ public class DataLoader {
     private final SubActivityService subActivityService;
     private final SubGradeService subGradeService;
     private final StudentGroupService studentGroupService;
+    private final AchievementService achievementService;
+    private final StudentAchievementService studentAchievementService;
 
     @Autowired
-    public DataLoader(UserService userService, CourseService courseService, ActivityService activityService, GradeService gradeService, SubActivityService subActivityService, SubGradeService subGradeService, StudentGroupService studentGroupService) {
+    public DataLoader(UserService userService,
+                      CourseService courseService,
+                      ActivityService activityService,
+                      GradeService gradeService,
+                      SubActivityService subActivityService,
+                      SubGradeService subGradeService,
+                      StudentGroupService studentGroupService,
+                      AchievementService achievementService,
+                      StudentAchievementService studentAchievementService
+    ) {
         this.userService = userService;
         this.courseService = courseService;
         this.activityService = activityService;
@@ -28,16 +42,21 @@ public class DataLoader {
         this.gradeService = gradeService;
         this.subGradeService = subGradeService;
         this.studentGroupService = studentGroupService;
+        this.achievementService = achievementService;
+        this.studentAchievementService = studentAchievementService;
+
     }
 
     public void populateData(){
         populateUsers();
         populateCourses();
+        populateAchievements();
         populateActivity();
         populateGrade();
         populateSubActivity();
         populateSubGrade();
         populateGroups();
+
     }
 
     public void populateCourses(){
@@ -147,8 +166,22 @@ public class DataLoader {
         for(SubActivity subActivity : subActivities){
             for(Grade grade : subActivity.getActivity().getGrades()){
                 SubGrade subGrade = new SubGrade(subActivity, grade, (int)(Math.random()*subActivity.getMaxValue()));
+                grade.getSubGrades().add(subGrade);
                 subGradeService.save(subGrade);
+                gradeService.save(grade);
             }
+
         }
+    }
+
+    public void populateAchievements(){
+
+        Course course = courseService.findAll().get(0);
+        Achievement passedActivityAchievement = new Achievement(AchievementType.PASSED_ACTIVITIES, course);
+        Achievement maxActivityAchievement = new Achievement(AchievementType.MAXED_ACTIVITIES, course);
+        Achievement maxedSubActivityAchievement = new Achievement(AchievementType.MAXED_SUBACTIVITIES, course);
+        achievementService.save(passedActivityAchievement);
+        achievementService.save(maxedSubActivityAchievement);
+        achievementService.save(maxActivityAchievement);
     }
 }

@@ -1,11 +1,14 @@
 package upeldev.com.github.upel3.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
+import upeldev.com.github.upel3.model.achievement.GradeAchievement;
+import upeldev.com.github.upel3.model.achievement.event.AchievementEvent;
+import upeldev.com.github.upel3.model.achievement.event.GradeEvent;
 import upeldev.com.github.upel3.repositories.GradeRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -13,10 +16,12 @@ import java.util.stream.StreamSupport;
 @Service
 public class GradeService {
     private final GradeRepository gradeRepository;
+    private final ApplicationEventPublisher publisher;
 
     @Autowired
-    public GradeService(GradeRepository gradeRepository) {
+    public GradeService(GradeRepository gradeRepository, ApplicationEventPublisher publisher) {
         this.gradeRepository = gradeRepository;
+        this.publisher = publisher;
     }
 
     public boolean canUserAddGrade(Grade gradeDTO, User user){
@@ -25,6 +30,7 @@ public class GradeService {
         if(!user.getRoles().contains(Role.LECTURER)) return false;
 
         return user.getCoursesLectured().contains(gradeDTO.getActivity().getCourse());
+
 
     }
 
@@ -62,8 +68,9 @@ public class GradeService {
     }
 
     public Grade save(Grade gradeDTO){
-        gradeRepository.save(gradeDTO);
-        return gradeRepository.save(gradeDTO);
+        Grade grade = gradeRepository.save(gradeDTO);
+        publisher.publishEvent(new GradeEvent(this, grade));
+        return grade;
     }
 
     public void changeDescription(Grade grade, String newDescription){
