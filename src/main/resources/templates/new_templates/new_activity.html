@@ -27,6 +27,16 @@
         }
 
     }
+    function showPassValue(){
+        html = "<label for=\"passValue\">Liczba punktów potrzebnych do zdania: </label>\n" +
+            "            <input type=\"number\" class=\"form-control\" id=\"passValue\" name=\"passValue\" placeholder=\"Liczba punktów potrzebnych do zdania aktywności\" required>"
+        document.getElementById("pass_div").innerHTML = html;
+    }
+    function hidePassValue(){
+        document.getElementById("pass_div").innerHTML = "";
+
+    }
+
 </script>
 <body style="background-color: #ecf1fc;">
 
@@ -63,8 +73,13 @@
             <textarea class="form-control" id="activityDescription" th:name="activityDescription" rows="3"></textarea>
         </div>
         <div class="form-group">
-            <label for="passValue">Liczba punktów potrzebnych do zdania:</label>
-            <input type="number" class="form-control" id="passValue" th:name="passValue" placeholder="Liczba punktów potrzebnych do zdania aktywności" required>
+            <p>Czy zdanie tej aktywności jest konieczne do zaliczenia całego kursu?</p>
+            <input type="radio" id="pass_nessesary" name="pass" value="yes" onchange="showPassValue()" checked> <label for="pass_nessesary">Tak</label><br>
+            <input type="radio" id="pass_not_nessesary" name="pass" value="no" onchange="hidePassValue()"> <label for="pass_not_nessesary">Nie</label><br>
+        </div>
+        <div class="form-group" id="pass_div">
+            <label for="passValue">Liczba punktów potrzebnych do zdania: </label>
+            <input type="number" class="form-control" id="passValue" name="passValue" placeholder="Liczba punktów potrzebnych do zdania aktywności" required>
         </div>
 
         <div class="form-group" id="subActivities">

@@ -90,6 +90,11 @@ public class GradeSummaryController {
             model.addAttribute("barColor", "bg-success");
             status = "Zaliczony";
         }
+        for(Grade grade : gradeList){
+            if(grade.getValue() <= grade.getActivity().getPassValue()){
+                status = "Niezaliczony";
+            }
+        }
         model.addAttribute("status", status);
 
         return "grade_summary";

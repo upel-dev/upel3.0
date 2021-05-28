@@ -102,33 +102,6 @@
         </table>
 
 
-<!--    <table class="table table-hover table-bordered bg-light">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th scope="col" class="text-nowrap">Użytkownik</th>-->
-<!--            <th scope="col" class="text-nowrap text-center">Łączna wartość</th>-->
-<!--            <th scope="col" class="text-nowrap text-center"-->
-<!--                th:each="grade : ${gradeList}" th:text="${grade.getActivity().getName()}"></th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--    <tbody>-->
-<!--    <tr th:style="${userValue} >= ${course.getPassValue()} ? 'background-color: #d0faa3' : 'background-color: #ff978f'">-->
-<!--        <td class="col text-nowrap align-middle"-->
-<!--            th:text="${user.getFirstName() +' '+ user.getLastName()}"></td>-->
-<!--        <td class="col text-nowrap align-middle text-center" style="font-weight: bold"-->
-<!--            th:text="${userValue}"></td>-->
-<!--        <td class="col text-nowrap align-middle text-center" style="min-width: 10ch;"-->
-<!--            th:each="grade : ${gradeList}">-->
-<!--            <span><strong th:text="${grade.getValue()}"></strong></span>-->
-<!--            <span>/</span>-->
-<!--            <span th:text="${grade.getActivity().getValue()}"></span>-->
-<!--        </td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--    </table>-->
-
-
-
     <p th:text="|Uzyskana wartość w kursie: ${percentage}%|"></p>
     <div class="progress">
         <div th:class="|progress-bar ${barColor}|" role="progressbar" th:style="|width: ${basePercentage}%|"></div>
