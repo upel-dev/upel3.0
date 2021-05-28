@@ -12,9 +12,9 @@
         newDiv.classList.add('subActivities-class');
 
         newDiv.innerHTML = "<label for=\"subActivity\">Nazwa części oceny:</label>\n" +
-            "            <input type=\"text\" class=\"form-control\" id=\"subActivity\" name=\"subActivity\" placeholder=\"Nazwa oceny\">\n" +
+            "            <input type=\"text\" class=\"form-control\" id=\"subActivity\" name=\"subActivity\" placeholder=\"Nazwa oceny\" required>\n " +
             "            <label for=\"maxPoints\">Maksymalna liczba punktów:</label>\n" +
-            "            <input type=\"number\" class=\"form-control\" id=\"maxPoints\" name=\"maxPoints\" placeholder=\"Maksymalna liczba punktów\">"
+            "            <input type=\"number\" class=\"form-control\" id=\"maxPoints\" name=\"maxPoints\" placeholder=\"Maksymalna liczba punktów\" required>"
 
         let subActivities = document.getElementById('subActivities');
         subActivities.append(newDiv);
@@ -29,7 +29,7 @@
     }
     function showPassValue(){
         html = "<label for=\"passValue\">Liczba punktów potrzebnych do zdania: </label>\n" +
-            "            <input type=\"number\" class=\"form-control\" id=\"passValue\" name=\"passValue\" placeholder=\"Liczba punktów potrzebnych do zdania aktywności\">"
+            "            <input type=\"number\" class=\"form-control\" id=\"passValue\" name=\"passValue\" placeholder=\"Liczba punktów potrzebnych do zdania aktywności\" required>"
         document.getElementById("pass_div").innerHTML = html;
     }
     function hidePassValue(){
@@ -66,7 +66,7 @@
     <form th:action="|/create_activity/${course.getId()}|">
         <div class="form-group">
             <label for="activityName">Nazwa aktywności:</label>
-            <input type="text" class="form-control" id="activityName" th:name="activityName" placeholder="Nazwa aktywności">
+            <input type="text" class="form-control" id="activityName" th:name="activityName" placeholder="Nazwa aktywności" required>
         </div>
         <div class="form-group">
             <label for="activityDescription">Opis aktywności:</label>
@@ -79,15 +79,15 @@
         </div>
         <div class="form-group" id="pass_div">
             <label for="passValue">Liczba punktów potrzebnych do zdania: </label>
-            <input type="number" class="form-control" id="passValue" name="passValue" placeholder="Liczba punktów potrzebnych do zdania aktywności">
+            <input type="number" class="form-control" id="passValue" name="passValue" placeholder="Liczba punktów potrzebnych do zdania aktywności" required>
         </div>
 
         <div class="form-group" id="subActivities">
             <div class="subActivities-class">
                 <label for="subActivity">Nazwa części oceny:</label>
-                <input type="text" class="form-control" id="subActivity" th:name="subActivity" placeholder="Nazwa oceny">
+                <input type="text" class="form-control" id="subActivity" th:name="subActivity" placeholder="Nazwa oceny" required>
                 <label for="maxPoints">Maksymalna liczba punktów:</label>
-                <input type="number" class="form-control" id="maxPoints" th:name="maxPoints" placeholder="Maksymalna liczba punktów">
+                <input type="number" class="form-control" id="maxPoints" th:name="maxPoints" placeholder="Maksymalna liczba punktów" required>
             </div>
         </div>
 

@@ -104,15 +104,18 @@ public class GroupController {
 
             User newStudent = userService.findByIndexNumber(userId);
 
-            if (newStudent == null)
-            {
+            if (newStudent == null) {
                 String errorMsg = "Niepoprawny numer indeksu.";
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
-            if (group.getStudents().contains(newStudent))
-            {
+            else if (group.getStudents().contains(newStudent)) {
                 String errorMsg = "Student już jest zapisany do grupy.";
+                model.addAttribute("errorMsg", errorMsg);
+                return "error";
+            }
+            else if (!course.getEnrolledStudents().contains(newStudent)){
+                String errorMsg = "Student nie jest zapisany do kursu.";
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }

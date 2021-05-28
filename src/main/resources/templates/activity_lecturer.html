@@ -113,7 +113,7 @@
                 </td>
                 <td class="col text-nowrap" th:each="subGrade : ${grade.getSubGrades()}">
                     <input type="number" class="form-control" style="min-width: 10ch;" th:name="subGrade"
-                           th:placeholder="${subGrade.getValue()}" th:value="${subGrade.getValue()}">
+                           th:placeholder="${subGrade.getValue()}" th:value="${subGrade.getValue()}" required>
                 </td>
             </tr>
             <tr class="collapse" th:id="'collapseExample' + ${iterStat.count}" style="background-color: #d9e6f9;">
@@ -141,15 +141,15 @@
             </th>
         </tr>
         <thead style="border-top: 3px solid #343a40;">
-        <tr th:if="${user.getCoursesLectured().contains(course)}">
+        <tr th:if="${!course.getEnrolledStudents().isEmpty() && user.getCoursesLectured().contains(course)}">
             <th scope="col" colspan="3">Użytkownik</th>
             <th scope="col" class="text-center"
                 th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
         </tr>
         </thead>
 
-        <thead>
-        <form th:if="${user.getCoursesLectured().contains(course)}"
+
+        <form th:if="${!course.getEnrolledStudents().isEmpty() && user.getCoursesLectured().contains(course)}"
               th:action="|/create_grade/${course.getId()}/${activity.getId()}|">
             <tr>
                 <td scope="col" colspan="3">
@@ -161,7 +161,7 @@
 
                 <td scope="col" th:each="subActivity : ${activity.getSubActivities()}">
                     <input type="number" class="form-control" th:id="${subActivity.getName()}" th:name="subGrade"
-                           placeholder="0" value="0" style="min-width: 10ch;">
+                           placeholder="0" value="0" style="min-width: 10ch;" required>
                 </td>
 
             </tr>
@@ -182,14 +182,14 @@
         </form>
 
         <thead style="border-top: 3px solid #343a40;">
-        <tr th:if="${user.getCoursesLectured().contains(course)}">
+        <tr th:if="${!course.getGroups().isEmpty() && user.getCoursesLectured().contains(course)}">
             <th scope="col" colspan="3">Grupa</th>
             <th scope="col" class="text-center"
                 th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
         </tr>
         </thead>
 
-        <form th:if="${user.getCoursesLectured().contains(course)}"
+        <form th:if="${!course.getGroups().isEmpty() && user.getCoursesLectured().contains(course)}"
               th:action="|/create_group_grade/${course.getId()}/${activity.getId()}|">
             <tr>
                 <td scope="col" colspan="3">
@@ -201,7 +201,7 @@
 
                 <td scope="col" th:each="subActivity : ${activity.getSubActivities()}">
                     <input type="number" class="form-control" th:id="${subActivity.getName()}" th:name="subGrade"
-                           placeholder="0" value="0" style="min-width: 10ch;">
+                           placeholder="0" value="0" style="min-width: 10ch;" required>
                 </td>
 
             </tr>
