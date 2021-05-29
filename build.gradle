@@ -7,6 +7,12 @@ plugins {
 group = 'upeldev.com.github'
 version = '0.0.1-SNAPSHOT'
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(15)
+    }
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -30,12 +36,12 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:3.7.7'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.7.7'
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.7.0'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
-    compile group: 'org.webjars', name: 'bootstrap', version: '4.0.0-2'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
+    implementation group: 'org.webjars', name: 'bootstrap', version: '4.0.0-2'
     implementation group: 'org.springframework.security', name: 'spring-security-core'
-    compile "org.springframework.security:spring-security-web"
-    compile "org.springframework.security:spring-security-config"
-    testCompile "org.springframework.security:spring-security-test:4.2.2.RELEASE"
+    implementation "org.springframework.security:spring-security-web"
+    implementation "org.springframework.security:spring-security-config"
+    testImplementation "org.springframework.security:spring-security-test:4.2.2.RELEASE"
 }
 
 test {
