@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>UPeL3.0</title>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="shortcut icon" href="https://upel2.cel.agh.edu.pl/wiet/theme/image.php/celupel/theme/1619178409/favicon" />
+</head>
+<body style="background-color: #ecf1fc;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<section th:each="achievement : ${achievements}">
+    <article class="container py-1 mb-3">
+        <div style="background-color: #d6dff5; border: 3px solid #343a40;">
+            <h2 class="bg-dark text-light text-center pt-1 pb-3" th:text="${achievement.getType()}"></h2>
+<!--            <p class="mx-3 pb-3 pt-2 mb-0" style="border-bottom: 2px solid #343a40;">-->
+<!--                <strong>Opis aktywności: </strong>-->
+<!--                <span th:text="${activity.getDescription()}">Opis aktywności.</span>-->
+<!--            </p>-->
+        </div>
+    </article>
+</section>
+
+</body>
+</html>
