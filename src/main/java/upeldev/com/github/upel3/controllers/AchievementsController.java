@@ -53,6 +53,7 @@ public class AchievementsController {
         List<Achievement> achievements = achievementService.findAllByCourse(course);
 
         model.addAttribute("achievements", achievements);
+        model.addAttribute("course", course);
 
         if(course.getLecturers().contains(currentUser)) return "achievements_lecturer";
         else return "error";
