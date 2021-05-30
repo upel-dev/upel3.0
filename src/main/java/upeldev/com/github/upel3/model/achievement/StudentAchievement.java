@@ -26,7 +26,8 @@ public abstract class StudentAchievement {
 
     protected boolean isAchieved = false;
 
-    protected AchievementType type;
+    @ManyToOne
+    protected Achievement achievement;
 
     @ManyToOne
     protected User user;
@@ -34,10 +35,10 @@ public abstract class StudentAchievement {
     @ManyToOne
     protected Course course;
 
-    public StudentAchievement(User user, Course course, AchievementType type){
+    public StudentAchievement(User user, Course course, Achievement achievement){
         this.user = user;
         this.course = course;
-        this.type = type;
+        this.achievement = achievement;
 
 //        System.out.println("New achievement of type " + type);
     }

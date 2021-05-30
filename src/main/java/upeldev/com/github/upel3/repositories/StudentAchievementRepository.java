@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import upeldev.com.github.upel3.model.Grade;
 import upeldev.com.github.upel3.model.User;
+import upeldev.com.github.upel3.model.achievement.Achievement;
 import upeldev.com.github.upel3.model.achievement.AchievementType;
 import upeldev.com.github.upel3.model.achievement.StudentAchievement;
 
@@ -13,6 +14,6 @@ public interface StudentAchievementRepository extends CrudRepository<StudentAchi
 
     List<StudentAchievement> findAllByUser(User user);
 
-    StudentAchievement findByUserAndType(User user, AchievementType type);
+    StudentAchievement findByUserAndAchievement(User user, Achievement achievement);
 
 }

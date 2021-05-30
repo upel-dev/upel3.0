@@ -29,10 +29,8 @@ public class GradeAchievement extends StudentAchievement {
     private Set<Grade> grades;
 
 
-    private int lowerLimit = 2;
-
-    public GradeAchievement(Grade grade, User student, Course course, AchievementType type){
-        super(student, course, type);
+    public GradeAchievement(Grade grade, User student, Course course, Achievement achievement){
+        super(student, course, achievement);
         this.grades = new HashSet<>();
         update(grade);
     }
@@ -41,7 +39,7 @@ public class GradeAchievement extends StudentAchievement {
 
         Activity activity = grade.getActivity();
 
-        switch (type){
+        switch (achievement.getType()){
             case MAXED_ACTIVITIES:
                 if(grade.getValue() >= activity.getValue() && activity.getValue() != 0){
                     grades.add(grade);
@@ -61,9 +59,9 @@ public class GradeAchievement extends StudentAchievement {
             break;
         }
 
-        isAchieved = grades.size() >= lowerLimit;
+        isAchieved = grades.size() >= achievement.getLowerLimit();
 
-        System.out.println("Updated " + getType() + " achievement. Current count: " + getQuantity());
+        System.out.println("Updated " + achievement.getType() + " achievement. Current count: " + getQuantity());
 
     }
 
