@@ -74,4 +74,8 @@ public class StudentAchievementService {
 
     }
 
+    public List<StudentAchievement> findAllByUserAndCourse(User user, Course course){
+        return studentAchievementRepository.findByUserAndCourse(user, course);
+    }
+
 }
