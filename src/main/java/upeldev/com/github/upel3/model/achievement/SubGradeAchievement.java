@@ -47,8 +47,6 @@ public class SubGradeAchievement extends StudentAchievement {
 
         isAchieved = subGrades.size() >= achievement.getLowerLimit();
 
-        System.out.println("Updated " + achievement.getType() + " achievement. Current count: " + getQuantity());
-
     }
 
     public double getQuantity(){

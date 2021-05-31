@@ -40,7 +40,6 @@ public abstract class StudentAchievement {
         this.course = course;
         this.achievement = achievement;
 
-//        System.out.println("New achievement of type " + type);
     }
 
 
