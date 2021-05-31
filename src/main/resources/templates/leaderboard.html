@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>UPeL3.0</title>
+
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+  <link rel="shortcut icon" href="https://upel2.cel.agh.edu.pl/wiet/theme/image.php/celupel/theme/1619178409/favicon" />
+</head>
+<body style="background-color: #ecf1fc;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<section class="container py-3">
+  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 pb-2 mb-0" style="border-top: 3px solid #343a40;">
+    <h2 class="my-0">Lista studentów zapisanych na kurs</h2>
+
+    <div class="text-end">
+      <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
+    </div>
+  </header>
+  <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: #ecf1fc">
+      <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
+      <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Leaderboard</li>
+    </ol>
+  </nav>
+  <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić leaderboard kursu.</p>
+</section>
+
+<div class="container pb-3">
+  <p class="pb-3" style="border-bottom: 3px solid #343a40;">
+    Tu możesz dodać studentów do obecnego kursu, poprzez wpisanie numerów ich indeksów.
+  </p>
+  <form th:action="|/new_course_students/${course.getId()}|">
+    <div class="form-group">
+      <label for="userId">Numer indeksu dodawanego studenta:</label>
+      <input type="number" min="100000" max="999999" class="form-control" placeholder="Sześciocyfrowy numer indeksu" id="userId" th:name="userId">
+    </div>
+    <div class="pt-3">
+      <button type="submit" class="btn btn-primary">Dodaj studenta</button>
+    </div>
+  </form>
+</div>
+
+<section class="container py-3">
+  <table class="table table-hover table-bordered bg-light">
+    <thead>
+    <tr>
+      <th scope="col">Studenci</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${userList}">
+      <td th:text=student>Opis</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="container py-3">
+  <table class="table table-hover table-bordered bg-light">
+    <thead>
+    <tr>
+      <th scope="col">Studenci</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="grade : ${gradeList}">
+      <td th:text=grade>Opis</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
