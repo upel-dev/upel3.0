@@ -114,13 +114,19 @@ public class GroupController {
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
+            else if (course.getGroups().stream().anyMatch(g -> g.getStudents().contains(newStudent))){
+                String errorMsg = "Student już jest zapisany do innej grupy w tym kursie.";
+                model.addAttribute("errorMsg", errorMsg);
+                return "error";
+            }
             else if (!course.getEnrolledStudents().contains(newStudent)){
                 String errorMsg = "Student nie jest zapisany do kursu.";
                 model.addAttribute("errorMsg", errorMsg);
                 return "error";
             }
-            else
+            else {
                 studentGroupService.addStudentToGroup(group, newStudent);
+            }
         }
         catch (IllegalArgumentException e){
             String errorMsg = "Podano nieprawidłowe argumenty podczas dodawania kursanta.";
