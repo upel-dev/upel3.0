@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import upeldev.com.github.upel3.model.Course;
+import upeldev.com.github.upel3.model.Role;
 import upeldev.com.github.upel3.model.User;
 import upeldev.com.github.upel3.model.achievement.Achievement;
+import upeldev.com.github.upel3.model.achievement.StudentAchievement;
 import upeldev.com.github.upel3.services.AchievementService;
 import upeldev.com.github.upel3.services.CourseService;
 import upeldev.com.github.upel3.services.StudentAchievementService;
@@ -55,9 +57,16 @@ public class AchievementsController {
         model.addAttribute("achievements", achievements);
         model.addAttribute("course", course);
 
-        if(course.getLecturers().contains(currentUser)) return "achievements_lecturer";
-        else return "error";
+        if(course.getLecturers().contains(currentUser) || currentUser.getRoles().contains(Role.ADMIN)){
+            return "achievements_lecturer";
+        }
+        else if(course.getEnrolledStudents().contains(currentUser)){
+            List<StudentAchievement> achieved = studentAchievementService.findAllByUserAndCourse(currentUser, course);
+            model.addAttribute("achieved", achieved);
 
+            return "achievements_student";
+        }
+        else return "error";
     }
 
 }
