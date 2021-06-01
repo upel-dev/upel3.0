@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>UPeL3.0</title>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="shortcut icon" href="https://upel2.cel.agh.edu.pl/wiet/theme/image.php/celupel/theme/1619178409/favicon" />
+</head>
+<body style="background-color: #ecf1fc;">
+
+<div th:replace="fragments/header :: header"></div>
+
+<section class="container py-3">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 pb-2 mb-0" style="border-top: 3px solid #343a40;">
+        <h2 class="my-0">Osiągnięcia</h2>
+        <div class="text-end">
+            <a type="button" class="btn btn-primary" th:href="|/course?id=${course.getId()}|">Powrót do kursu</a>
+        </div>
+    </header>
+    <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
+        <ol class="breadcrumb" style="background-color: #ecf1fc">
+            <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
+            <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Osiągnięcia</li>
+        </ol>
+    </nav>
+    <p class="pb-3" style="border-bottom: 3px solid #343a40;">
+        Tutaj możesz obejrzeć wszystkie osiągnięcia zdobyte w ramach kursu.
+    </p>
+</section>
+
+<section class="container py-3">
+    <h4>Twoje osiągnięcia</h4>
+    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0 border-bottom">
+        <div class="col-6 mx-0 px-0 my-2">
+            <h6 class="align-middle my-0">Liczba zdobytych osiągnięć:</h6>
+        </div>
+        <div class="mx-0 px-0 col-6 text-right my-2">
+            <p class="my-0"><strong th:text="${achieved.size()}">-</strong></p>
+        </div>
+    </header>
+    <table class="table table-hover table-bordered bg-light">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="col text-nowrap">Nazwa</th>
+                <th class="col text-nowrap">Opis</th>
+                <th class="col text-nowrap">Próg przyznawania</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="achievement : ${achieved}" style="background-color: #d0faa3;"
+                th:if="${achievement.isAchieved()}">
+                <td><img class="my-0" src="../static/images/star.png" width="45" th:src="@{images/star.png}"/></td>
+                <td class="align-middle">
+                    <h5 class="text-nowrap my-0 align-middle" th:text="${achievement.getAchievement.getType()}"></h5>
+                </td>
+                <td class="align-middle">
+                    <p class="text-nowrap my-0" th:text="${achievement.getAchievement().getType().getDescription()}"></p>
+                </td>
+                <td class="align-middle text-center">
+                    <p class="my-0" th:text="${#numbers.formatInteger(achievement.getAchievement().getLowerLimit(), 1)}"></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="container py-3">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 mb-0 border-bottom">
+        <h4 class="pb-2">Lista wszystkich osiągnięć dostępnych w tym kursie</h4>
+        <div class="text-end">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Rozwiń listę
+            </button>
+        </div>
+        <p class="mt-3">Lista wszystkich osiągnięć wyświetlana jest w widoku uproszczonym dla przejrzystości.</p>
+    </header>
+    <div class="collapse" id="collapseExample">
+        <div class="card-body px-0 mx-0 py-0">
+            <div th:each="achievement : ${achievements}" class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 border-bottom">
+                <div class="row mx-0">
+                    <img class="mr-2" src="../static/images/star.png" width="30" th:src="@{images/star.png}"/>
+                    <h5 class="py-0 my-0 align-middle" th:text="${achievement.getType()}">Nazwa osiągnięcia</h5>
+                </div>
+                <div>
+                <p class="text-right mb-0">
+                    <small>Opis:</small>
+                    <small><strong th:text="${achievement.getType().getDescription()}">Opis</strong></small>
+                </p>
+                <p class="text-right mb-0">
+                    <small>Próg przyznania osiągnięcia:</small>
+                    <small><strong th:text="${#numbers.formatInteger(achievement.getLowerLimit(), 1)}">Próg</strong></small>
+                </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
