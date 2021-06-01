@@ -29,8 +29,8 @@ public class LeaderboardController {
         this.gradeService = gradeService;
     }
 
-    @RequestMapping(value = "/leaderboard",  method = RequestMethod.GET)
-    public String leaderboardDisplay(
+    @RequestMapping(value = "/leaderboard_lecturer",  method = RequestMethod.GET)
+    public String leaderboardFullDisplay(
             Model model,
             Principal principal,
             HttpServletRequest request)
@@ -58,6 +58,44 @@ public class LeaderboardController {
         Map<Double, String> sortedUserGradeMap = new TreeMap<Double, String>(userGradeMap).descendingMap();
         model.addAttribute("studentGrades", sortedUserGradeMap);
 
-        return "/leaderboard";
+        return "leaderboard_lecturer";
+    }
+
+    @RequestMapping(value = "/leaderboard_student",  method = RequestMethod.GET)
+    public String leaderboardSingleDisplay(
+            Model model,
+            Principal principal,
+            HttpServletRequest request)
+    {
+        Long id = Long.parseLong(request.getParameter("id"));
+        Course currentCourse = courseService.findCourseById(id);
+        model.addAttribute("course", currentCourse);
+
+        Map<Double, String> userGradeMap = new HashMap<Double, String>();
+
+        double sum = 0;
+        double userSum = 0;
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
+
+        Set<User> users = currentCourse.getEnrolledStudents();
+
+        for (User user : users) {
+            List<Grade> grades = gradeService.findGradeByCourseAndUser(currentCourse, user);
+            sum = 0;
+            for (Grade grade : grades){
+                sum = sum + grade.getValue();
+            }
+            userGradeMap.put(sum, user.getEmail());
+            if(currentUser == user)
+                userSum = sum;
+        }
+        NavigableMap<Double, String> sortedUserGradeMap = new TreeMap<Double, String>(userGradeMap).descendingMap();
+        int leaderboardNumber = 0;
+        leaderboardNumber = sortedUserGradeMap.headMap(userSum).size() + 1;
+        model.addAttribute("number", leaderboardNumber);
+        model.addAttribute("sum", userSum);
+
+        return "leaderboard_student";
     }
 }
