@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.model.achievement.*;
+import upeldev.com.github.upel3.repositories.AchievementRepository;
 import upeldev.com.github.upel3.repositories.StudentAchievementRepository;
 
 import javax.transaction.Transactional;
@@ -13,19 +14,21 @@ import java.util.List;
 public class StudentAchievementService {
 
     private final StudentAchievementRepository studentAchievementRepository;
+    private final AchievementRepository achievementRepository;
 
     @Autowired
     public StudentAchievementService(
-            StudentAchievementRepository studentAchievementRepository){
+            StudentAchievementRepository studentAchievementRepository, AchievementRepository achievementRepository){
         this.studentAchievementRepository = studentAchievementRepository;
+        this.achievementRepository = achievementRepository;
     }
 
     public StudentAchievement save(StudentAchievement studentAchievement){
         return studentAchievementRepository.save(studentAchievement);
     }
 
-    public StudentAchievement findByUserAndType(User user, AchievementType type){
-        return studentAchievementRepository.findByUserAndType(user, type);
+    public StudentAchievement findByUserAndAchievement(User user, Achievement achievement){
+        return studentAchievementRepository.findByUserAndAchievement(user, achievement);
     }
 
     public GradeAchievement createOrUpdate(Grade grade, AchievementType type){
@@ -34,14 +37,16 @@ public class StudentAchievementService {
         Course course = activity.getCourse();
         User user = grade.getUser();
 
-        GradeAchievement achievement = (GradeAchievement) findByUserAndType(grade.getUser(), AchievementType.PASSED_ACTIVITIES);
-        if(achievement == null) {
-            achievement = new GradeAchievement(grade, user, course, type);
+        Achievement achievement = achievementRepository.findByCourseAndType(course, type);
+
+        GradeAchievement studentAchievement = (GradeAchievement) findByUserAndAchievement(grade.getUser(), achievement);
+        if(studentAchievement == null) {
+            studentAchievement = new GradeAchievement(grade, user, course, achievement);
         }
         else{
-            achievement.update(grade);
+            studentAchievement.update(grade);
         }
-        return (GradeAchievement) save(achievement);
+        return (GradeAchievement) save(studentAchievement);
     }
 
 
@@ -51,20 +56,26 @@ public class StudentAchievementService {
         Course course = activity.getCourse();
         User user = subGrade.getGrade().getUser();
 
-        SubGradeAchievement achievement = (SubGradeAchievement) findByUserAndType(subGrade.getGrade().getUser(), AchievementType.MAXED_SUBACTIVITIES);
+        Achievement achievement = achievementRepository.findByCourseAndType(course, type);
 
-        if(achievement == null) {
-            achievement = new SubGradeAchievement(subGrade, user, course, type);
+        SubGradeAchievement studentAchievement = (SubGradeAchievement) findByUserAndAchievement(subGrade.getGrade().getUser(), achievement);
+
+        if(studentAchievement == null) {
+            studentAchievement = new SubGradeAchievement(subGrade, user, course, achievement);
         }
         else{
-            achievement.update(subGrade);
+            studentAchievement.update(subGrade);
         }
-        return (SubGradeAchievement) save(achievement);
+        return (SubGradeAchievement) save(studentAchievement);
     }
 
     public List<StudentAchievement> findAllUsersAchievements(User user){
         return studentAchievementRepository.findAllByUser(user);
 
+    }
+
+    public List<StudentAchievement> findAllByUserAndCourse(User user, Course course){
+        return studentAchievementRepository.findByUserAndCourse(user, course);
     }
 
 }

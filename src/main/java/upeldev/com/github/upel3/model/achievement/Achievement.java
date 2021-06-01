@@ -26,6 +26,10 @@ public class Achievement {
 
     private AchievementType type;
 
+    private double lowerLimit = 2;
+
+    private String title;
+
     public Achievement(AchievementType type, Course course){
         this.type = type;
         this.course = course;

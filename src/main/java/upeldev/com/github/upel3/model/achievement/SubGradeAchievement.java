@@ -24,10 +24,8 @@ public class SubGradeAchievement extends StudentAchievement {
     @OneToMany
     private Set<SubGrade> subGrades;
 
-    private int lowerLimit = 2;
-
-    public SubGradeAchievement(SubGrade subGrade, User student, Course course, AchievementType type){
-        super(student, course, type);
+    public SubGradeAchievement(SubGrade subGrade, User student, Course course, Achievement achievement){
+        super(student, course, achievement);
         this.subGrades = new HashSet<>();
         update(subGrade);
     }
@@ -36,7 +34,7 @@ public class SubGradeAchievement extends StudentAchievement {
 
         SubActivity subActivity = subGrade.getSubActivity();
 
-        switch (type){
+        switch (achievement.getType()){
             case MAXED_SUBACTIVITIES:
                 if(subGrade.getValue() >= subActivity.getMaxValue() && subActivity.getMaxValue() != 0){
                     subGrades.add(subGrade);
@@ -47,9 +45,7 @@ public class SubGradeAchievement extends StudentAchievement {
                 break;
         }
 
-        isAchieved = subGrades.size() >= lowerLimit;
-
-        System.out.println("Updated " + getType() + " achievement. Current count: " + getQuantity());
+        isAchieved = subGrades.size() >= achievement.getLowerLimit();
 
     }
 

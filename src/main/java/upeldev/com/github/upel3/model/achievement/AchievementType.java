@@ -10,11 +10,22 @@ public enum AchievementType {
     @Override
     public String toString(){
         switch (this){
-            case MAXED_ACTIVITIES: return "Maxed activities";
-            case PASSED_ACTIVITIES: return "Passed activities";
-            case MAXED_SUBACTIVITIES: return "Maxed subactivities";
+            case MAXED_ACTIVITIES: return "Wzorowy student";
+            case PASSED_ACTIVITIES: return "Łowca zaliczeń";
+            case MAXED_SUBACTIVITIES: return "Pogromca zadań";
         }
         return null;
     }
+
+    public String getDescription(){
+        switch (this){
+            case MAXED_ACTIVITIES: return "Zdobądź maksymalną liczbę punktów w aktywności";
+            case PASSED_ACTIVITIES: return "Zdaj aktywność";
+            case MAXED_SUBACTIVITIES: return "Zdobądź maksymalną ocenę w zadaniu";
+        }
+        return null;
+    }
+
+
 
 }
