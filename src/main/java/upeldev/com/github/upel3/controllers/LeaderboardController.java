@@ -3,7 +3,6 @@ package upeldev.com.github.upel3.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import upeldev.com.github.upel3.model.Course;
@@ -13,10 +12,9 @@ import upeldev.com.github.upel3.services.CourseService;
 import upeldev.com.github.upel3.services.GradeService;
 import upeldev.com.github.upel3.services.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class LeaderboardController {
@@ -31,36 +29,35 @@ public class LeaderboardController {
         this.gradeService = gradeService;
     }
 
-    @RequestMapping(value = "/leaderboard/{courseID}",  method = RequestMethod.GET)
+    @RequestMapping(value = "/leaderboard",  method = RequestMethod.GET)
     public String leaderboardDisplay(
-            @PathVariable("courseID") Long courseId,
             Model model,
-            Principal principal)
+            Principal principal,
+            HttpServletRequest request)
     {
-        List<StringBuilder> gradeList = new LinkedList<>();
-        List<String> userList = new LinkedList<>();
-        StringBuilder gradeString;
+        Long id = Long.parseLong(request.getParameter("id"));
+        Course currentCourse = courseService.findCourseById(id);
+        model.addAttribute("course", currentCourse);
+
+        Map<Double, String> userGradeMap = new HashMap<Double, String>();
+
+        double sum = 0;
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
-
-        Course currentCourse = courseService.findCourseById(courseId);
-        model.addAttribute("course", currentCourse);
 
         Set<User> users = currentCourse.getEnrolledStudents();
 
         for (User user : users) {
             List<Grade> grades = gradeService.findGradeByCourseAndUser(currentCourse, user);
-            gradeString = new StringBuilder();
+            sum = 0;
             for (Grade grade : grades){
-                String g = String.valueOf(grade.getValue());
-                gradeString.append(g).append(", ");
+                sum = sum + grade.getValue();
             }
-            gradeList.add(gradeString);
-            userList.add(user.getEmail());
+            userGradeMap.put(sum, user.getEmail());
         }
-        model.addAttribute("userList", userList);
-        model.addAttribute("gradeList", gradeList);
+        Map<Double, String> sortedUserGradeMap = new TreeMap<Double, String>(userGradeMap).descendingMap();
+        model.addAttribute("studentGrades", sortedUserGradeMap);
 
-        return "redirect:/leaderboard?id="+courseId;
+        return "/leaderboard";
     }
 }
