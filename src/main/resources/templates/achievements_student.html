@@ -50,7 +50,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="achievement : ${achieved}" style="background-color: #d0faa3;">
+            <tr th:each="achievement : ${achieved}" style="background-color: #d0faa3;"
+                th:if="${achievement.isAchieved()}">
                 <td><img class="my-0" src="../static/images/star.png" width="45" th:src="@{images/star.png}"/></td>
                 <td class="align-middle">
                     <h5 class="text-nowrap my-0 align-middle" th:text="${achievement.getAchievement.getType()}"></h5>
