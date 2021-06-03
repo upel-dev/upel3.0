@@ -162,6 +162,11 @@ public class ActivitySettingsController {
 
         for(SubActivity subActivity : subActivityService.findByActivity(currentActivity)){
             if(subActivity.getId().equals(subActivityId)){
+                for(Grade grade : gradeService.findGradeByActivity(currentActivity)) {
+                    SubGrade subgrade = grade.getSubGrades().stream().filter(subGrade -> subGrade.getSubActivity().equals(subActivity)).findFirst().get();
+                    gradeService.removeSubGrade(grade, subgrade);
+                    subGradeService.deleteById(subgrade.getId());
+                }
                 activityService.removeSubActivity(currentActivity, subActivity);
                 break;
             }
