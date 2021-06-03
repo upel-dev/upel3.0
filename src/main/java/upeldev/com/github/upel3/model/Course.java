@@ -42,7 +42,7 @@ public class Course implements Aggregator {
             joinColumns = @JoinColumn(name="COURSE_ID"),
             inverseJoinColumns = @JoinColumn(name="USER_ID")
     )
-    public Set<User> enrolledStudents = new HashSet<>();
+    private Set<User> enrolledStudents = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.DETACH)
     @LazyCollection(LazyCollectionOption.FALSE)

@@ -23,16 +23,16 @@
     <ol class="breadcrumb" style="background-color: #ecf1fc">
       <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
       <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Leaderboard</li>
+      <li class="breadcrumb-item active" aria-current="page">Pozycja w rankingu</li>
     </ol>
   </nav>
-  <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić swoje miejsce na leaderboardzie.</p>
+  <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić swoje miejsce w rankingu kursu.</p>
 </section>
 
 <section class="container py-3">
   <table class="table table-hover table-bordered bg-light">
     <thead>
-    <tr>
+    <tr th:style="${sum} >= ${course.getPassValue()} ? 'background-color: #d0faa3;'">
       <th scope="col">Twoja pozycja</th>
       <th scope="col">Suma punktów</th>
     </tr>

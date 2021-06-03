@@ -13,7 +13,7 @@
 
 <section class="container py-3">
   <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 pb-2 mb-0" style="border-top: 3px solid #343a40;">
-    <h2 class="my-0">leader</h2>
+    <h2 class="my-0">Tablica wyników</h2>
 
     <div class="text-end">
       <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
@@ -23,23 +23,23 @@
     <ol class="breadcrumb" style="background-color: #ecf1fc">
       <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
       <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Leaderboard</li>
+      <li class="breadcrumb-item active" aria-current="page">Tablica wyników</li>
     </ol>
   </nav>
-  <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić leaderboard kursu.</p>
+  <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić tablicę wyników kursantów.</p>
 </section>
 
 <section class="container py-3">
   <table class="table table-hover table-bordered bg-light">
     <thead>
     <tr>
-      <th scope="col">Numer</th>
-      <th scope="col">Studenci</th>
-      <th scope="col">Oceny</th>
+      <th scope="col">Pozycja</th>
+      <th scope="col">Student</th>
+      <th scope="col">Suma Punktów</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="student : ${studentGrades}" th:class="${studentStat.count}">
+    <tr th:each="student : ${studentGrades}" th:class="${studentStat.count}" th:style="${student.key} >= ${course.getPassValue()} ? 'background-color: #d0faa3;'">
       <td th:text="${studentStat.count}">Opis</td>
       <td th:text="${student.value}">Opis</td>
       <td th:text="${student.key}">Opis</td>

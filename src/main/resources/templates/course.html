@@ -90,10 +90,10 @@
             <a type="button" class="btn btn-primary" th:href="|course_groups?id=${course.getId()}|">Grupy</a>
         </div>
         <div class="d-flex p-2" th:if="${user.getCoursesLectured().contains(course)}">
-            <a type="button" class="btn btn-primary" th:href="|leaderboard_lecturer?id=${course.getId()}|">Leaderboard</a>
+            <a type="button" class="btn btn-primary" th:href="|leaderboard_lecturer?id=${course.getId()}|">Tablica wyników</a>
         </div>
         <div class="d-flex p-2" th:if="${!user.getCoursesLectured().contains(course)}">
-            <a type="button" class="btn btn-primary" th:href="|leaderboard_student?id=${course.getId()}|">Leaderboard</a>
+            <a type="button" class="btn btn-primary" th:href="|leaderboard_student?id=${course.getId()}|">Miejsce w rankingu</a>
         </div>
         <div class="d-flex p-2" th:if="${!user.getCoursesLectured().contains(course)}">
             <a type="button" class="btn btn-primary" th:href="|/grade_summary?id=${course.getId()}|">Podsumowanie ocen</a>

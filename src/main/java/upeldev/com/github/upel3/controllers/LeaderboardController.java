@@ -40,8 +40,7 @@ public class LeaderboardController {
         model.addAttribute("course", currentCourse);
 
         Map<Double, String> userGradeMap = new HashMap<Double, String>();
-
-        double sum = 0;
+        
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
 
@@ -49,10 +48,7 @@ public class LeaderboardController {
 
         for (User user : users) {
             List<Grade> grades = gradeService.findGradeByCourseAndUser(currentCourse, user);
-            sum = 0;
-            for (Grade grade : grades){
-                sum = sum + grade.getValue();
-            }
+            double sum = grades.stream().mapToDouble(Grade::getValue).sum();
             userGradeMap.put(sum, user.getEmail());
         }
         Map<Double, String> sortedUserGradeMap = new TreeMap<Double, String>(userGradeMap).descendingMap();
@@ -73,7 +69,6 @@ public class LeaderboardController {
 
         Map<Double, String> userGradeMap = new HashMap<Double, String>();
 
-        double sum = 0;
         double userSum = 0;
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
@@ -82,10 +77,7 @@ public class LeaderboardController {
 
         for (User user : users) {
             List<Grade> grades = gradeService.findGradeByCourseAndUser(currentCourse, user);
-            sum = 0;
-            for (Grade grade : grades){
-                sum = sum + grade.getValue();
-            }
+            double sum = grades.stream().mapToDouble(Grade::getValue).sum();
             userGradeMap.put(sum, user.getEmail());
             if(currentUser == user)
                 userSum = sum;
