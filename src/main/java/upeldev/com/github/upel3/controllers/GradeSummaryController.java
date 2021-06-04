@@ -15,6 +15,8 @@ import upeldev.com.github.upel3.services.UserService;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 public class GradeSummaryController {
@@ -36,31 +38,14 @@ public class GradeSummaryController {
         Course currentCourse = courseService.findCourseById(courseId);
         model.addAttribute("course", currentCourse);
 
-        double userValue = 0;
-        double valueMAX = 0;
+        List<Grade> gradeList = activityService.findActivityByCourse(currentCourse).
+                stream().
+                map(activity -> activityService.getStudentGradeInActivity(activity, currentUser)).
+                filter(Objects::nonNull).
+                collect(Collectors.toList());
 
-        List<Activity> activityList = activityService.findActivityByCourse(currentCourse);
-        List<Grade> gradeList = new ArrayList<>();
-
-        for(Activity activity : activityList){
-            gradeList.addAll(gradeService.findGradeByCourseAndUserAndActivity(currentCourse, currentUser, activity));
-        }
-
-        if(currentCourse.getAggregation().equals(ElementAggregation.SUM)){
-            for(Grade grade : gradeList){
-                userValue += grade.getValue();
-                valueMAX += grade.getActivity().getValue();
-            }
-
-        }
-
-        else { //TODO add agregation for ElementAggregation.WAVG
-            for(Grade grade : gradeList){
-                userValue += grade.getValue()/grade.getActivity().getValue();
-            }
-            valueMAX = 100;
-            userValue = Math.round(userValue*100/gradeList.size());
-        }
+        double userValue = courseService.getUserValueInCourse(currentCourse, currentUser);
+        double valueMAX = currentCourse.getValue();
 
         int basePercentage;
         int bonusPercentage = 0;

@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Grade {
+public class Grade implements Aggregable{
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,5 +59,15 @@ public class Grade {
 
     public String getGradeOwnerUsername(){
         return user.getFirstName() + " "  + user.getLastName();
+    }
+
+    @Override
+    public double getAggregableValue() {
+        return getValue();
+    }
+
+    @Override
+    public double getAggregableWeight() {
+        return activity.getWeight();
     }
 }

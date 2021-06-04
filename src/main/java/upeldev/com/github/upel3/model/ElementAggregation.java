@@ -28,7 +28,7 @@ public enum ElementAggregation {
     public String toString() {
         switch (this) {
             case SUM: return "Suma";
-            case AVG: return"Średnia";
+            case AVG: return "Średnia";
             case WAVG: return "Średnia ważona";
         }
         return "";
