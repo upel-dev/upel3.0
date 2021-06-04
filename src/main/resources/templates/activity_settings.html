@@ -166,10 +166,34 @@
         <thead>
             <tr>
                 <td><strong th:text="${activity.getAggregation()}">Suma punktów</strong></td>
-                <td class="text-center"><strong th:text="${activity.getValue()}"></strong></td>
+                <td class="text-center" th:colspan="${displayWeight} ? 2">
+                    <strong th:text="${activity.getValue()}"></strong>
+                </td>
                 <td colspan="3"></td>
             </tr>
         </thead>
+        <tbody>
+            <tr>
+                <form th:method="post"
+                      th:action="|/activity_settings/subactivity_add/${course.getId()}/${activity.getId()}|">
+                    <td class="col">
+                        <input type="text" class="form-control" name="name"
+                               placeholder="Nazwa nowego zadania" required>
+                    </td>
+                    <td class="col" th:if="${displayWeight}">
+                        <input type="number" class="form-control" name="weight"
+                               placeholder="1.0" value="1.0" required>
+                    </td>
+                    <td class="col">
+                        <input type="number" class="form-control" name="maxValue"
+                               placeholder="0.0" value="0.0" required>
+                    </td>
+                    <td class="col text-center" colspan="2">
+                        <button type="submit" class="btn btn-primary mx-0 ">Dodaj nowe zadanie</button>
+                    </td>
+                </form>
+            </tr>
+        </tbody>
     </table>
 </section>
 
