@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.repositories.ActivityRepository;
+import upeldev.com.github.upel3.repositories.GradeRepository;
+import upeldev.com.github.upel3.repositories.SubActivityRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,10 +14,13 @@ import java.util.stream.Collectors;
 @Service
 public class ActivityService {
     private final ActivityRepository activityRepository;
+    private final SubActivityRepository subActivityRepository;
 
     @Autowired
-    public ActivityService(ActivityRepository activityRepository) {
+    public ActivityService(ActivityRepository activityRepository, SubActivityRepository subActivityRepository) {
         this.activityRepository = activityRepository;
+
+        this.subActivityRepository = subActivityRepository;
     }
 
     public Activity findActivityById(Long id){
@@ -96,6 +101,18 @@ public class ActivityService {
 
     public void removeSubActivity(Activity activity, SubActivity subActivity){
         activity.getSubActivities().remove(subActivity);
+        activityRepository.save(activity);
+    }
+
+    public void addSubActivity(Activity activity, SubActivity subActivity){
+        subActivityRepository.save(subActivity);
+        activity.getSubActivities().add(subActivity);
+        activity.getGrades().forEach(
+                grade -> {
+                    SubGrade subGrade = new SubGrade(subActivity, grade, 0.0);
+                    grade.getSubGrades().add(subGrade);
+                }
+        );
         activityRepository.save(activity);
     }
 
