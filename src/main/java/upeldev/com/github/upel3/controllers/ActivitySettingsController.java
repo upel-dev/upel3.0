@@ -147,6 +147,31 @@ public class ActivitySettingsController {
         return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
     }
 
+    @RequestMapping(value = "/activity_settings/subactivity_add/{courseId}/{activityId}", method = RequestMethod.POST)
+    public String addSubActivity(@PathVariable("courseId") Long courseId,
+                                 @PathVariable("activityId") Long activityId,
+                                 @RequestParam(value = "name") String name,
+                                 @RequestParam(value = "weight", defaultValue = "1.0") String weight_str,
+                                 @RequestParam(value = "maxValue") String maxValue_str,
+                                 Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+
+        Course currentCourse = courseService.findCourseById(courseId);
+        Activity currentActivity = activityService.findActivityById(activityId);
+        model.addAttribute("user", currentUser);
+
+        double weight = Double.parseDouble(weight_str);
+        int maxValue = (int) Double.parseDouble(maxValue_str);
+
+        SubActivity newSubActivity = new SubActivity(currentActivity, maxValue, name);
+        if(weight >= 0)
+            newSubActivity.setWeight(weight);
+
+        activityService.addSubActivity(currentActivity, newSubActivity);
+
+        return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
+    }
+
     @RequestMapping(value = "/activity_settings/subactivity_delete/{courseId}/{activityId}/{subActivityId}", method = RequestMethod.GET)
     public String deleteSubActivity(@PathVariable("courseId") Long courseId,
                                   @PathVariable("activityId") Long activityId,

@@ -56,7 +56,6 @@ public class DataLoader {
         populateSubActivity();
         populateSubGrade();
         populateGroups();
-
     }
 
     public void populateCourses(){
