@@ -131,7 +131,7 @@
             </th>
         </tr>
         <thead style="border-top: 3px solid #343a40;">
-        <tr th:if="${!course.getEnrolledStudents().isEmpty() && user.getCoursesLectured().contains(course)}">
+        <tr th:if="${!ungradedStudents.isEmpty() && user.getCoursesLectured().contains(course)}">
             <th scope="col" colspan="3">Użytkownik</th>
             <th scope="col" class="text-center"
                 th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}"></th>
@@ -139,12 +139,12 @@
         </thead>
 
 
-        <form th:if="${!course.getEnrolledStudents().isEmpty() && user.getCoursesLectured().contains(course)}"
+        <form th:if="${!ungradedStudents.isEmpty() && user.getCoursesLectured().contains(course)}"
               th:action="|/create_grade/${course.getId()}/${activity.getId()}|">
             <tr>
                 <td scope="col" colspan="3">
                     <select class="form-control" id="userName" th:name="userName">
-                        <option th:each="student : ${course.getEnrolledStudents()}" th:value="${student.getEmail()}"
+                        <option th:each="student : ${ungradedStudents}" th:value="${student.getEmail()}"
                                 th:text="|${student.getFirstName()} ${student.getLastName()}|"></option>
                     </select>
                 </td>

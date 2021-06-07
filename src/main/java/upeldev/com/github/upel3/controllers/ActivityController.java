@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(path="/activity")
@@ -93,7 +94,15 @@ public class ActivityController {
                 model.addAttribute("grades", grades);
             }
 
-            if(currentUser.getCoursesLectured().contains(course) || currentUser.getRoles().contains(Role.ADMIN)) return "activity_lecturer";
+            if(currentUser.getCoursesLectured().contains(course) || currentUser.getRoles().contains(Role.ADMIN)) {
+                List<User> ungradedStudents = course.
+                        getEnrolledStudents().
+                        stream().
+                        filter(user -> activityService.getStudentGradeInActivity(activity, user) == null).
+                        collect(Collectors.toList());
+                model.addAttribute("ungradedStudents", ungradedStudents);
+                return "activity_lecturer";
+            }
 
             // Progress bar
             String status;
