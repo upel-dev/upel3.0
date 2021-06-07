@@ -2,10 +2,7 @@ package upeldev.com.github.upel3.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import upeldev.com.github.upel3.model.AccessCode;
-import upeldev.com.github.upel3.model.Activity;
-import upeldev.com.github.upel3.model.Course;
-import upeldev.com.github.upel3.model.User;
+import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.repositories.AccessCodeRepository;
 import upeldev.com.github.upel3.repositories.ActivityRepository;
 import upeldev.com.github.upel3.repositories.CourseRepository;
@@ -14,6 +11,7 @@ import upeldev.com.github.upel3.repositories.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -162,4 +160,14 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+    public double getUserValueInCourse(Course course, User user){
+        List<Grade> grades = course.getActivity().stream().flatMap(activity -> activity.getGrades().stream())
+                .filter(g -> g.getUser().equals(user)).collect(Collectors.toList());
+        switch (course.getAggregation()){
+            case SUM: return ElementAggregation.countSum(grades);
+            case AVG: return ElementAggregation.countAvg(grades);
+            case WAVG: return ElementAggregation.countWavg(grades);
+        }
+        return 0;
+    }
 }
