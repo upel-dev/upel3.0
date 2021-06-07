@@ -8,4 +8,6 @@ import java.util.List;
 public interface SubGradeRepository extends CrudRepository<SubGrade, Integer> {
     SubGrade findSubGradeById(Long id);
     List<SubGrade> findAll();
+
+    long deleteById(Long id);
 }

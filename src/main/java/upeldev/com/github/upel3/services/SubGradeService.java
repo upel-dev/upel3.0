@@ -41,4 +41,9 @@ public class SubGradeService {
         subGrade.setValue(newValue);
         subGradeRepository.save(subGrade);
     }
+
+    public long deleteById(Long id) {
+        return subGradeRepository.deleteById(id);
+    }
+
 }

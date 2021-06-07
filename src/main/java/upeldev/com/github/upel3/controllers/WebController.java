@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Controller
@@ -97,34 +98,22 @@ public class WebController {
             boolean shouldSeeShortSummary = false;
 
             if(currentUser.getRoles().contains(Role.STUDENT) && currentUser.getCoursesEnrolledIn().contains(course)){
-                double userValue = 0;
-                double valueMAX = 0;
-                int passedCourses = 0;
                 shouldSeeShortSummary = true;
 
-                List<Activity> activityList = activityService.findActivityByCourse(course);
-                List<Grade> gradeList = new ArrayList<>();
+                long gradeCount = activityService.findActivityByCourse(course).
+                        stream().
+                        map(activity -> activityService.getStudentGradeInActivity(activity, currentUser)).
+                        filter(Objects::nonNull).
+                        count();
 
-                for(Activity activity : activityList){
-                    gradeList.addAll(gradeService.findGradeByCourseAndUserAndActivity(course, currentUser, activity));
-                }
+                long passedCourses = activityService.findActivityByCourse(course).
+                        stream().
+                        map(activity -> activityService.getStudentGradeInActivity(activity, currentUser)).
+                        filter(grade -> grade != null && grade.getValue() >= grade.getActivity().getPassValue()).
+                        count();
 
-                if(course.getAggregation().equals(ElementAggregation.SUM)){
-                    for(Grade grade : gradeList){
-                        if(grade.getValue() >= grade.getActivity().getPassValue()) passedCourses++;
-                        userValue += grade.getValue();
-                        valueMAX += grade.getActivity().getValue();
-                    }
-
-                }
-                else { //TODO add agregation for ElementAggregation.WAVG
-                    for(Grade grade : gradeList){
-                        if(grade.getValue() >= grade.getActivity().getPassValue()) passedCourses++;
-                        userValue += grade.getValue()/grade.getActivity().getValue();
-                    }
-                    valueMAX = 100;
-                    userValue = Math.round(userValue*100/gradeList.size());
-                }
+                double userValue = courseService.getUserValueInCourse(course, currentUser);
+                double valueMAX = course.getValue();
 
                 int basePercentage;
                 int bonusPercentage = 0;
@@ -138,7 +127,7 @@ public class WebController {
                 }
 
                 model.addAttribute("passedCourses", passedCourses);
-                model.addAttribute("gradeList", gradeList);
+                model.addAttribute("gradeCount", gradeCount);
                 model.addAttribute("userValue", userValue);
                 model.addAttribute("valueMAX", valueMAX);
 

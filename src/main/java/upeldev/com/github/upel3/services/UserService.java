@@ -3,10 +3,7 @@ package upeldev.com.github.upel3.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import upeldev.com.github.upel3.model.Activity;
-import upeldev.com.github.upel3.model.Course;
-import upeldev.com.github.upel3.model.Role;
-import upeldev.com.github.upel3.model.User;
+import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.repositories.UserRepository;
 
 import java.util.HashSet;

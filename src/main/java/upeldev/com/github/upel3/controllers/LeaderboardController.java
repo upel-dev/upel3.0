@@ -47,10 +47,10 @@ public class LeaderboardController {
         Set<User> users = currentCourse.getEnrolledStudents();
 
         for (User user : users) {
-            List<Grade> grades = gradeService.findGradeByCourseAndUser(currentCourse, user);
-            double sum = grades.stream().mapToDouble(Grade::getValue).sum();
-            userGradeMap.put(sum, user.getEmail());
+            double userValue = courseService.getUserValueInCourse(currentCourse, user);
+            userGradeMap.put(userValue, user.getEmail());
         }
+
         Map<Double, String> sortedUserGradeMap = new TreeMap<Double, String>(userGradeMap).descendingMap();
         model.addAttribute("studentGrades", sortedUserGradeMap);
 
@@ -69,24 +69,24 @@ public class LeaderboardController {
 
         Map<Double, String> userGradeMap = new HashMap<Double, String>();
 
-        double userSum = 0;
+        double currentUserValue = 0;
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
 
         Set<User> users = currentCourse.getEnrolledStudents();
 
         for (User user : users) {
-            List<Grade> grades = gradeService.findGradeByCourseAndUser(currentCourse, user);
-            double sum = grades.stream().mapToDouble(Grade::getValue).sum();
-            userGradeMap.put(sum, user.getEmail());
+            double userValue = courseService.getUserValueInCourse(currentCourse, user);
+            userGradeMap.put(userValue, user.getEmail());
             if(currentUser == user)
-                userSum = sum;
+                currentUserValue = userValue;
         }
         NavigableMap<Double, String> sortedUserGradeMap = new TreeMap<Double, String>(userGradeMap).descendingMap();
+
         int leaderboardNumber = 0;
-        leaderboardNumber = sortedUserGradeMap.headMap(userSum).size() + 1;
+        leaderboardNumber = sortedUserGradeMap.headMap(currentUserValue).size() + 1;
         model.addAttribute("number", leaderboardNumber);
-        model.addAttribute("sum", userSum);
+        model.addAttribute("sum", currentUserValue);
 
         return "leaderboard_student";
     }
