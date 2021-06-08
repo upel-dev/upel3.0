@@ -16,8 +16,8 @@
     <h2 class="my-0">Tablica wyników aktywności</h2>
 
     <div class="text-end">
-      <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
-      <a type="button" class="btn btn-primary" th:href="|course?id=${activity.getId()}|">Powrót do aktywności</a>
+      <a type="button" class="btn btn-primary" th:href="|/course?id=${course.getId()}|">Powrót do kursu</a>
+      <a type="button" class="btn btn-primary" th:href="|/activity?id=${activity.getId()}|">Powrót do aktywności</a>
     </div>
   </header>
   <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
@@ -41,9 +41,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="student : ${studentGrades}" th:class="${studentStat.count}" th:style="${student.key} >= ${course.getPassValue()} ? 'background-color: #d0faa3;'">
+    <tr th:each="student : ${studentGrades}" th:class="${studentStat.count}" th:style="${student.key} >= ${activity.getPassValue()} ? 'background-color: #d0faa3;'">
       <td th:text="${studentStat.count}">Opis</td>
-      <td th:text="${student.value}">Opis</td>
+      <td th:text="${student.value.getFirstName} + ' ' + ${student.value.getLastName}">Opis</td>
       <td th:text="${student.key}">Opis</td>
     </tr>
     </tbody>

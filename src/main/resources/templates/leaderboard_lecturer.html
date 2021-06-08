@@ -41,7 +41,7 @@
     <tbody>
     <tr th:each="student : ${studentGrades}" th:class="${studentStat.count}" th:style="${student.key} >= ${course.getPassValue()} ? 'background-color: #d0faa3;'">
       <td th:text="${studentStat.count}">Opis</td>
-      <td th:text="${student.value}">Opis</td>
+      <td th:text="${student.value.getFirstName} + ' ' + ${student.value.getLastName}">Opis</td>
       <td th:text="${student.key}">Opis</td>
     </tr>
     </tbody>
