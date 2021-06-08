@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.model.achievement.GradeAchievement;
 import upeldev.com.github.upel3.model.achievement.event.AchievementEvent;
+import upeldev.com.github.upel3.model.achievement.event.EventType;
 import upeldev.com.github.upel3.model.achievement.event.GradeEvent;
+import upeldev.com.github.upel3.model.achievement.event.SubGradeEvent;
 import upeldev.com.github.upel3.repositories.GradeRepository;
+import upeldev.com.github.upel3.repositories.StudentAchievementRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,11 +19,13 @@ import java.util.stream.StreamSupport;
 @Service
 public class GradeService {
     private final GradeRepository gradeRepository;
+    private final StudentAchievementRepository studentAchievementRepository;
     private final ApplicationEventPublisher publisher;
 
     @Autowired
-    public GradeService(GradeRepository gradeRepository, ApplicationEventPublisher publisher) {
+    public GradeService(GradeRepository gradeRepository, StudentAchievementRepository studentAchievementRepository, ApplicationEventPublisher publisher) {
         this.gradeRepository = gradeRepository;
+        this.studentAchievementRepository = studentAchievementRepository;
         this.publisher = publisher;
     }
 
@@ -69,7 +74,7 @@ public class GradeService {
 
     public Grade save(Grade gradeDTO){
         Grade grade = gradeRepository.save(gradeDTO);
-        publisher.publishEvent(new GradeEvent(this, grade));
+        publisher.publishEvent(new GradeEvent(this, grade, EventType.ADD_EDIT));
         return grade;
     }
 
@@ -83,7 +88,10 @@ public class GradeService {
     }
 
     public void removeSubGrade(Grade grade, SubGrade subGrade){
+
+        publisher.publishEvent(new SubGradeEvent(this, subGrade, EventType.REMOVE));
         grade.getSubGrades().remove(subGrade);
+
         gradeRepository.save(grade);
     }
 }

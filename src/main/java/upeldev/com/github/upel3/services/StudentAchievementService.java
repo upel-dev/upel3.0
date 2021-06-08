@@ -50,7 +50,20 @@ public class StudentAchievementService {
     }
 
 
-    public SubGradeAchievement createOrUpdate(SubGrade subGrade, AchievementType type){
+    private SubGradeAchievement getSubGradeAchievement(SubGrade subGrade, AchievementType type){
+        Activity activity = subGrade.getSubActivity().getActivity();
+        Course course = activity.getCourse();
+        User user = subGrade.getGrade().getUser();
+
+        Achievement achievement = achievementRepository.findByCourseAndType(course, type);
+
+        StudentAchievement studentAchievement = findByUserAndAchievement(user, achievement);
+
+
+        return studentAchievement instanceof  SubGradeAchievement ? (SubGradeAchievement) studentAchievement : null;
+    }
+
+    public void createOrUpdate(SubGrade subGrade, AchievementType type){
 
         Activity activity = subGrade.getSubActivity().getActivity();
         Course course = activity.getCourse();
@@ -58,15 +71,29 @@ public class StudentAchievementService {
 
         Achievement achievement = achievementRepository.findByCourseAndType(course, type);
 
-        SubGradeAchievement studentAchievement = (SubGradeAchievement) findByUserAndAchievement(subGrade.getGrade().getUser(), achievement);
+        SubGradeAchievement subGradeAchievement = getSubGradeAchievement(subGrade, type);
 
-        if(studentAchievement == null) {
-            studentAchievement = new SubGradeAchievement(subGrade, user, course, achievement);
+        if(subGradeAchievement == null) {
+            subGradeAchievement = new SubGradeAchievement(subGrade, user, course, achievement);
         }
         else{
-            studentAchievement.update(subGrade);
+            subGradeAchievement.update(subGrade);
         }
-        return (SubGradeAchievement) save(studentAchievement);
+        save(subGradeAchievement);
+    }
+
+    public void remove(SubGrade subGrade, AchievementType type){
+
+        SubGradeAchievement subGradeAchievement = getSubGradeAchievement(subGrade, type);
+
+        if(subGradeAchievement == null) {
+            return;
+        }
+        else{
+            subGradeAchievement.remove(subGrade);
+        }
+        save(subGradeAchievement);
+
     }
 
     public List<StudentAchievement> findAllUsersAchievements(User user){

@@ -30,6 +30,10 @@ public class SubGradeAchievement extends StudentAchievement {
         update(subGrade);
     }
 
+    public void remove(SubGrade subGrade){
+        this.subGrades.remove(subGrade);
+    }
+
     public void update(SubGrade subGrade){
 
         SubActivity subActivity = subGrade.getSubActivity();

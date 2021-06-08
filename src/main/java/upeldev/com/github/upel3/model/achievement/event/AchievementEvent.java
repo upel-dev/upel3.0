@@ -11,9 +11,11 @@ import org.springframework.context.ApplicationEvent;
 public abstract class AchievementEvent<T> extends ApplicationEvent {
 
     private final T value;
+    private final EventType type;
 
-    public AchievementEvent(Object source, T value) {
+    public AchievementEvent(Object source, T value, EventType type) {
         super(source);
         this.value = value;
+        this.type = type;
     }
 }
