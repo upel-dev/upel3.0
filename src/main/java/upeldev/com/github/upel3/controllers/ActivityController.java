@@ -141,4 +141,20 @@ public class ActivityController {
 
         return "error";
     }
+
+    @RequestMapping(value = "/delete_grade/{courseId}/{activityId}/{gradeId}", method = RequestMethod.GET)
+    public String deleteGrade(@PathVariable("courseId") Long courseId,
+                                    @PathVariable("activityId") Long activityId,
+                                    @PathVariable("gradeId") Long gradeId,
+                                    Model model, Principal principal) {
+        User currentUser = userService.findByEmail(principal.getName());
+
+        model.addAttribute("user", currentUser);
+
+        Activity currentActivity = activityService.findActivityById(activityId);
+        Grade currentGrade = gradeService.findGradeById(gradeId);
+        activityService.removeGrade(currentActivity, currentGrade);
+
+        return "redirect:/activity?id=" + activityId;
+    }
 }

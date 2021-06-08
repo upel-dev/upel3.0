@@ -77,7 +77,7 @@
         <thead>
         <tr>
             <th scope="col">Użytkownik</th>
-            <th scope="col">Zaawansowane</th>
+            <th scope="col" class="text-center">Zaawansowane</th>
             <th scope="col" class="text-nowrap" th:text="${activity.getAggregation()}">Suma</th>
             <th scope="col" class="text-nowrap text-center" th:each="subActivity : ${activity.getSubActivities()}" th:text="${subActivity.getName()}">
             </th>
@@ -86,6 +86,8 @@
 
         <tbody th:each="grade, iterStat : ${grades}"
                th:style="${grade.getValue()} >= ${grade.getActivity().getPassValue()} ? 'background-color: #d0faa3' : 'background-color: #ff978f'">
+<!--        <form th:action="|/activity/delete_grade/${course.getId()}/${activity.getId()}/${grade.getId()}|"-->
+<!--              th:id="'delete' + ${iterStat.count}"></form>-->
         <form th:action="|/edit_grade/${course.getId()}/${activity.getId()}/${grade.getUser().getEmail()}|">
             <tr>
                 <td class="col text-nowrap align-middle">
@@ -96,6 +98,9 @@
                             th:data-target="'#collapseExample' + ${iterStat.count}"
                             aria-expanded="false" aria-controls="collapseExample">
                         Pokaż
+                    </button>
+                    <button type="submit" class="btn btn-primary py-1">
+                        <img class="" src="../static/images/saveicon.png" width="27" th:src="@{images/saveicon.png}"/>
                     </button>
                 </td>
                 <td class="col text-nowrap text-center align-middle">
@@ -111,7 +116,9 @@
                     <header class="d-flex flex-wrap justify-content-center py-1 mx-0 px-0">
                         <div class="col-3 mx-0 px-0 h-100 align-top">
                             <h6 class="align-top mb-3 border-bottom border-light mr-3 pb-3">Komentarz:</h6>
-                            <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+<!--                            <form th:action="|/delete_grade/${activity.getId()}/${grade.getId()}|">-->
+<!--                                <button type="submit" class="btn btn-primary bg-danger" name="xdd" value="true"-->
+<!--                                        th:form="'delete' + ${iterStat.count}">Usuń ocenę</button>-->
                         </div>
 
                         <div class="mx-0 px-0 col-9">
@@ -220,6 +227,19 @@
 <script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('[data-toggle="collapse"]').click(function() {
+            $(this).toggleClass( "active" );
+            if ($(this).hasClass("active")) {
+                $(this).text("Ukryj");
+            } else {
+                $(this).text("Pokaż");
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
