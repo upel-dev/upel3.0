@@ -184,6 +184,10 @@ public class ActivitySettingsController {
 
         Activity currentActivity = activityService.findActivityById(activityId);
 
+        if(subActivityService.findByActivity(currentActivity).size() == 1){
+            model.addAttribute("errorMsg", "Nie możesz usunąć jedynego zadania w tej aktywności!");
+            return "error";
+        }
 
         for(SubActivity subActivity : subActivityService.findByActivity(currentActivity)){
             if(subActivity.getId().equals(subActivityId)){
