@@ -55,6 +55,10 @@ public class ActivitySettingsController {
             model.addAttribute("errorMsg", errorMsg);
             return "error";
         }
+
+        boolean isWeighted = currentCourse.getAggregation().equals(ElementAggregation.WAVG);
+
+        model.addAttribute("isWeighted", isWeighted);
         model.addAttribute("course", currentCourse);
         model.addAttribute("activity", currentActivity);
         return "activity_settings";
@@ -221,9 +225,9 @@ public class ActivitySettingsController {
 
     @RequestMapping(value = "/activity_settings/grade_aggregation/{courseId}/{activityId}", method = RequestMethod.POST)
     public String editAggregation(@PathVariable("courseId") Long courseId,
-                                @PathVariable("activityId") Long activityId,
-                                @ModelAttribute(value = "activity") Activity activity,
-                                Model model, Principal principal) {
+                                  @PathVariable("activityId") Long activityId,
+                                  @ModelAttribute(value = "activity") Activity activity,
+                                  Model model, Principal principal) {
 
         User currentUser = userService.findByEmail(principal.getName());
         model.addAttribute("user", currentUser);
@@ -235,6 +239,29 @@ public class ActivitySettingsController {
 
         if(activity.getAggregation() != null){
             activityService.changeAggregation(currentActivity, activity.getAggregation());
+        }
+
+        return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
+
+    }
+
+    @RequestMapping(value = "/activity_settings/weight/{courseId}/{activityId}", method = RequestMethod.POST)
+    public String editWeight(@PathVariable("courseId") Long courseId,
+                                  @PathVariable("activityId") Long activityId,
+                                  @ModelAttribute(value = "activity") Activity activity,
+                                  Model model, Principal principal) {
+
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser);
+
+        Course currentCourse = courseService.findCourseById(courseId);
+
+        Activity currentActivity = activityService.findActivityById(activityId);
+        model.addAttribute("activity", currentActivity);
+
+        if(activity.getAggregation() != null){
+            currentActivity.setWeight(activity.getWeight());
+            activityService.save(currentActivity);
         }
 
         return String.format("redirect:/activity_settings/%d/%d", courseId, activityId);
