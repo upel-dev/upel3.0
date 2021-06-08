@@ -79,6 +79,27 @@
     </form>
 </section>
 
+<section th:if="${isWeighted}" class="container py-3 border-bottom">
+    <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0">
+        <div class="col-8 mx-0 px-0">
+            <h6 class="align-middle my-0">Waga tej aktywności:</h6>
+        </div>
+
+        <div class="mx-0 px-0 col-4">
+            <form class="px-0 mx-0 col-12 form-inline" method="post"
+                  th:action="|/activity_settings/weight/${course.getId()}/${activity.getId()}|">
+                <div class="col-8 ml-0 pl-0">
+                    <input type="number" class="form-control w-100" th:name="weight"
+                           th:placeholder="${activity.getWeight()}" th:value="${activity.getWeight()}" required>
+                </div>
+                <div class="col-4 mx-0 px-0">
+                    <button type="submit" class="btn btn-primary px-0 mx-0 col">Zmień wagę</button>
+                </div>
+            </form>
+        </div>
+    </header>
+</section>
+
 <section class="container py-3 border-bottom">
     <header class="d-flex flex-wrap align-items-center py-2 mx-0 px-0">
         <div class="col-8 mx-0 px-0">
