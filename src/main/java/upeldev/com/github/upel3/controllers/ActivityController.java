@@ -21,14 +21,16 @@ public class ActivityController {
     private final ActivityService activityService;
     private final UserService userService;
     private final GradeService gradeService;
+    private final CourseService courseService;
     private final SubActivityService subActivityService;
     private final SubGradeService subGradeService;
 
     @Autowired
-    public ActivityController(ActivityService activityService, UserService userService, GradeService gradeService, SubActivityService subActivityService, SubGradeService subGradeService) {
+    public ActivityController(ActivityService activityService, UserService userService, GradeService gradeService, CourseService courseService, SubActivityService subActivityService, SubGradeService subGradeService) {
         this.activityService = activityService;
         this.userService = userService;
         this.gradeService = gradeService;
+        this.courseService = courseService;
         this.subActivityService = subActivityService;
         this.subGradeService = subGradeService;
     }
@@ -134,7 +136,7 @@ public class ActivityController {
             model.addAttribute("bonusPercentage", bonusPercentage);
 
             if(currentUser.getCoursesEnrolledIn().contains(course)){
-                // Leaderboard spot
+                // Place in leaderboard
 
                 Map<Double, String> userGradeMap = new HashMap<Double, String>();
                 Set<User> users = activity.getCourse().getEnrolledStudents();
@@ -170,6 +172,31 @@ public class ActivityController {
         }
 
         return "error";
+    }
+
+    @RequestMapping(value = "/activity_leaderboard/{courseId}/{activityId}", method = RequestMethod.GET)
+    public String activityLeaderboard(@PathVariable("courseId") Long courseId,
+                              @PathVariable("activityId") Long activityId,
+                              Model model, Principal principal) {
+        Course currentCourse = courseService.findCourseById(courseId);
+        Activity currentActivity = activityService.findActivityById(activityId);
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("course", currentCourse);
+        model.addAttribute("activity", currentActivity);
+        model.addAttribute("user", currentUser);
+
+        Map<Double, String> userGradeMap = new HashMap<Double, String>();
+        Set<User> users = currentCourse.getEnrolledStudents();
+
+        for (User user : users) {
+            double userValue = courseService.getUserValueInCourse(currentCourse, user);
+            userGradeMap.put(userValue, user.getEmail());
+        }
+
+        Map<Double, String> sortedUserGradeMap = new TreeMap<Double, String>(userGradeMap).descendingMap();
+        model.addAttribute("studentGrades", sortedUserGradeMap);
+
+        return String.format("redirect:/activity_leaderboard/%d/%d", courseId, activityId);
     }
 
     @RequestMapping(value = "/delete_grade/{courseId}/{activityId}/{gradeId}", method = RequestMethod.GET)
