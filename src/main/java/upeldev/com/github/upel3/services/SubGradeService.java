@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import upeldev.com.github.upel3.model.*;
+import upeldev.com.github.upel3.model.achievement.event.EventType;
 import upeldev.com.github.upel3.model.achievement.event.SubGradeEvent;
 import upeldev.com.github.upel3.repositories.SubGradeRepository;
 
@@ -22,7 +23,7 @@ public class SubGradeService {
 
     public SubGrade save(SubGrade subGradeDTO){
         SubGrade subGrade = subGradeRepository.save(subGradeDTO);
-        publisher.publishEvent(new SubGradeEvent(this, subGrade));
+        publisher.publishEvent(new SubGradeEvent(this, subGrade, EventType.ADD_EDIT));
         return subGrade;
     }
 

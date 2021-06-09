@@ -5,6 +5,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import upeldev.com.github.upel3.model.*;
 import upeldev.com.github.upel3.model.achievement.event.AchievementEvent;
+import upeldev.com.github.upel3.model.achievement.event.EventType;
 import upeldev.com.github.upel3.model.achievement.event.GradeEvent;
 import upeldev.com.github.upel3.model.achievement.event.SubGradeEvent;
 import upeldev.com.github.upel3.services.AchievementService;
@@ -47,15 +48,25 @@ public class AchievementManager {
     @EventListener
     public void handleAchievementEvent(SubGradeEvent subGradeEvent){
 
+
         SubGrade subGrade = subGradeEvent.getValue();
         SubActivity subActivity = subGrade.getSubActivity();
         Course course = subActivity.getActivity().getCourse();
 
         Set<AchievementType> activeTypes = achievementService.findAchievementTypesInCourse(course);
 
-        if(activeTypes.contains(AchievementType.MAXED_SUBACTIVITIES)) {
-            studentAchievementService.createOrUpdate(subGrade, AchievementType.MAXED_SUBACTIVITIES);
+        switch (subGradeEvent.getType()){
+            case ADD_EDIT:
+                if(activeTypes.contains(AchievementType.MAXED_SUBACTIVITIES)) {
+                    studentAchievementService.createOrUpdate(subGrade, AchievementType.MAXED_SUBACTIVITIES);
+                }
+                break;
+            case REMOVE:
+                activeTypes.forEach(activeType -> studentAchievementService.remove(subGrade, activeType));
+                break;
         }
+
+
 
     }
 }
