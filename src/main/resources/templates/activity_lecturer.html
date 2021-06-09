@@ -28,6 +28,7 @@
             <a type="button" class="btn btn-primary" href="index">Powrót do listy kursów</a>
             <a type="button" class="btn btn-primary" th:href="|/course?id=${course.getId()}|">Powrót do kursu</a>
             <a type="button" class="btn btn-primary" th:href="|/activity_settings/${course.getId()}/${activity.getId()}|">Ustawienia aktywności</a>
+            <a type="button" class="btn btn-primary" th:href="|/activity_leaderboard/${course.getId()}/${activity.getId()}|">Tablica wyników aktywności</a>
         </div>
     </header>
     <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">

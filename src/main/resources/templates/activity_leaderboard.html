@@ -13,17 +13,19 @@
 
 <section class="container py-3">
   <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 pb-2 mb-0" style="border-top: 3px solid #343a40;">
-    <h2 class="my-0">Tablica wyników</h2>
+    <h2 class="my-0">Tablica wyników aktywności</h2>
 
     <div class="text-end">
-      <a type="button" class="btn btn-primary" th:href="|course?id=${course.getId()}|">Powrót do kursu</a>
+      <a type="button" class="btn btn-primary" th:href="|/course?id=${course.getId()}|">Powrót do kursu</a>
+      <a type="button" class="btn btn-primary" th:href="|/activity?id=${activity.getId()}|">Powrót do aktywności</a>
     </div>
   </header>
   <nav class="border-bottom mt-0 pt-1 mb-3" aria-label="breadcrumb">
     <ol class="breadcrumb" style="background-color: #ecf1fc">
       <li class="breadcrumb-item"><a href="/index">Kursy</a></li>
       <li class="breadcrumb-item"><a th:href="|/course?id=${course.getId()}|" th:text="${course.getName()}">Nazwa kursu</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Tablica wyników</li>
+      <li class="breadcrumb-item"><a th:href="|/activity?id=${activity.getId()}|" th:text="${activity.getName()}">Nazwa aktywności</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Tablica wyników aktywności</li>
     </ol>
   </nav>
   <p class="pb-3" style="border-bottom: 3px solid #343a40;">Tutaj możesz sprawdzić tablicę wyników kursantów.</p>
@@ -39,7 +41,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="student : ${studentGrades}" th:class="${studentStat.count}" th:style="${student.key} >= ${course.getPassValue()} ? 'background-color: #d0faa3;'">
+    <tr th:each="student : ${studentGrades}" th:class="${studentStat.count}" th:style="${student.key} >= ${activity.getPassValue()} ? 'background-color: #d0faa3;'">
       <td th:text="${studentStat.count}">Opis</td>
       <td th:text="${student.value.getFirstName} + ' ' + ${student.value.getLastName}">Opis</td>
       <td th:text="${student.key}">Opis</td>

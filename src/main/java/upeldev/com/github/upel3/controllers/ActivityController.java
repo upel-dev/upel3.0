@@ -12,8 +12,7 @@ import upeldev.com.github.upel3.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -22,14 +21,16 @@ public class ActivityController {
     private final ActivityService activityService;
     private final UserService userService;
     private final GradeService gradeService;
+    private final CourseService courseService;
     private final SubActivityService subActivityService;
     private final SubGradeService subGradeService;
 
     @Autowired
-    public ActivityController(ActivityService activityService, UserService userService, GradeService gradeService, SubActivityService subActivityService, SubGradeService subGradeService) {
+    public ActivityController(ActivityService activityService, UserService userService, GradeService gradeService, CourseService courseService, SubActivityService subActivityService, SubGradeService subGradeService) {
         this.activityService = activityService;
         this.userService = userService;
         this.gradeService = gradeService;
+        this.courseService = courseService;
         this.subActivityService = subActivityService;
         this.subGradeService = subGradeService;
     }
@@ -134,7 +135,29 @@ public class ActivityController {
             model.addAttribute("basePercentage", basePercentage);
             model.addAttribute("bonusPercentage", bonusPercentage);
 
-            if(currentUser.getCoursesEnrolledIn().contains(course)) return "activity_student";
+            if(currentUser.getCoursesEnrolledIn().contains(course)){
+                // Place in leaderboard
+
+                Map<Double, String> userGradeMap = new HashMap<Double, String>();
+                Set<User> users = activity.getCourse().getEnrolledStudents();
+                double currentUserValue = 0;
+
+                for (User user : users) {
+                    Grade userGrade = activityService.getStudentGradeInActivity(activity, user);
+                    double userValue = userGrade.getValue();
+                    userGradeMap.put(userValue, user.getEmail());
+                    if(currentUser == user)
+                        currentUserValue = userValue;
+                }
+
+                NavigableMap<Double, String> sortedUserGradeMap = new TreeMap<Double, String>(userGradeMap).descendingMap();
+
+                int leaderboardNumber = 0;
+                leaderboardNumber = sortedUserGradeMap.headMap(currentUserValue).size() + 1;
+                model.addAttribute("number", leaderboardNumber);
+
+                return "activity_student";
+            }
 
             if(!currentUser.getRoles().contains(Role.ADMIN)){
                 model.addAttribute("errorMsg", errorMsg);

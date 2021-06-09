@@ -53,7 +53,7 @@
         </thead>
         <tbody>
         <tr th:each="student : ${course.getEnrolledStudents()}">
-            <td th:text="${student.getEmail()}">Opis</td>
+            <td th:text="${student.getFirstName} + ' ' + ${student.getLastName}">Opis</td>
         </tr>
         </tbody>
     </table>
