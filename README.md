@@ -52,3 +52,6 @@ There are screenshots of some app screens.
 - [Jakub Wybra](https://github.com/wyder110)
 - [Karol Stach](https://github.com/Krlstch)
 - [Wojciech Makaruk](https://github.com/Ivanowicz)
+
+## License
+UPeL3.0 is an open source software licensed as [GNU General Public License v3.0](LICENSE.md).
