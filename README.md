@@ -49,7 +49,7 @@ There are screenshots of some app screens.
 - [Anna Nosek](https://github.com/Enkelian)
 - [Marcin Zięba](https://github.com/marcinz99)
 - [Ksenia Fiodarava](https://github.com/xenoteo)
-- [Jakub Wybra](https://github.com/wyder110)
+- [Jakub Wydra](https://github.com/wyder110)
 - [Karol Stach](https://github.com/Krlstch)
 - [Wojciech Makaruk](https://github.com/Ivanowicz)
 
