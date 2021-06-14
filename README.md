@@ -1,4 +1,4 @@
-# upel3.0
+# UPeL3.0
 This is a university group project done during lab classes on software engineering.
 
 ## About
